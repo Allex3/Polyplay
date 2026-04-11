@@ -23,13 +23,11 @@
 html,
 body {
   background: #6c4366;
-  width: 100%;
-  height: 100%;
   font-family: ComicNeueBold;
 }
 
 .retro-window {
-  background: #f4b5ea;
+  background: #e899dc;
   border: 0.18rem solid black;
   z-index: 10;
   box-shadow: 0.6rem 0.4rem 0.2rem rgba(0, 0, 0, 0.25);
@@ -37,26 +35,40 @@ body {
 
 .retro-window:before {
   content: '';
-  background: #e899dc;
-  width: 98.5%;
-  height: 94.5%;
+  position: absolute;
+
+  border-bottom: 0.4rem solid #f4b5ea;
+  border-top: 1.3rem solid #f4b5ea;
+  border-left: 0.4rem solid #f4b5ea;
+  border-right: 0.4rem solid #f4b5ea;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -5;
+}
+
+.retro-window:after {
+  content: '';
+  position: absolute;
 
   border: 0.18rem solid black;
 
-  transform: translate(0.75%, 4.75%);
+  top: 1.3rem;
+  left: 0.4rem;
+  right: 0.4rem;
+  bottom: 0.4rem;
 
-  position: absolute; /* so it doesn't take up space, and creates a static context */
-  z-index: -1; /* stacking contex */
-
-  align-self: baseline; /* override items-center in case of flexing, to always stay like i want it */
+  z-index: -5;
 }
 
-.login_input {
-    background-color: #BFEDEF;
-    padding: 0.1rem 0.3rem;
-    border: 0.1rem solid black;
+.retro-input {
+  background-color: #bfedef;
+  padding: 0.1rem 0.3rem;
+  border: 2px solid black;
 }
 
-*:focus{
-    outline: none;
+*:focus {
+  outline: none;
 }

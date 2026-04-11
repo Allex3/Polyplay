@@ -21,9 +21,9 @@ const routes = [
     component: () => import('../pages/Login.vue'),
   },
   {
-    path: '/admin/table',
-    name: 'MasterTable',
-    component: () => import('../pages/UserGamesTable.vue'),
+    path: '/user/table',
+    name: 'UserGamesTable',
+    component: () => import('../pages/TableView/UserGamesTable.vue'),
   },
 ]
 

@@ -3,8 +3,9 @@ export type Game = {
   name: string
   description: string
   postedDate: Date
+  imagePath: string
   rating: number
-  mainTag: string
+  tags: string[]
   developer: string
 }
 
@@ -14,8 +15,9 @@ export function createGame(data: Partial<Game> = {}): Game {
     name: data.name ?? 'NoName',
     description: data.description ?? 'NoDesc',
     postedDate: data.postedDate ?? new Date(),
+    imagePath: data.imagePath ?? '',
     rating: data.rating ?? 0.0,
-    mainTag: data.mainTag ?? 'NoTags',
+    tags: data.tags ?? [],
     developer: data.developer ?? 'NoDev',
   }
 }

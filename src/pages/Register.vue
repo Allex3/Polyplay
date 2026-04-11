@@ -4,12 +4,12 @@
     <form @submit.prevent="login" class="flex flex-col items-center gap-5 p-5">
       <div class="flex flex-col gap-1.5">
         <label for="username">Username</label>
-        <input class="login_input" name="username" v-model="username" placeholder="username" />
+        <input class="retro-input" name="username" v-model="username" placeholder="username" />
       </div>
       <div class="flex flex-col gap-1.5">
         <label for="email">E-mail</label>
         <input
-          class="login_input"
+          class="retro-input"
           name="email"
           v-model="email"
           placeholder="e-mail@something.me"
@@ -19,7 +19,7 @@
       <div class="flex flex-col gap-1.5">
         <label for="password">Password</label>
         <input
-          class="login_input"
+          class="retro-input"
           name="password"
           v-model="password"
           placeholder="password"
