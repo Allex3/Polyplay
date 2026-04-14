@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createGame, type Game } from '@/data/model'
-import { useUserGamesStore } from '@/stores/repo'
+import { useUserGamesStore } from '@/stores/gameRepo'
 
 const props = defineProps<{
   game: Game

@@ -15,7 +15,7 @@ export function createGame(data: Partial<Game> = {}): Game {
     name: data.name ?? 'NoName',
     description: data.description ?? 'NoDesc',
     postedDate: data.postedDate ?? new Date(),
-    imagePath: data.imagePath ?? '',
+    imagePath: data.imagePath ?? '../../assets/logo.png',
     rating: data.rating ?? 0.0,
     tags: data.tags ?? [],
     developer: data.developer ?? 'NoDev',

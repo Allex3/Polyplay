@@ -2,13 +2,14 @@
 import { ref, reactive } from 'vue'
 import { useAddGameModal } from '@/composables/useAddGameModal'
 import { createGame } from '@/data/model'
-import { useUserGamesStore } from '@/stores/repo'
+import { useUserGamesStore } from '@/stores/gameRepo'
 
 const userGamesStore = useUserGamesStore()
 const { isAddGameModalOpen, closeAddGameModal } = useAddGameModal()
 
 const gameFromForm = reactive(createGame())
-const tagList: string[] = []
+const tagList: string[] = reactive([])
+const mainTag = ref('')
 
 const emit = defineEmits(['addedGame'])
 //TODO SEE HOW TO DO EVENT VALIDATION but i dont think its needed here
@@ -30,7 +31,7 @@ function sendInputAndClose(): void {
     postedDate: gameFromForm.postedDate,
     imagePath: gameFromForm.imagePath,
     rating: 0.0,
-    tags: tagList,
+    tags: [mainTag.value], // TODO remake this later but god not now
     developer: 'Idkkk',
   })
 
@@ -52,29 +53,41 @@ function closeOnBackdropClick(e: Event) {
       class="fixed inset-0 z-1000 flex items-center justify-center backdrop-brightness-50"
     >
       <div class="p-8 retro-window relative flex h-3/4 w-2/5 flex-col gap-y-3 text-lg">
-        <span>Name</span>
+        <label for="name">Name</label>
         <input
           type="text"
+          name="name"
           v-model="gameFromForm.name"
           class="retro-input"
           placeholder="Enter name"
         />
 
-        <span>Description:</span>
+        <label for="description">Description:</label>
         <textarea
           v-model="gameFromForm.description"
+          name="description"
           class="retro-input"
           placeholder="Enter description"
         />
 
-        <span>Thumbnail URL:</span>
+        <label for="tags">Tags:</label>
         <input
           type="text"
+          name="tags"
+          v-model="mainTag"
+          class="retro-input"
+          placeholder="Enter tag(s)"
+        />
+
+        <label for="thumbnail">Thumbnail URL:</label>
+        <input
+          type="text"
+          name="thumbnail"
           v-model="gameFromForm.imagePath"
           class="retro-input"
           placeholder="Enter image URL"
         />
-        <img v-bind:src="gameFromForm.imagePath" />
+        <img v-bind:src="gameFromForm.imagePath" class="w-50" />
 
         <button
           @click="sendInputAndClose"

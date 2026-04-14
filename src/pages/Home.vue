@@ -3,7 +3,7 @@ import { ref } from 'vue'
 </script>
 
 <template>
-  <div class="retro-window flex flex-col items-center">
+  <div class="retro-window flex flex-col items-center md:w-20">
     <img src="/assets//Homepage/Polyplay.png" alt="Polyplay" class="logoText" />
     <span
       >Discover fun indie games and build communities with similar players. Play while chatting,

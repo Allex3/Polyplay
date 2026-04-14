@@ -3,7 +3,7 @@ import GameTableItem from './GameTableItem.vue'
 import { onBeforeMount, onMounted, ref } from 'vue'
 
 import AddGameModal from './AddGameModal.vue'
-import { useUserGamesStore } from '@/stores/repo'
+import { useUserGamesStore } from '@/stores/gameRepo'
 import { useAddGameModal } from '@/composables/useAddGameModal'
 
 const userGamesStore = useUserGamesStore()

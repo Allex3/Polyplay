@@ -9,17 +9,12 @@ export const useUserGamesStore = defineStore('userGames', () => {
 
   function resetGames(): void {
     games.value = []
-    // for testing
-    addGame(createGame({ name: 'A', id: 1 }))
-    addGame(createGame({ name: 'B', id: 2 }))
-    addGame(createGame({ name: 'C', id: 3 }))
-    addGame(createGame({ name: 'D', id: 4 }))
-    addGame(createGame({ name: 'E', id: 5 }))
-    addGame(createGame({ name: 'F', id: 6 }))
-    addGame(createGame({ name: 'G', id: 7 }))
-    addGame(createGame({ name: 'H', id: 8 }))
-    addGame(createGame({ name: 'I', id: 9 }))
-    addGame(createGame({ name: 'J', id: 10 }))
+  }
+
+  function getGame(id: Number): Game | undefined {
+    const index = games.value.findIndex((game) => game.id === id)
+    if (index === -1) throw new Error(`Get Game: Game with id ${id} does NOT exist`)
+    return games.value[index]
   }
 
   function addGame(game: Game) {
@@ -28,17 +23,19 @@ export const useUserGamesStore = defineStore('userGames', () => {
 
   function updateGame(updatedGame: Game) {
     const index = games.value.findIndex((game) => game.id === updatedGame.id)
-    if (index !== -1) games.value[index] = updatedGame
+    if (index === -1) throw new Error(`Update Game: Game with id ${updatedGame.id} does NOT exist`)
+    games.value[index] = updatedGame // all good
   }
 
   function deleteGame(deletedGame: Game | undefined) {
-    if (typeof deletedGame === 'undefined') return
+    if (typeof deletedGame === 'undefined') throw new Error(`Delete Game: Game is undefined`)
     games.value = games.value.filter((game) => game.id != deletedGame?.id)
   }
 
   return {
     games,
     countOfGames,
+    getGame,
     addGame,
     updateGame,
     resetGames,
