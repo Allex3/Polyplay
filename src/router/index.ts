@@ -25,6 +25,14 @@ const routes = [
     name: 'UserGamesTable',
     component: () => import('../pages/TableView/UserGamesTable.vue'),
   },
+  {
+    path: '/games/:gameid/edit',
+    component: () => import('../pages/EditGame.vue'),
+  },
+  {
+    path:'/PermissionDenied',
+    component: () => import('../pages/PermissionDenied.vue')
+  }
 ]
 
 const router = createRouter({

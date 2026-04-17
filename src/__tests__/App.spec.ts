@@ -57,7 +57,7 @@ describe('Games CRUD', () => {
     expect(gameCount).toBe(1)
   })
 
-  test('Reset Games', () => {
+  test('Reset Games Correctly', () => {
     gameStore.resetGames()
     const gameCount = gameStore.countOfGames
     expect(gameCount).toBe(0)

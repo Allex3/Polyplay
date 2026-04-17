@@ -1,25 +1,34 @@
 <script setup lang="ts">
 import { createGame, type Game } from '@/data/model'
-import { useUserGamesStore } from '@/stores/gameRepo'
+import { useGamesStore } from '@/stores/gameRepo'
+import { onBeforeMount, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   game: Game
 }>()
 
+const router = useRouter()
+
 const emit = defineEmits(['deletedGame'])
 
 const currentGame: Game | undefined = props.game
 
-const userGamesStore = useUserGamesStore()
+const gamesStore = useGamesStore()
 
 function deleteGame(): void {
-  userGamesStore.deleteGame(currentGame)
+  gamesStore.deleteGame(currentGame)
   emit('deletedGame')
 }
 
 function editGame(): void {
-  // pls implement this in a separate page
+  router.push('/games/' + currentGame?.id + '/edit')
 }
+
+onBeforeMount(() => {
+  // for some reason it  was STILL IN ISO 8601 FORMAT, NOT A DATE
+  currentGame.postedDate = new Date(currentGame.postedDate)
+})
 </script>
 
 <template>

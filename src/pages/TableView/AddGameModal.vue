@@ -2,9 +2,9 @@
 import { ref, reactive } from 'vue'
 import { useAddGameModal } from '@/composables/useAddGameModal'
 import { createGame } from '@/data/model'
-import { useUserGamesStore } from '@/stores/gameRepo'
+import { useGamesStore } from '@/stores/gameRepo'
 
-const userGamesStore = useUserGamesStore()
+const gamesStore = useGamesStore()
 const { isAddGameModalOpen, closeAddGameModal } = useAddGameModal()
 
 const gameFromForm = reactive(createGame())
@@ -25,7 +25,7 @@ function sendInputAndClose(): void {
     return
   }
   const newGame = createGame({
-    id: 0,
+    id: gamesStore.getNewID(),
     name: gameFromForm.name,
     description: gameFromForm.description,
     postedDate: gameFromForm.postedDate,
@@ -35,7 +35,7 @@ function sendInputAndClose(): void {
     developer: 'Idkkk',
   })
 
-  userGamesStore.addGame(newGame)
+  gamesStore.addGame(newGame)
   emit('addedGame')
   closeAddGameModal()
 }
@@ -50,51 +50,55 @@ function closeOnBackdropClick(e: Event) {
     <div
       v-show="isAddGameModalOpen"
       @click="closeOnBackdropClick"
-      class="fixed inset-0 z-1000 flex items-center justify-center backdrop-brightness-50"
+      class="fixed inset-0 z-1000 flex items-center justify-center backdrop-brightness-35"
     >
-      <div class="p-8 retro-window relative flex h-3/4 w-2/5 flex-col gap-y-3 text-lg">
-        <label for="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          v-model="gameFromForm.name"
-          class="retro-input"
-          placeholder="Enter name"
-        />
+      <div class="w-100 h-155 relative retro-window">
+        <div class="h-full w-full relative">
+          <div class="p-8 relative overflow-scroll h-full w-full flex flex-col gap-y-3 text-lg">
+            <label for="name" class="-z-5">Name</label>
+            <input
+              type="text"
+              name="name"
+              v-model="gameFromForm.name"
+              class="game-input"
+              placeholder="Enter name"
+            />
 
-        <label for="description">Description:</label>
-        <textarea
-          v-model="gameFromForm.description"
-          name="description"
-          class="retro-input"
-          placeholder="Enter description"
-        />
+            <label class="-z-5" for="description">Description:</label>
+            <textarea
+              v-model="gameFromForm.description"
+              name="description"
+              class="game-input"
+              placeholder="Enter description"
+            />
 
-        <label for="tags">Tags:</label>
-        <input
-          type="text"
-          name="tags"
-          v-model="mainTag"
-          class="retro-input"
-          placeholder="Enter tag(s)"
-        />
+            <label class="-z-5" for="tags">Tags:</label>
+            <input
+              type="text"
+              name="tags"
+              v-model="mainTag"
+              class="game-input"
+              placeholder="Enter tag(s)"
+            />
 
-        <label for="thumbnail">Thumbnail URL:</label>
-        <input
-          type="text"
-          name="thumbnail"
-          v-model="gameFromForm.imagePath"
-          class="retro-input"
-          placeholder="Enter image URL"
-        />
-        <img v-bind:src="gameFromForm.imagePath" class="w-50" />
+            <label class="-z-5" for="thumbnail">Thumbnail URL:</label>
+            <input
+              type="text"
+              name="thumbnail"
+              v-model="gameFromForm.imagePath"
+              class="game-input"
+              placeholder="Enter image URL"
+            />
+            <img v-bind:src="gameFromForm.imagePath" class="w-45" />
 
-        <button
-          @click="sendInputAndClose"
-          class="hover:cursor-pointer hover_scale bg-[#bfedef] w-30 self-center border-2"
-        >
-          Add Game
-        </button>
+            <button
+              @click="sendInputAndClose"
+              class="-z-5 hover:cursor-pointer hover_scale bg-[#bfedef] w-30 self-center border-2"
+            >
+              Add Game
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </Teleport>

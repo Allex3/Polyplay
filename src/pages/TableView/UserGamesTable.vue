@@ -3,33 +3,33 @@ import GameTableItem from './GameTableItem.vue'
 import { onBeforeMount, onMounted, ref } from 'vue'
 
 import AddGameModal from './AddGameModal.vue'
-import { useUserGamesStore } from '@/stores/gameRepo'
+import { useGamesStore } from '@/stores/gameRepo'
 import { useAddGameModal } from '@/composables/useAddGameModal'
 
-const userGamesStore = useUserGamesStore()
+const gamesStore = useGamesStore()
 const { openAddGameModal } = useAddGameModal()
 
 const visibleGamesOnPage = 4
 
-const visibleGames = ref(userGamesStore.games.slice(0, visibleGamesOnPage))
+const visibleGames = ref(gamesStore.games.slice(0, visibleGamesOnPage))
 
 const page = ref(1)
-const totalPages = ref(Math.ceil(userGamesStore.games.length / visibleGamesOnPage))
+const totalPages = ref(Math.ceil(gamesStore.games.length / visibleGamesOnPage))
 
 function getStartingPage() {
-  totalPages.value = Math.ceil(userGamesStore.games.length / visibleGamesOnPage)
+  totalPages.value = Math.ceil(gamesStore.games.length / visibleGamesOnPage)
   page.value = 1
-  visibleGames.value = userGamesStore.games.slice(0, visibleGamesOnPage)
+  visibleGames.value = gamesStore.games.slice(0, visibleGamesOnPage)
 }
 
 function getEndingPage() {
-  totalPages.value = Math.ceil(userGamesStore.games.length / visibleGamesOnPage)
+  totalPages.value = Math.ceil(gamesStore.games.length / visibleGamesOnPage)
   page.value = totalPages.value
-  visibleGames.value = userGamesStore.games.slice((totalPages.value - 1) * visibleGamesOnPage)
+  visibleGames.value = gamesStore.games.slice((totalPages.value - 1) * visibleGamesOnPage)
 }
 
 function getPreviousPage() {
-  totalPages.value = Math.ceil(userGamesStore.games.length / visibleGamesOnPage)
+  totalPages.value = Math.ceil(gamesStore.games.length / visibleGamesOnPage)
   if (page.value == 1) page.value = totalPages.value
   else page.value--
 
@@ -37,7 +37,7 @@ function getPreviousPage() {
 }
 
 function getNextPage() {
-  totalPages.value = Math.ceil(userGamesStore.games.length / visibleGamesOnPage)
+  totalPages.value = Math.ceil(gamesStore.games.length / visibleGamesOnPage)
   if (page.value == totalPages.value) page.value = 1
   else page.value++
 
@@ -45,9 +45,9 @@ function getNextPage() {
 }
 
 function updateGamesView(): void {
-  totalPages.value = Math.ceil(userGamesStore.games.length / visibleGamesOnPage)
+  totalPages.value = Math.ceil(gamesStore.games.length / visibleGamesOnPage)
   const startingGameIndex = (page.value - 1) * visibleGamesOnPage
-  visibleGames.value = userGamesStore.games.slice(
+  visibleGames.value = gamesStore.games.slice(
     startingGameIndex,
     startingGameIndex + visibleGamesOnPage,
   )
@@ -65,9 +65,8 @@ function updateNoGames(): void {
 }
 
 onBeforeMount(() => {
-  userGamesStore.resetGames()
-  visibleGames.value = userGamesStore.games.slice(0, visibleGamesOnPage)
-  totalPages.value = Math.ceil(userGamesStore.games.length / visibleGamesOnPage)
+  visibleGames.value = gamesStore.games.slice(0, visibleGamesOnPage)
+  totalPages.value = Math.ceil(gamesStore.games.length / visibleGamesOnPage)
 })
 </script>
 
