@@ -11,6 +11,18 @@ const gameFromForm = reactive(createGame())
 const tagList: string[] = reactive([])
 const mainTag = ref('')
 
+function isScrolledIntoView(el: HTMLElement) {
+  var rect = el.getBoundingClientRect()
+  var elemTop = rect.top
+  var elemBottom = rect.bottom
+
+  // Only completely visible elements return true:
+  //var isVisible = (elemTop >= 0) && (elemBottom <= document.getElementById('add-window')?.getBoundingClientRect().height);
+  // Partially visible elements return true:
+  //isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+  //return isVisible;
+}
+
 const emit = defineEmits(['addedGame'])
 //TODO SEE HOW TO DO EVENT VALIDATION but i dont think its needed here
 // since we don't submit the variables or the game..
@@ -50,12 +62,12 @@ function closeOnBackdropClick(e: Event) {
     <div
       v-show="isAddGameModalOpen"
       @click="closeOnBackdropClick"
-      class="fixed inset-0 z-1000 flex items-center justify-center backdrop-brightness-35"
+      class="fixed inset-0 z-11 flex items-center justify-center backdrop-brightness-35"
     >
-      <div class="w-100 h-155 relative retro-window">
-        <div class="h-full w-full relative">
-          <div class="p-8 relative overflow-scroll h-full w-full flex flex-col gap-y-3 text-lg">
-            <label for="name" class="-z-5">Name</label>
+      <div class="w-100 h-100 relative retro-window">
+        <div class="h-full w-full">
+          <div class="p-8 overflow-scroll h-full w-full flex flex-col gap-y-3 text-lg">
+            <label for="name">Name</label>
             <input
               type="text"
               name="name"
@@ -64,7 +76,7 @@ function closeOnBackdropClick(e: Event) {
               placeholder="Enter name"
             />
 
-            <label class="-z-5" for="description">Description:</label>
+            <label for="description">Description:</label>
             <textarea
               v-model="gameFromForm.description"
               name="description"
@@ -72,7 +84,7 @@ function closeOnBackdropClick(e: Event) {
               placeholder="Enter description"
             />
 
-            <label class="-z-5" for="tags">Tags:</label>
+            <label for="tags">Tags:</label>
             <input
               type="text"
               name="tags"
@@ -81,7 +93,7 @@ function closeOnBackdropClick(e: Event) {
               placeholder="Enter tag(s)"
             />
 
-            <label class="-z-5" for="thumbnail">Thumbnail URL:</label>
+            <label for="thumbnail">Thumbnail URL:</label>
             <input
               type="text"
               name="thumbnail"
@@ -93,7 +105,7 @@ function closeOnBackdropClick(e: Event) {
 
             <button
               @click="sendInputAndClose"
-              class="-z-5 hover:cursor-pointer hover_scale bg-[#bfedef] w-30 self-center border-2"
+              class="hover:cursor-pointer hover_scale bg-[#bfedef] w-30 self-center border-2"
             >
               Add Game
             </button>
