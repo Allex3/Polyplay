@@ -30,9 +30,13 @@ const routes = [
     component: () => import('../pages/EditGame.vue'),
   },
   {
-    path:'/PermissionDenied',
-    component: () => import('../pages/PermissionDenied.vue')
-  }
+    path: '/games/:gameid',
+    component: () => import('../pages/GamePage.vue'),
+  },
+  {
+    path: '/PermissionDenied',
+    component: () => import('../pages/PermissionDenied.vue'),
+  },
 ]
 
 const router = createRouter({
