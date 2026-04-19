@@ -38,8 +38,8 @@ const routes = [
     component: () => import('../pages/PermissionDenied.vue'),
   },
   {
-    path: '/user/games',
-    component: () => import('../pages/ImageView/ImageGrid.vue'),
+    path: '/games',
+    component: () => import('../pages/ImageView/MainGamesCatalogue.vue'),
   },
 ]
 

@@ -1,11 +1,12 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div id="nav" class="flex flex-row gap-10 p-2 items-center">
+  <div id="nav" class="flex flex-row gap-10 p-2 items-center mb-4">
     <router-link to="/" class="hover_scale single_link"
       ><img src="/assets/logo.png" alt="Logo" class="logo"
     /></router-link>
     <router-link to="/" class="hover_scale single_link">Home</router-link>
+    <router-link to="/games" class="hover_scale single_link">Games</router-link>
     <router-link to="/Register" class="hover_scale single_link">Register</router-link>
     <router-link to="/Login" class="hover_scale single_link">Login</router-link>
     <router-link to="/user/table" class="hover_scale single_link">Dashboard</router-link>

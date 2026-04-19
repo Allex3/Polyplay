@@ -71,7 +71,9 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="retro-window flex flex-col justify-between items-center">
+  <div
+    class="retro-window m-auto w-10/12 relative gap-10 flex flex-col justify-between items-center"
+  >
     <div class="flex flex-row text-3xl pt-13 mr-6">
       <div class="text-center w-30 pr-3 pl-3 overflow-hidden text-ellipsis whitespace-nowrap">
         Name
@@ -81,14 +83,14 @@ onBeforeMount(() => {
       <div class="text-center w-48 pl-6">Main Tag</div>
       <div class="text-center w-48 pr-6">Developer</div>
     </div>
-    <div class="flex flex-col gap-5 w-216">
+    <div class="flex flex-col gap-5 w-216 h-auto">
       <div v-for="game in visibleGames" :key="game.id">
         <GameTableItem @deleted-game="updateGamesView" :game="game" class="hover:bg-[#98518E]" />
       </div>
     </div>
 
     <!-- buttons -->
-    <div class="flex flex-row items-center gap-x-10 mb-15">
+    <div class="flex flex-row items-center gap-x-10 mb-10">
       <div>
         <button
           class="bg-[#bfedef] border-black border-2 px-2 text-2xl hover:bg-[#a6ebee] hover:cursor-pointer active:bg-[#88d8dc]"
@@ -129,12 +131,3 @@ onBeforeMount(() => {
 
   <AddGameModal @added-game="updateGamesView" />
 </template>
-
-<style scoped>
-.retro-window {
-  width: 60rem;
-  height: 35rem;
-  position: relative;
-  margin: auto;
-}
-</style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserService } from '@/stores/userService'
 import { useGamesStore } from '@/stores/gameRepo'
@@ -12,6 +12,11 @@ const router = useRouter()
 const route = useRoute()
 
 const currentGame = ref<Game>(gameStore.getGame(Number(route.params.gameid)))
+
+onBeforeMount(() => {
+  // for some reason it  was STILL IN ISO 8601 FORMAT, NOT A DATE
+  currentGame.value.postedDate = new Date(currentGame.value.postedDate)
+})
 </script>
 <template>
   <!-- Two items: For the game details, and for the chat  -->

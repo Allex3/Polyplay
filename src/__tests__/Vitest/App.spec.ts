@@ -1,5 +1,5 @@
 import { describe, test, it, expect, beforeAll } from 'vitest'
-import { useUserGamesStore } from '../stores/gameRepo'
+import { useUserGamesStore } from '../../stores/gameRepo'
 import { mount } from '@vue/test-utils'
 import App from '../App.vue'
 import { createGame } from '@/data/model'
