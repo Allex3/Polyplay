@@ -5,11 +5,11 @@ import { createUser, type User } from '@/data/model.ts'
 
 export const useUserService = defineStore('userService', () => {
   const user = ref<User>(createUser())
+  const users = ref<User[]>([])
 
   if (localStorage.getItem('activeUser')) {
     user.value = JSON.parse(localStorage.getItem('activeUser') ?? '')
-  }
-  else {
+  } else {
     user.value = createUser()
   }
 

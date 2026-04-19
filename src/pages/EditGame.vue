@@ -16,11 +16,14 @@ const tag = ref('')
 const currentGame = ref<Game>(createGame())
 
 if (userService.user.username == '2') {
+  //TODO change tihs, for testing
   router.push('/PermissionDenied')
 } else {
   // correct
   currentGame.value = gameStore.getGame(Number(route.params.gameid))
 }
+
+tag.value = currentGame.value.tags[0] ?? '' //TODO get rid of this
 
 function sendInputAndClose() {
   currentGame.value.tags = [tag.value] //TODO later make actual tags

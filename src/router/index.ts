@@ -37,6 +37,10 @@ const routes = [
     path: '/PermissionDenied',
     component: () => import('../pages/PermissionDenied.vue'),
   },
+  {
+    path: '/user/games',
+    component: () => import('../pages/ImageView/ImageGrid.vue'),
+  },
 ]
 
 const router = createRouter({
