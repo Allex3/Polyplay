@@ -11,6 +11,8 @@ const gameStore = useGamesStore()
 const router = useRouter()
 const route = useRoute()
 
+const tag = ref('')
+
 const currentGame = ref<Game>(createGame())
 
 if (userService.user.username == '2') {
@@ -21,6 +23,7 @@ if (userService.user.username == '2') {
 }
 
 function sendInputAndClose() {
+  currentGame.value.tags = [tag.value] //TODO later make actual tags
   gameStore.updateGame(currentGame.value)
 }
 </script>
@@ -49,7 +52,7 @@ function sendInputAndClose() {
         <input
           type="text"
           name="tags"
-          v-model="currentGame.tags"
+          v-model="tag"
           class="game-input"
           placeholder="Enter tag(s)"
         />

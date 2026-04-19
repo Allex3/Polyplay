@@ -36,11 +36,11 @@ function goToGamePage(): void {
 </script>
 
 <template>
-  <div
-    @click="goToGamePage()"
-    class="flex flex-row hover:cursor-pointer items-center bg-[#f4b5ea] p-2 text-2xl border-2"
-  >
-    <div class="text-center w-56 overflow-hidden text-ellipsis whitespace-nowrap">
+  <div class="flex flex-row items-center bg-[#f4b5ea] p-2 text-2xl border-2">
+    <div
+      @click="goToGamePage()"
+      class="hover:cursor-pointer hover:scale-120 text-center w-56 overflow-hidden text-ellipsis whitespace-nowrap"
+    >
       {{ currentGame?.name }}
     </div>
     <div class="text-center w-30 overflow-hidden text-ellipsis whitespace-nowrap">
