@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: ComicNeue;
+  src: url('/assets/Comic_Neue/ComicNeue-Regular.ttf');
+}
+@font-face {
+  font-family: ComicNeueBold;
+  src: url('/assets/Comic_Neue/ComicNeue-Bold.ttf');
+}
+@font-face {
+  font-family: ComicNeueItalic;
+  src: url('/assets/Comic_Neue/ComicNeue-Italic.ttf');
+}
+
+.comic-neue-bold {
+  font-family: ComicNeueBold;
+}
+
+.comic-neue {
+  font-family: ComicNeue;
+}
+
+.hover_scale {
+  transition: scale 0.25s; /* transition the scale propety */
+}
+.hover_scale:hover {
+  scale: 1.14;
+}
+
+html,
+body {
+  background: #6c4366;
+  font-family: ComicNeueBold;
+}
+
+.retro-window {
+  background: #e899dc;
+  border: 0.18rem solid black;
+  z-index: 10;
+  box-shadow:
+    0.4rem 0rem #f4b5ea,
+    0.4rem -1.3rem #f4b5ea,
+    0.4rem 0.4rem #f4b5ea,
+    -0.4rem 0.4rem #f4b5ea,
+    -0.4rem -1.3rem #f4b5ea,
+    0.58rem 0.58rem black,
+    -0.58rem 0.4rem black,
+    0.4rem 0.58rem black,
+    -0.58rem 0.58rem black,
+    -0.58rem -1.48rem black,
+    0.58rem -1.48rem black,
+    1rem 1rem 0.2rem rgba(0, 0, 0, 0.25);
+}
+
+.retro-input {
+  background-color: #bfedef;
+  padding: 0.1rem 0.3rem;
+  border: 2px solid black;
+}
+
+.game-input {
+  background-color: #f4b5ea;
+  padding: 0.1rem 0.3rem;
+  border: 2px solid black;
+  color: #98518e;
+}
+
+*:focus {
+  outline: none;
+}
