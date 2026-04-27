@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useUserRepo } from '@/stores/userRepo'
-import { useGamesStore } from '@/stores/gameRepo'
+import { useUserRepo } from '@/stores/userStore'
+import { useGamesStore } from '@/stores/gameStore'
 import { type Game, type User, createGame } from '@/data/model'
 
 import { useCookieManager } from '@/composables/useCookieManager'

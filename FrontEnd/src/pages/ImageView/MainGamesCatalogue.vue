@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import GamesGrid from './GamesGrid.vue';
+import { Suspense } from 'vue'
+import GamesGrid from './GamesGrid.vue'
 import SearchArt from './SearchArt.vue'
 </script>
 <template>
   <SearchArt />
-  <GamesGrid />
+  <Suspense>
+    <GamesGrid />
+    <template #fallback>Loading...</template>
+  </Suspense>
 </template>

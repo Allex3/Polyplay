@@ -1,32 +1,12 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { createGame, type Game } from '@/data/model.ts'
+import apiService from '@/api/apiService'
 
-export const useGamesStore = defineStore('games', () => {
-  const games = ref<Game[]>([])
+export const useGamesStore = defineStore('games', async () => {
+  const games = (await apiService.games.getGames()).data
+
   const maxID = ref(0)
-
-  if (localStorage.getItem('games')) {
-    games.value = JSON.parse(localStorage.getItem('games') ?? '')
-  }
-  if (localStorage.getItem('maxID')) {
-    maxID.value = JSON.parse(localStorage.getItem('maxID') ?? '')
-  }
-
-  watch(
-    games,
-    (gamesVal) => {
-      localStorage.setItem('games', JSON.stringify(gamesVal))
-    },
-    { deep: true },
-  )
-  watch(
-    maxID,
-    (maxIDval) => {
-      localStorage.setItem('maxID', JSON.stringify(maxIDval))
-    },
-    { deep: true },
-  )
 
   const countOfGames = computed(() => games.value.length)
 
@@ -43,7 +23,6 @@ export const useGamesStore = defineStore('games', () => {
     if (game === undefined) throw new Error(`Get Game: Game with id ${id} does NOT exist`)
     return game
   }
-
 
   function addGame(game: Game) {
     games.value.push(game)

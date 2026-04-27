@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import GameImageItem from './GameImageItem.vue'
-import { useGamesStore } from '@/stores/gameRepo'
+import { useGamesStore } from '@/stores/gameStore'
 import { onBeforeMount, ref } from 'vue'
+import apiService from '@/api/apiService'
 
-const gamesStore = useGamesStore()
+const gamesStore = await useGamesStore()
+gamesStore.games = (await apiService.games.getGames()).data
+
+console.log(gamesStore.games)
 
 const visibleGamesOnPage = 6
 

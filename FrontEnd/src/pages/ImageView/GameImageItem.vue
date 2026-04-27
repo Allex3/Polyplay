@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type Game, createGame } from '@/data/model'
-import { useGamesStore } from '@/stores/gameRepo'
+import { useGamesStore } from '@/stores/gameStore'
 import { useRouter } from 'vue-router'
 
 const props = defineProps<{

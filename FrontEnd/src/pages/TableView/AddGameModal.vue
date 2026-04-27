@@ -2,8 +2,8 @@
 import { ref, reactive } from 'vue'
 import { useAddGameModal } from '@/composables/useAddGameModal'
 import { createGame } from '@/data/model'
-import { useGamesStore } from '@/stores/gameRepo'
-import { useUserRepo } from '@/stores/userRepo'
+import { useGamesStore } from '@/stores/gameStore'
+import { useUserRepo } from '@/stores/userStore'
 
 const gamesStore = useGamesStore()
 const { isAddGameModalOpen, closeAddGameModal } = useAddGameModal()

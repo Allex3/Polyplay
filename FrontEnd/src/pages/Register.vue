@@ -72,7 +72,7 @@ label {
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useUserRepo } from '@/stores/userRepo'
+import { useUserRepo } from '@/stores/userStore'
 import { createUser } from '@/data/model'
 import { useRouter } from 'vue-router'
 

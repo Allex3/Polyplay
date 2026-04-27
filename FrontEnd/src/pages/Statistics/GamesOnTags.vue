@@ -10,7 +10,7 @@ import {
   LinearScale,
 } from 'chart.js'
 import { computed, reactive, ref } from 'vue'
-import { useGamesStore } from '@/stores/gameRepo'
+import { useGamesStore } from '@/stores/gameStore'
 import { createGame } from '@/data/model'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)

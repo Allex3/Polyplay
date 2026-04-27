@@ -70,7 +70,7 @@ label {
 </style>
 
 <script setup lang="ts">
-import { useUserRepo } from '@/stores/userRepo'
+import { useUserRepo } from '@/stores/userStore'
 import { ref } from 'vue'
 import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
 import { useRouter } from 'vue-router'

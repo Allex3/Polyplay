@@ -3,7 +3,7 @@ import GameTableItem from './GameTableItem.vue'
 import { onBeforeMount, onMounted, ref } from 'vue'
 
 import AddGameModal from './AddGameModal.vue'
-import { useGamesStore } from '@/stores/gameRepo'
+import { useGamesStore } from '@/stores/gameStore'
 import { useAddGameModal } from '@/composables/useAddGameModal'
 import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
 import { useRouter } from 'vue-router'

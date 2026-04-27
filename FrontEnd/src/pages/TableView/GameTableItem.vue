@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { createGame, type Game } from '@/data/model'
-import { useGamesStore } from '@/stores/gameRepo'
+import { useGamesStore } from '@/stores/gameStore'
 import { onBeforeMount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
