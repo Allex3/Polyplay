@@ -25,17 +25,22 @@ class GamesApiInterface {
 
       const result = await response.json()
 
-      return { success: true, data: result }
+      return { success: true, gamesData: result }
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : error }
     }
   }
 
-  public getGames() {
-    return this.callApi('GET', '/api/games')
+  public async getGames(pageNumber: number, pageSize: number = 12) {
+    // 12 by default
+    const response = await this.callApi(
+      'GET',
+      `/api/games?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    )
+    return { games: response.gamesData.data, totalGames: response.gamesData.totalRecords }
   }
 
-  public getGame(id: number) {
+  public async getGame(id: number) {
     return this.callApi('GET', `/api/games/${id}`)
   }
 

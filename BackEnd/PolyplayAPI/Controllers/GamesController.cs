@@ -25,9 +25,17 @@ namespace PolyplayAPI.Controllers
 
         // GET: api/Games
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetGames()
+        public async Task<ActionResult<IEnumerable<Game>>> GetGames([FromQuery] PaginationParameters paginationParams)
         {
-            return await _context.Games.ToListAsync();
+            var gamesQuery = _context.Games.AsQueryable();
+            var totalGames = await gamesQuery.CountAsync();
+            var games = await gamesQuery.Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
+                .ToListAsync();
+
+            var paginatedResponse = new PaginatedResponse<Game>(games, paginationParams.PageNumber, paginationParams.PageSize, totalGames);
+
+            return Ok(paginatedResponse); // 200 OK, page number, page size, total records, and data
         }
 
         // GET: api/Games/5

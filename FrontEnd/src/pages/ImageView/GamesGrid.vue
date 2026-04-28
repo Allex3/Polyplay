@@ -2,66 +2,11 @@
 import { useRouter } from 'vue-router'
 import GameImageItem from './GameImageItem.vue'
 import { onBeforeMount, ref } from 'vue'
-import apiService from '@/api/apiService'
+import { usePagination } from '@/composables/usePagination'
 
-const games = (await apiService.games.getGames()).data
+const VISIBLE_GAMES_ON_PAGE = 12 // 12 to be seen in the grid
 
-const visibleGamesOnPage = 6
-
-const visibleGames = ref(games.slice(0, visibleGamesOnPage))
-
-const page = ref(1)
-const totalPages = ref(Math.ceil(games.length / visibleGamesOnPage))
-
-function getStartingPage() {
-  totalPages.value = Math.ceil(games.length / visibleGamesOnPage)
-  page.value = 1
-  visibleGames.value = games.slice(0, visibleGamesOnPage)
-}
-
-function getEndingPage() {
-  totalPages.value = Math.ceil(games.length / visibleGamesOnPage)
-  page.value = totalPages.value
-  visibleGames.value = games.slice((totalPages.value - 1) * visibleGamesOnPage)
-}
-
-function getPreviousPage() {
-  totalPages.value = Math.ceil(games.length / visibleGamesOnPage)
-  if (page.value == 1) page.value = totalPages.value
-  else page.value--
-
-  updateGamesView()
-}
-
-function getNextPage() {
-  totalPages.value = Math.ceil(games.length / visibleGamesOnPage)
-  if (page.value == totalPages.value) page.value = 1
-  else page.value++
-
-  updateGamesView()
-}
-
-function updateGamesView(): void {
-  totalPages.value = Math.ceil(games.length / visibleGamesOnPage)
-  const startingGameIndex = (page.value - 1) * visibleGamesOnPage
-  visibleGames.value = games.slice(startingGameIndex, startingGameIndex + visibleGamesOnPage)
-
-  if (totalPages.value == 0) // NO GAMES
-  {
-    updateNoGames()
-    return
-  }
-}
-
-function updateNoGames(): void {
-  totalPages.value = 1
-  page.value = 1
-}
-
-onBeforeMount(() => {
-  visibleGames.value = games.slice(0, visibleGamesOnPage)
-  totalPages.value = Math.ceil(games.length / visibleGamesOnPage)
-})
+const { visibleGames, totalPages, page, goToPage } = usePagination(VISIBLE_GAMES_ON_PAGE)
 </script>
 <template>
   <div
@@ -76,26 +21,26 @@ onBeforeMount(() => {
     <div class="flex flex-row gap-x-3 text-2xl">
       <button
         class="bg-[#bfedef] border-black border-2 px-2 hover:bg-[#a6ebee] hover:cursor-pointer active:bg-[#88d8dc]"
-        @click="getStartingPage"
+        @click="goToPage(1)"
       >
         &lt;&lt;
       </button>
       <button
         class="bg-[#bfedef] border-black border-2 px-2 hover:bg-[#a6ebee] hover:cursor-pointer active:bg-[#88d8dc]"
-        @click="getPreviousPage"
+        @click="goToPage(--page)"
       >
         &lt;
       </button>
       <div class="text-sm text-center pt-2">{{ page }} / {{ totalPages }}</div>
       <button
         class="bg-[#bfedef] border-black border-2 px-2 hover:bg-[#a6ebee] hover:cursor-pointer active:bg-[#88d8dc]"
-        @click="getNextPage"
+        @click="goToPage(++page)"
       >
         &gt;
       </button>
       <button
         class="bg-[#bfedef] border-black border-2 px-2 hover:bg-[#a6ebee] hover:cursor-pointer active:bg-[#88d8dc]"
-        @click="getEndingPage"
+        @click="goToPage(totalPages)"
       >
         &gt;&gt;
       </button>

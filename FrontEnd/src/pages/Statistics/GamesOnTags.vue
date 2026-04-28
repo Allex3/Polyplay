@@ -21,37 +21,31 @@ var chartDataLabels: string[] = []
 var chartDataDatasets: any[] = [{}]
 chartDataDatasets[0].data = []
 
-const chartData = ref({})
-var games = (await apiService.games.getGames()).data
-
-games.forEach((game: Game) => {
-  let currentTag = game.mainTag ?? 'No Tag'
-  if (!chartDataLabels.includes(currentTag)) // new tag
-  {
-    chartDataLabels.push(currentTag) // push the new tag
-    chartDataDatasets[0].data.push(1) // push the new tag at the end
-    return
-  }
-
-  // for each game also see what tag it is to add to that specific dataset position
-  let currentTagIndex = chartDataLabels.findIndex((tag) => tag === currentTag)
-  chartDataDatasets[0].data[currentTagIndex] += 1 // one more game
-})
-
-chartDataDatasets[0].label = 'Game Tags'
-chartDataDatasets[0].backgroundColor = '#f4b5ea'
+var chartData: any = reactive({})
 
 ChartJS.defaults.color = '#f4b5ea'
 ChartJS.defaults.borderColor = '#000'
 
-chartData.value = { labels: chartDataLabels, datasets: chartDataDatasets }
+const MAX_GAMES_ON_PAGE = 20
 
-async function updateData(): Promise<void> {
+await updateData()
+
+async function updateData(): Promise<any> {
   chartDataLabels = []
   chartDataDatasets = [{}]
   chartDataDatasets[0].data = []
 
-  games = (await apiService.games.getGames()).data
+  let games: [] = [] // empty array now
+  let pageNumber: number = 1
+  let currentPageGames = (await apiService.games.getGames(1, MAX_GAMES_ON_PAGE)).games
+  while (currentPageGames.length > 0) {
+    // run this while there are games in the API, to get them all
+    games.push.apply(games, currentPageGames)
+    console.log(currentPageGames)
+    pageNumber++
+    currentPageGames = (await apiService.games.getGames(pageNumber, MAX_GAMES_ON_PAGE)).games
+  }
+
   games.forEach((game: Game) => {
     let currentTag = game.mainTag ?? 'No Tag'
     if (!chartDataLabels.includes(currentTag)) // new tag
@@ -68,9 +62,7 @@ async function updateData(): Promise<void> {
   chartDataDatasets[0].label = 'Game Tags'
   chartDataDatasets[0].backgroundColor = '#f4b5ea'
 
-  ChartJS.defaults.color = '#f4b5ea'
-  ChartJS.defaults.borderColor = '#000'
-  chartData.value = { labels: chartDataLabels, datasets: chartDataDatasets }
+  chartData = { labels: chartDataLabels, datasets: chartDataDatasets }
 }
 
 function addTestGames() {
@@ -79,7 +71,7 @@ function addTestGames() {
 </script>
 
 <template>
-  <Bar class="text-[#000000]" :options="chartOptions" :data="chartData" />
+  <Bar :options="chartOptions" :data="chartData" />
   <button
     @click="addTestGames"
     class="hover:cursor-pointer hover:scale-110 flex m-auto p-2 bg-[#bfedef] border-2 mb-3"

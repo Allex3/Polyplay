@@ -20,7 +20,9 @@ const successText = ref('')
 if (!(await apiService.games.getGame(Number(route.params.gameid))).success)
   router.push('/PermissionDenied') // game doesn't exist, 404 probably
 
-const currentGame = ref<Game>((await apiService.games.getGame(Number(route.params.gameid))).data)
+const currentGame = ref<Game>(
+  (await apiService.games.getGame(Number(route.params.gameid))).gamesData,
+)
 
 if (userRepo.user.username != currentGame.value.developer)
   //TODO change tihs, for testing

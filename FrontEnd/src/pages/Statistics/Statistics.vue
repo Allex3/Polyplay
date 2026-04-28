@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { Suspense } from 'vue'
-import GamesGrid from './GamesGrid.vue'
-import SearchArt from './SearchArt.vue'
+import GamesOnTags from './GamesOnTags.vue'
 </script>
+
 <template>
-  <SearchArt />
   <Suspense>
-    <GamesGrid />
+    <GamesOnTags />
     <template class="text-center w-full h-full" #fallback>Loading...</template>
   </Suspense>
 </template>

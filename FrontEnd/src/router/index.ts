@@ -43,7 +43,7 @@ const routes = [
   },
   {
     path: '/stats',
-    component: () => import('../pages/Statistics/GamesOnTags.vue'),
+    component: () => import('../pages/Statistics/Statistics.vue'),
   },
 ]
 

@@ -14,14 +14,16 @@ const { readCookie, writeCookie } = useCookieManager()
 const router = useRouter()
 const route = useRoute()
 
-const currentGame = ref<Game>((await apiService.games.getGame(Number(route.params.gameid))).data)
+const currentGame = ref<Game>(
+  (await apiService.games.getGame(Number(route.params.gameid))).gamesData,
+)
 
 onBeforeMount(() => {
   // for some reason it  was STILL IN ISO 8601 FORMAT, NOT A DATE
   currentGame.value.postedDate = new Date(currentGame.value.postedDate)
 })
 
-var visitedGames: object = readCookie('VisitedGames') ?? {}
+var visitedGames: any = readCookie('VisitedGames') ?? {}
 
 if (visitedGames.hasOwnProperty(currentGame.value.id)) visitedGames[currentGame.value.id] += 1
 else visitedGames[currentGame.value.id] = 1
@@ -111,7 +113,8 @@ console.log(readCookie('VisitedGames'))
     </div>
 
     <!-- Chat -->
-    <div class="hidden flex flex-col h-5/6 w-1/3 self-center justify-center retro-window">
+    <!-- TODO make this flex, not hidden, in the future -->
+    <div class="hidden flex-col h-5/6 w-1/3 self-center justify-center retro-window">
       <span class="w-30">COMING SOON!!</span>
     </div>
   </div>
