@@ -1,3 +1,5 @@
+import type { Game } from '@/data/model'
+
 class GamesApiInterface {
   baseURL: string
 
@@ -18,7 +20,7 @@ class GamesApiInterface {
       })
 
       if (!response.ok) {
-        throw new Error(response.statusText)
+        return { success: false, errors: await response.json() } //if NOT ok, we get the POST/PUT data validation errors
       }
 
       const result = await response.json()
@@ -31,6 +33,22 @@ class GamesApiInterface {
 
   public getGames() {
     return this.callApi('GET', '/api/games')
+  }
+
+  public getGame(id: number) {
+    return this.callApi('GET', `/api/games/${id}`)
+  }
+
+  public postGame(game: Game) {
+    const gameWithoutID: object = (({ id, ...restOfGame }) => restOfGame)(game)
+    return this.callApi('POST', '/api/games', { body: JSON.stringify(gameWithoutID) })
+  }
+
+  public putGame(game: Game) {
+    return this.callApi('PUT', `/api/games/${game.id}`, { body: JSON.stringify(game) })
+  }
+  public deleteGame(id: number) {
+    return this.callApi('DELETE', `/api/games/${id}`)
   }
 }
 

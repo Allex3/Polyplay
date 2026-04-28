@@ -22,8 +22,8 @@ const routes = [
   },
   {
     path: '/user/table',
-    name: 'UserGamesTable',
-    component: () => import('../pages/TableView/UserGamesTable.vue'),
+    name: 'TableView',
+    component: () => import('../pages/TableView/TableView.vue'),
   },
   {
     path: '/games/:gameid/edit',

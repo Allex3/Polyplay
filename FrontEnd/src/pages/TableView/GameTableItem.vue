@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import apiService from '@/api/apiService'
 import { createGame, type Game } from '@/data/model'
-import { useGamesStore } from '@/stores/gameStore'
 import { onBeforeMount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -12,12 +12,10 @@ const router = useRouter()
 
 const emit = defineEmits(['deletedGame'])
 
-const currentGame: Game | undefined = props.game
-
-const gamesStore = useGamesStore()
+const currentGame: Game = props.game
 
 function deleteGame(): void {
-  gamesStore.deleteGame(currentGame)
+  apiService.games.deleteGame(currentGame.id)
   emit('deletedGame')
 }
 
@@ -59,7 +57,7 @@ function goToGamePage(): void {
       {{ currentGame?.rating }}
     </div>
     <div class="text-center w-16 md:w-48 overflow-hidden text-ellipsis whitespace-nowrap">
-      {{ currentGame?.tags?.at(0) }}
+      {{ currentGame?.mainTag }}
     </div>
     <div class="text-center w-16 md:w-48 overflow-hidden text-ellipsis whitespace-nowrap">
       {{ currentGame?.developer }}

@@ -20,7 +20,7 @@ function goToGamePage(): void {
 <template>
   <div class="flex flex-col border hover:cursor-pointer hover:scale-105" @click="goToGamePage()">
     <!-- Game Thumbnail -->
-    <img :src="currentGame.imagePath" :alt="currentGame.name" />
+    <img :src="currentGame.thumbnailPath" :alt="currentGame.name" />
     <!-- Game name + rating -->
     <div class="pt-1 pb-1 pl-2 pr-2 text-[#6C4366] flex flex-col items-center border-t">
       <span>{{ currentGame.name }}</span>

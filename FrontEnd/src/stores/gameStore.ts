@@ -1,3 +1,4 @@
+/*
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { createGame, type Game } from '@/data/model.ts'
@@ -50,3 +51,8 @@ export const useGamesStore = defineStore('games', async () => {
     deleteGame,
   }
 })
+*/
+import { ref, computed, watch } from 'vue'
+import { defineStore } from 'pinia'
+import { createGame, type Game } from '@/data/model.ts'
+export const useGamesStore = defineStore('games', async () => {})

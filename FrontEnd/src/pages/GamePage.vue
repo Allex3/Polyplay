@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useUserRepo } from '@/stores/userStore'
-import { useGamesStore } from '@/stores/gameStore'
+import { useUserRepo } from '@/stores/userRepo'
 import { type Game, type User, createGame } from '@/data/model'
 
 import { useCookieManager } from '@/composables/useCookieManager'
+import apiService from '@/api/apiService'
 
 const userRepo = useUserRepo()
-const gameStore = useGamesStore()
 
 const { readCookie, writeCookie } = useCookieManager()
 
 const router = useRouter()
 const route = useRoute()
 
-const currentGame = ref<Game>(gameStore.getGame(Number(route.params.gameid)))
+const currentGame = ref<Game>((await apiService.games.getGame(Number(route.params.gameid))).data)
 
 onBeforeMount(() => {
   // for some reason it  was STILL IN ISO 8601 FORMAT, NOT A DATE
@@ -38,7 +37,11 @@ console.log(readCookie('VisitedGames'))
     <div class="flex flex-col gap-2.5">
       <!-- Game image -> (name, dev, tags col) -> (follow, favorite col)-->
       <div class="flex flex-row gap-4">
-        <img class="w-25 h-16 md:w-45 md:h-30" :src="currentGame.imagePath" alt="Game Thumbnail" />
+        <img
+          class="w-25 h-16 md:w-45 md:h-30"
+          :src="currentGame.thumbnailPath"
+          alt="Game Thumbnail"
+        />
 
         <!-- name, dev, tags -->
         <div class="flex flex-col gap-2 mt-1">
@@ -51,7 +54,7 @@ console.log(readCookie('VisitedGames'))
           >
           <div class="comic-neue">
             <span class="bg-[#bfedef] border text-center p-0.5 text-xs">{{
-              currentGame.tags[0]
+              currentGame.mainTag
             }}</span>
           </div>
         </div>

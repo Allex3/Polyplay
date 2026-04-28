@@ -10,12 +10,10 @@ import {
   LinearScale,
 } from 'chart.js'
 import { computed, reactive, ref } from 'vue'
-import { useGamesStore } from '@/stores/gameStore'
-import { createGame } from '@/data/model'
+import { createGame, type Game } from '@/data/model'
+import apiService from '@/api/apiService'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
-
-const gamesStore = useGamesStore()
 
 var chartOptions: any = { responsive: true }
 
@@ -24,9 +22,10 @@ var chartDataDatasets: any[] = [{}]
 chartDataDatasets[0].data = []
 
 const chartData = ref({})
+var games = (await apiService.games.getGames()).data
 
-gamesStore.games.forEach((game) => {
-  let currentTag = game.tags[0] ?? 'No Tag'
+games.forEach((game: Game) => {
+  let currentTag = game.mainTag ?? 'No Tag'
   if (!chartDataLabels.includes(currentTag)) // new tag
   {
     chartDataLabels.push(currentTag) // push the new tag
@@ -47,13 +46,14 @@ ChartJS.defaults.borderColor = '#000'
 
 chartData.value = { labels: chartDataLabels, datasets: chartDataDatasets }
 
-function updateData(): void {
+async function updateData(): Promise<void> {
   chartDataLabels = []
   chartDataDatasets = [{}]
   chartDataDatasets[0].data = []
 
-  gamesStore.games.forEach((game) => {
-    let currentTag = game.tags[0] ?? 'No Tag'
+  games = (await apiService.games.getGames()).data
+  games.forEach((game: Game) => {
+    let currentTag = game.mainTag ?? 'No Tag'
     if (!chartDataLabels.includes(currentTag)) // new tag
     {
       chartDataLabels.push(currentTag) // push the new tag
@@ -74,12 +74,7 @@ function updateData(): void {
 }
 
 function addTestGames() {
-  gamesStore.addGame(createGame({ name: 'aaa', tags: ['incremental'], id: gamesStore.getNewID() }))
-  gamesStore.addGame(createGame({ name: 'aaa', tags: ['No Tag'], id: gamesStore.getNewID() }))
-  gamesStore.addGame(createGame({ name: 'aaa', tags: ['aaa'], id: gamesStore.getNewID() }))
-  gamesStore.addGame(createGame({ name: 'aaa', tags: ['aaa'], id: gamesStore.getNewID() }))
-  gamesStore.addGame(createGame({ name: 'aaa', tags: ['aaa'], id: gamesStore.getNewID() }))
-  updateData()
+  //TODO add test data in server with a test method in API service
 }
 </script>
 

@@ -1,3 +1,68 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useUserRepo } from '@/stores/userRepo'
+import { createUser } from '@/data/model'
+import { useRouter } from 'vue-router'
+
+const userRepo = useUserRepo()
+
+const registerFailed = ref(false)
+const registerFailedErrorText = ref('')
+
+const router = useRouter()
+
+const username = ref('')
+const email = ref('')
+const password = ref('')
+const newsletter = ref(false)
+
+function registerInputsAreValid(): boolean {
+  registerFailed.value = false
+
+  if (username.value == '' || password.value == '' || email.value == '') {
+    registerFailedErrorText.value = "Please don't leave a field empty"
+    registerFailed.value = true
+  } else if (userRepo.userExists(username.value)) {
+    registerFailedErrorText.value = 'Username already exists'
+    registerFailed.value = true
+  } else if (!(/[@]/.test(email.value) && /[.]/.test(email.value))) {
+    registerFailedErrorText.value = '\nE-mail format should be example@something.smth'
+    registerFailed.value = true
+  } else if (/[^@.a-zA-Z0-9]/.test(email.value)) {
+    registerFailedErrorText.value = '\nE-mail should be alpha-numeric and must contain @ and .'
+    registerFailed.value = true
+  } else if (/[^0-9a-zA-Z@.,!]/.test(password.value)) {
+    registerFailedErrorText.value =
+      'Password must only contain legal characters: a-z, A-Z, 0-9, @.,!'
+    registerFailed.value = true
+  } else if (password.value.length < 8 || !/[0-9@.,!]/.test(password.value)) {
+    // length < 8, or doesn't have a special character required, or has illegal characters (not alpha-numeric)
+    registerFailedErrorText.value =
+      'Password must be at least 8 characters and it needs to contain at least one characterom from [@.,!0123456789]'
+    registerFailed.value = true
+  }
+
+  if (registerFailed.value) return false //it fails
+
+  return true
+}
+
+async function register() {
+  if (!registerInputsAreValid()) return
+
+  userRepo.addUser(
+    createUser({
+      username: username.value,
+      password: password.value,
+      email: email.value,
+      wantsNewsletter: newsletter.value,
+    }),
+  )
+
+  router.push('/login')
+}
+</script>
+
 <template>
   <div class="retro-window flex flex-col gap-5 w-5/6 md:2/5 items-center m-auto relative">
     <span style="font-size: 2rem; margin-top: 4rem; margin-bottom: -1rem">Register</span>
@@ -69,68 +134,3 @@ label {
   width: 15rem;
 }
 </style>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useUserRepo } from '@/stores/userStore'
-import { createUser } from '@/data/model'
-import { useRouter } from 'vue-router'
-
-const userRepo = useUserRepo()
-
-const registerFailed = ref(false)
-const registerFailedErrorText = ref('')
-
-const router = useRouter()
-
-const username = ref('')
-const email = ref('')
-const password = ref('')
-const newsletter = ref(false)
-
-function registerInputsAreValid(): boolean {
-  registerFailed.value = false
-
-  if (username.value == '' || password.value == '' || email.value == '') {
-    registerFailedErrorText.value = "Please don't leave a field empty"
-    registerFailed.value = true
-  } else if (userRepo.userExists(username.value)) {
-    registerFailedErrorText.value = 'Username already exists'
-    registerFailed.value = true
-  } else if (!(/[@]/.test(email.value) && /[.]/.test(email.value))) {
-    registerFailedErrorText.value = '\nE-mail format should be example@something.smth'
-    registerFailed.value = true
-  } else if (/[^@.a-zA-Z0-9]/.test(email.value)) {
-    registerFailedErrorText.value = '\nE-mail should be alpha-numeric and must contain @ and .'
-    registerFailed.value = true
-  } else if (/[^0-9a-zA-Z@.,!]/.test(password.value)) {
-    registerFailedErrorText.value =
-      'Password must only contain legal characters: a-z, A-Z, 0-9, @.,!'
-    registerFailed.value = true
-  } else if (password.value.length < 8 || !/[0-9@.,!]/.test(password.value)) {
-    // length < 8, or doesn't have a special character required, or has illegal characters (not alpha-numeric)
-    registerFailedErrorText.value =
-      'Password must be at least 8 characters and it needs to contain at least one characterom from [@.,!0123456789]'
-    registerFailed.value = true
-  }
-
-  if (registerFailed.value) return false //it fails
-
-  return true
-}
-
-async function register() {
-  if (!registerInputsAreValid()) return
-
-  userRepo.addUser(
-    createUser({
-      username: username.value,
-      password: password.value,
-      email: email.value,
-      wantsNewsletter: newsletter.value,
-    }),
-  )
-
-  router.push('/login')
-}
-</script>

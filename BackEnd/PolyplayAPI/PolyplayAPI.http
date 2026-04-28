@@ -1,0 +1,53 @@
+@PolyplayAPI_HostAddress = https://localhost:7114
+
+GET {{PolyplayAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+POST {{PolyplayAPI_HostAddress}}/api/games
+Content-Type: application/json
+
+{
+  "name": "aaa",
+  "description": "No",
+  "mainTag": "incremental",
+  "thumbnailPath": "../../assets/logo.png",
+  "developer": "alex",
+  "postedDate": "2025-03-20"
+}
+
+###
+
+@id=1
+PUT {{PolyplayAPI_HostAddress}}/api/games/{{id}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "aaa",
+  "description": "No",
+  "mainTag": "incremental",
+  "thumbnailPath": "nope",
+  "postedDate": "2025-03-20",
+  "developer": "alex"
+}
+
+###
+
+@id = 1
+DELETE {{PolyplayAPI_HostAddress}}/api/games/{{id}}
+
+###
+
+POST {{PolyplayAPI_HostAddress}}/api/games
+Content-Type: application/json
+
+{
+  "description": "aaaa"
+}
+
+###
+
+GET {{PolyplayAPI_HostAddress}}/api/games
+
+###
