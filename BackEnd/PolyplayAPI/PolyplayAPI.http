@@ -52,7 +52,7 @@ GET {{PolyplayAPI_HostAddress}}/api/games
 
 ###
 
-GET {{PolyplayAPI_HostAddress}}/api/games?pageNumber=2&pageSize=12
+GET {{PolyplayAPI_HostAddress}}/api/games?pageNumber=1&pageSize=12
 
 ###
 

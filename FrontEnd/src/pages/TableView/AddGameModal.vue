@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, useTemplateRef } from 'vue'
 import { useAddGameModal } from '@/composables/useAddGameModal'
 import { createGame, type Game } from '@/data/model'
 import { useUserRepo } from '@/stores/userRepo'
@@ -7,10 +7,10 @@ import apiService from '@/api/apiService'
 
 const { isAddGameModalOpen, closeAddGameModal } = useAddGameModal()
 
-const gameFromForm = reactive(createGame())
-const tagList: string[] = reactive([])
-
 const userRepo = useUserRepo()
+
+const gameFromForm = reactive(createGame({ developer: userRepo.user.username }))
+const tagList: string[] = reactive([])
 
 const isInvalidFormat = ref(false) // show error when true
 const errorText = ref('')
@@ -20,6 +20,7 @@ const emit = defineEmits(['addedGame'])
 // since we don't submit the variables or the game..
 
 async function sendInputAndClose(): Promise<void> {
+  /*
   const newGame = createGame({
     name: gameFromForm.name,
     description: gameFromForm.description,
@@ -29,26 +30,32 @@ async function sendInputAndClose(): Promise<void> {
     mainTag: gameFromForm.mainTag, // TODO remake this later but god not now
     developer: userRepo.user.username,
   })
+  */
+  const addGameButton: any = document.getElementById('addGameButton')
+  addGameButton.disabled = true
 
-  if (!(await postGame(newGame))) // didn't work
-  {
-    return // don't do anything
-  }
-  errorText.value = ''
-  isInvalidFormat.value = false
+  const response = await apiService.games.postGame(gameFromForm)
 
-  emit('addedGame')
-  closeAddGameModal()
-}
-
-async function postGame(game: Game): Promise<boolean> {
-  const response = await apiService.games.postGame(game)
-
-  if (response.success) return true // all good yay
-
-  // otherwise we got the "errors" JSON, that is basically objects with
+  // if no success we got the "errors" JSON, that is basically objects with
   // "name" , "maintag", etc. properties with their given errors, already as a JS object
   const errors: object = response.errors
+
+  if (
+    response.success ||
+    errors === undefined
+  ) // no errors but failure => no connection, act as added because cache
+  {
+    closeAddGameModal()
+    emit('addedGame')
+
+    // reset game when opening add modal again
+    gameFromForm.name = ''
+    gameFromForm.description = ''
+    gameFromForm.mainTag = ''
+
+    addGameButton.disabled = false
+    return
+  }
 
   // append all errors to the error text:
   errorText.value = ''
@@ -57,8 +64,6 @@ async function postGame(game: Game): Promise<boolean> {
   }
 
   isInvalidFormat.value = true
-
-  return false
 }
 
 function closeOnBackdropClick(e: Event) {
@@ -118,6 +123,7 @@ function closeOnBackdropClick(e: Event) {
           <span class="text-[red]" v-show="isInvalidFormat" id="addGameError">{{ errorText }}</span>
           <button
             id="addGameButton"
+            ref="addGameButton"
             @click="sendInputAndClose"
             class="mt-5 md:mt-0 hover:cursor-pointer hover_scale bg-[#bfedef] w-30 self-center border-2"
           >

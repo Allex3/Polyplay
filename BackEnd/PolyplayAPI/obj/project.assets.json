@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     "net10.0": {
+      "Bogus/35.6.5": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Bogus.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Bogus.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Humanizer/2.14.1": {
         "type": "package",
         "dependencies": {
@@ -596,7 +609,7 @@
           }
         }
       },
-      "Microsoft.AspNetCore.OpenApi/10.0.6": {
+      "Microsoft.AspNetCore.OpenApi/10.0.7": {
         "type": "package",
         "dependencies": {
           "Microsoft.OpenApi": "2.0.0"
@@ -1330,10 +1343,16 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Tools/10.0.2": {
+      "Microsoft.EntityFrameworkCore.Tools/10.0.7": {
         "type": "package",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Design": "10.0.2"
+          "Microsoft.EntityFrameworkCore.Design": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/_._": {}
+        },
+        "runtime": {
+          "lib/net8.0/_._": {}
         }
       },
       "Microsoft.Extensions.DependencyModel/10.0.2": {
@@ -2012,6 +2031,27 @@
     }
   },
   "libraries": {
+    "Bogus/35.6.5": {
+      "sha512": "2FGZn+aAVHjmCgClgmGkTDBVZk0zkLvAKGaxEf5JL6b3i9JbHTE4wnuY4vHCuzlCmJdU6VZjgDfHwmYkQF8VAA==",
+      "type": "package",
+      "path": "bogus/35.6.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "bogus.128.png",
+        "bogus.35.6.5.nupkg.sha512",
+        "bogus.nuspec",
+        "lib/net40/Bogus.dll",
+        "lib/net40/Bogus.xml",
+        "lib/net6.0/Bogus.dll",
+        "lib/net6.0/Bogus.xml",
+        "lib/netstandard1.3/Bogus.dll",
+        "lib/netstandard1.3/Bogus.xml",
+        "lib/netstandard2.0/Bogus.dll",
+        "lib/netstandard2.0/Bogus.xml"
+      ]
+    },
     "Humanizer/2.14.1": {
       "sha512": "/FUTD3cEceAAmJSCPN9+J+VhGwmL/C12jvwlyM1DFXShEMsBzvLzLqSrJ2rb+k/W2znKw7JyflZgZpyE+tI7lA==",
       "type": "package",
@@ -2758,10 +2798,10 @@
         "logo.png"
       ]
     },
-    "Microsoft.AspNetCore.OpenApi/10.0.6": {
-      "sha512": "WTAQe7MAbbKztRyeCRGZOqqlIqpMHDBz+jKo7LLY6hp4qRqn7iucR24u32KJVxV7mF3tSEfwXH96NgGSiDBw7A==",
+    "Microsoft.AspNetCore.OpenApi/10.0.7": {
+      "sha512": "vKiAcGXG0BwNVw3bOjjWRLnp9tR18dR7MiwpvC94h0yFS+zfnzGHzS/JmmgwUdRixrGxrlIMRAWrVc+2DfAGlg==",
       "type": "package",
-      "path": "microsoft.aspnetcore.openapi/10.0.6",
+      "path": "microsoft.aspnetcore.openapi/10.0.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2772,7 +2812,7 @@
         "build/Microsoft.AspNetCore.OpenApi.targets",
         "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll",
         "lib/net10.0/Microsoft.AspNetCore.OpenApi.xml",
-        "microsoft.aspnetcore.openapi.10.0.6.nupkg.sha512",
+        "microsoft.aspnetcore.openapi.10.0.7.nupkg.sha512",
         "microsoft.aspnetcore.openapi.nuspec"
       ]
     },
@@ -4226,17 +4266,18 @@
         "microsoft.entityframeworkcore.relational.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.Tools/10.0.2": {
-      "sha512": "Q7s7zCjEikOn4e7yS7kMPm3xkKR7CdfUhmN/sdFsKLslvS/iGS8zQUROvZRkbxRISA2SJ6sfho0cX8F8lo1khQ==",
+    "Microsoft.EntityFrameworkCore.Tools/10.0.7": {
+      "sha512": "Ui7+Y+E2KwwQvRlbOclMP8HAGXrQFQcOu3NLpKlYdmd5pbhlueyLhnW3SBv1WuXALKESGHR3lMqeANNnl/02Bw==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.tools/10.0.2",
+      "path": "microsoft.entityframeworkcore.tools/10.0.7",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "docs/PACKAGE.md",
-        "microsoft.entityframeworkcore.tools.10.0.2.nupkg.sha512",
+        "lib/net8.0/_._",
+        "microsoft.entityframeworkcore.tools.10.0.7.nupkg.sha512",
         "microsoft.entityframeworkcore.tools.nuspec",
         "tools/EntityFrameworkCore.PS2.psd1",
         "tools/EntityFrameworkCore.PS2.psm1",
@@ -5394,9 +5435,10 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
-      "Microsoft.AspNetCore.OpenApi >= 10.0.6",
+      "Bogus >= 35.6.5",
+      "Microsoft.AspNetCore.OpenApi >= 10.0.7",
       "Microsoft.EntityFrameworkCore.InMemory >= 10.0.7",
-      "Microsoft.EntityFrameworkCore.Tools >= 10.0.2",
+      "Microsoft.EntityFrameworkCore.Tools >= 10.0.7",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 10.0.2"
     ]
   },
@@ -5452,9 +5494,13 @@
         "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
+          "Bogus": {
+            "target": "Package",
+            "version": "[35.6.5, )"
+          },
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
-            "version": "[10.0.6, )"
+            "version": "[10.0.7, )"
           },
           "Microsoft.EntityFrameworkCore.InMemory": {
             "target": "Package",
@@ -5464,7 +5510,7 @@
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
             "target": "Package",
-            "version": "[10.0.2, )"
+            "version": "[10.0.7, )"
           },
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",

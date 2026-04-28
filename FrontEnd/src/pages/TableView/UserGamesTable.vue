@@ -55,7 +55,7 @@ function updateGamesView() {
           @click="openAddGameModal"
           id="openAddGameModal"
         >
-          + Add boardgame
+          + Add Game
         </button>
       </div>
       <div class="flex flex-row gap-x-3 text-base">

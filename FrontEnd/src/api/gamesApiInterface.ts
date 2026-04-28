@@ -1,4 +1,5 @@
 import type { Game } from '@/data/model'
+import { cacheRequest } from './offlineApiSupport'
 
 class GamesApiInterface {
   baseURL: string
@@ -8,8 +9,9 @@ class GamesApiInterface {
   }
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
-    try {
-      const response = await fetch(this.baseURL + endpoint, {
+    const fetchData: { URL: string; options: any } = {
+      URL: this.baseURL + endpoint,
+      options: {
         method: method,
         mode: 'cors',
         headers: {
@@ -17,7 +19,11 @@ class GamesApiInterface {
           'Content-Type': 'application/json',
         },
         ...requestParams, // put the requestParams object: body, etc.
-      })
+      },//TODO after POST return websocket
+    }
+
+    try {
+      const response = await fetch(fetchData.URL, fetchData.options)
 
       if (!response.ok) {
         return { success: false, errors: await response.json() } //if NOT ok, we get the POST/PUT data validation errors
@@ -27,7 +33,12 @@ class GamesApiInterface {
 
       return { success: true, gamesData: result }
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : error }
+      // actual connection down or user offline
+      cacheRequest(fetchData)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : error,
+      }
     }
   }
 
@@ -37,6 +48,7 @@ class GamesApiInterface {
       'GET',
       `/api/games?pageNumber=${pageNumber}&pageSize=${pageSize}`,
     )
+    if (response.gamesData == undefined) return { games: [], totalGames: 0 } // request didn't work
     return { games: response.gamesData.data, totalGames: response.gamesData.totalRecords }
   }
 
