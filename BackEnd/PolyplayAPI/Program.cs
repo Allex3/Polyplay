@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PolyplayAPI;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
 
@@ -29,6 +30,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<GameDbContext>(options => options.UseInMemoryDatabase("Games"));
 
 var app = builder.Build();
+
+app.UseWebSockets(); // use web sockets, all origins allowed, ping every 2 minutes by default
+
 
 app.UseCors("VueSite");
 

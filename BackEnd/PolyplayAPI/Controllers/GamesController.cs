@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.WebSockets;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace PolyplayAPI.Controllers
@@ -17,10 +19,12 @@ namespace PolyplayAPI.Controllers
     public class GamesController : ControllerBase
     {
         private readonly GameDbContext _context;
+        private FakeData _fakeData;
 
         public GamesController(GameDbContext context)
         {
             _context = context;
+            _fakeData = new FakeData();
         }
 
         // GET: api/Games
@@ -123,6 +127,41 @@ namespace PolyplayAPI.Controllers
         private bool GameExists(long id)
         {
             return _context.Games.Any(e => e.Id == id);
+        }
+
+        // for web sockets... but still related to games, so I put it here
+        [Route("~/ws/startTestGames")] // ~ overrides default routing, so
+        // instead of api/games/ws/... it will be just /ws/startTestGames
+        public async Task GetTestWs()
+        {
+            if (HttpContext.WebSockets.IsWebSocketRequest)
+            {
+                using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+
+                while (true)
+                {
+                    List<Game> games = _fakeData.GenerateGames(3);
+                    foreach(var game in games)
+                    {
+                        _context.Games.Add(game); // add each game
+                    }
+                    await _context.SaveChangesAsync(); // save changes
+
+                    var message = "horse";
+                    var bytes = Encoding.UTF8.GetBytes(message);
+                    var arraySegment = new ArraySegment<byte>(bytes, 0, bytes.Length);
+                    await webSocket.SendAsync(arraySegment, // announce that games were inserted
+                        WebSocketMessageType.Text,
+                        true,
+                        CancellationToken.None);
+
+                    Thread.Sleep(3000); //generate 5 games every 3 seconds
+                }
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest; // not websocket request
+            }
         }
     }
 }

@@ -3,9 +3,11 @@ import { cacheRequest } from './offlineApiSupport'
 
 class GamesApiInterface {
   baseURL: string
+  generateGamesWebSocket: undefined | WebSocket
 
   constructor() {
     this.baseURL = 'https://localhost:7114'
+    this.generateGamesWebSocket = undefined
   }
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
@@ -19,7 +21,7 @@ class GamesApiInterface {
           'Content-Type': 'application/json',
         },
         ...requestParams, // put the requestParams object: body, etc.
-      },//TODO after POST return websocket
+      }, //TODO after POST return websocket
     }
 
     try {
