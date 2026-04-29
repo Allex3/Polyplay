@@ -69,6 +69,22 @@ class GamesApiInterface {
   public deleteGame(id: number) {
     return this.callApi('DELETE', `/api/games/${id}`)
   }
+
+  public generateTestGames(updateView: Function) {
+    this.generateGamesWebSocket = new WebSocket(this.baseURL + '/ws/startTestGames')
+
+    this.generateGamesWebSocket.onopen = function (event) {
+      this.send('connection started') // announce it can start the loop
+    }
+    this.generateGamesWebSocket.onmessage = async function (event) {
+      this.send('received') // the server is awaiting "handshake" to know to continue after generating and sleeping for 3 seconds
+      await updateView() // update view with new games
+    }
+  }
+
+  public stopGeneratingTestGames() {
+    this.generateGamesWebSocket?.close() // close connection
+  }
 }
 
 const gamesApi = new GamesApiInterface()

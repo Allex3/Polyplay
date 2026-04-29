@@ -9,7 +9,7 @@ import {
   CategoryScale,
   LinearScale,
 } from 'chart.js'
-import { computed, reactive, ref } from 'vue'
+import { computed, getCurrentInstance, reactive, ref, useTemplateRef } from 'vue'
 import { createGame, type Game } from '@/data/model'
 import apiService from '@/api/apiService'
 
@@ -21,7 +21,9 @@ var chartDataLabels: string[] = []
 var chartDataDatasets: any[] = [{}]
 chartDataDatasets[0].data = []
 
-var chartData: any = reactive({})
+const barKey = ref(1) // t oforce stats to re-render
+
+const chartData = ref<any>({})
 
 ChartJS.defaults.color = '#f4b5ea'
 ChartJS.defaults.borderColor = '#000'
@@ -41,7 +43,6 @@ async function updateData(): Promise<any> {
   while (currentPageGames.length > 0) {
     // run this while there are games in the API, to get them all
     games.push.apply(games, currentPageGames)
-    console.log(currentPageGames)
     pageNumber++
     currentPageGames = (await apiService.games.getGames(pageNumber, MAX_GAMES_ON_PAGE)).games
   }
@@ -62,20 +63,37 @@ async function updateData(): Promise<any> {
   chartDataDatasets[0].label = 'Game Tags'
   chartDataDatasets[0].backgroundColor = '#f4b5ea'
 
-  chartData = { labels: chartDataLabels, datasets: chartDataDatasets }
+  chartData.value.labels = chartDataLabels
+  chartData.value.datasets = chartDataDatasets
+
+  barKey.value++ // force stats to re-render
 }
 
-function addTestGames() {
-  //TODO add test data in server with a test method in API service
+const isGeneratingGames = ref(false)
+
+function generateTestGames() {
+  apiService.games.generateTestGames(updateData) // update data on each generated request
+  isGeneratingGames.value = true
+}
+function stopGeneratingTestGames() {
+  apiService.games.stopGeneratingTestGames()
+  isGeneratingGames.value = false
 }
 </script>
 
 <template>
-  <Bar :options="chartOptions" :data="chartData" />
+  <Bar :key="barKey" :options="chartOptions" :data="chartData" />
   <button
-    @click="addTestGames"
+    @click="generateTestGames"
     class="hover:cursor-pointer hover:scale-110 flex m-auto p-2 bg-[#bfedef] border-2 mb-3"
   >
-    Add Test Games
+    Generate Test Games
+  </button>
+  <button
+    @click="stopGeneratingTestGames"
+    v-show="isGeneratingGames"
+    class="hover:cursor-pointer hover:scale-110 flex m-auto p-2 bg-[#bfedef] border-2 mb-3"
+  >
+    Stop Generating
   </button>
 </template>

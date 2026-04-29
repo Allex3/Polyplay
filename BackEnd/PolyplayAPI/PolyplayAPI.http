@@ -60,3 +60,7 @@ GET {{PolyplayAPI_HostAddress}}/api/games?pageNumber=1&pageSize=12
 GET {{PolyplayAPI_HostAddress}}/api/games/1
 
 ###
+
+GET {{PolyplayAPI_HostAddress}}/ws/startTestGames
+
+###

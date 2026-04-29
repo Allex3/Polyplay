@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\polyplayapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
-      "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:polyplayapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\models\\paginationparameters.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:models\\paginationparameters.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\controllers\\gamescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:controllers\\gamescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\models\\paginatedresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:models\\paginatedresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\fakedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:fakedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\polyplayapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:polyplayapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\models\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:models\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\models\\gamedbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,14 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\filters\\validationfilterattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:filters\\validationfilterattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\models\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|solutionrelative:models\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B0F1CE03-3F84-5E15-AA69-F464F728E814}|PolyplayAPI.csproj|d:\\polyplay\\backend\\polyplayapi\\polyplayapi.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
@@ -46,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,85 +50,70 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "PaginatedResponse.cs",
-              "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Models\\PaginatedResponse.cs",
-              "RelativeDocumentMoniker": "Models\\PaginatedResponse.cs",
-              "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Models\\PaginatedResponse.cs",
-              "RelativeToolTip": "Models\\PaginatedResponse.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T13:12:50.125Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "PaginationParameters.cs",
-              "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Models\\PaginationParameters.cs",
-              "RelativeDocumentMoniker": "Models\\PaginationParameters.cs",
-              "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Models\\PaginationParameters.cs",
-              "RelativeToolTip": "Models\\PaginationParameters.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAdAAAAAAAAAA==",
+              "Title": "FakeData.cs",
+              "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\FakeData.cs",
+              "RelativeDocumentMoniker": "FakeData.cs",
+              "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\FakeData.cs",
+              "RelativeToolTip": "FakeData.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAlwBMAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T12:58:14.194Z",
+              "WhenOpened": "2026-04-29T20:52:49.138Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
+              "Title": "Game.cs",
+              "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Models\\Game.cs",
+              "RelativeDocumentMoniker": "Models\\Game.cs",
+              "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Models\\Game.cs",
+              "RelativeToolTip": "Models\\Game.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T01:32:39.398Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "GamesController.cs",
               "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Controllers\\GamesController.cs",
               "RelativeDocumentMoniker": "Controllers\\GamesController.cs",
               "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Controllers\\GamesController.cs",
               "RelativeToolTip": "Controllers\\GamesController.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAuwCYAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAJ4AAAAAAAAAAAAiwKgAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-28T00:49:46.424Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAmwCkAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T01:24:48.858Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "PolyplayAPI.http",
               "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\PolyplayAPI.http",
               "RelativeDocumentMoniker": "PolyplayAPI.http",
               "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\PolyplayAPI.http",
               "RelativeToolTip": "PolyplayAPI.http",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAAADYAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAADoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
               "WhenOpened": "2026-04-27T22:55:49.86Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAIBJwBMAAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T01:24:48.858Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Game.cs",
-              "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Models\\Game.cs",
-              "RelativeDocumentMoniker": "Models\\Game.cs",
-              "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Models\\Game.cs",
-              "RelativeToolTip": "Models\\Game.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAIBJwAwAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T01:32:39.398Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "GameDbContext.cs",
               "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Models\\GameDbContext.cs",
               "RelativeDocumentMoniker": "Models\\GameDbContext.cs",
@@ -140,12 +121,11 @@
               "RelativeToolTip": "Models\\GameDbContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T01:37:48.778Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T01:37:48.778Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "ValidationFilterAttribute.cs",
               "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\Filters\\ValidationFilterAttribute.cs",
               "RelativeDocumentMoniker": "Filters\\ValidationFilterAttribute.cs",
@@ -153,20 +133,18 @@
               "RelativeToolTip": "Filters\\ValidationFilterAttribute.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T22:51:17.218Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T22:51:17.218Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "PolyplayAPI",
               "DocumentMoniker": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\PolyplayAPI.csproj",
               "RelativeDocumentMoniker": "PolyplayAPI.csproj",
               "ToolTip": "D:\\Polyplay\\BackEnd\\PolyplayAPI\\PolyplayAPI.csproj",
               "RelativeToolTip": "PolyplayAPI.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-04-27T01:28:50.326Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-27T01:28:50.326Z"
             }
           ]
         }

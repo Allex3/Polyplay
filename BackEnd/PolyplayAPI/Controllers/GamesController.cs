@@ -132,36 +132,61 @@ namespace PolyplayAPI.Controllers
         // for web sockets... but still related to games, so I put it here
         [Route("~/ws/startTestGames")] // ~ overrides default routing, so
         // instead of api/games/ws/... it will be just /ws/startTestGames
-        public async Task GetTestWs()
+        public async Task EstablishGenerateGamesWs()
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
                 using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
 
-                while (true)
-                {
-                    List<Game> games = _fakeData.GenerateGames(3);
-                    foreach(var game in games)
-                    {
-                        _context.Games.Add(game); // add each game
-                    }
-                    await _context.SaveChangesAsync(); // save changes
+                await GenerateGames(webSocket); 
 
-                    var message = "horse";
-                    var bytes = Encoding.UTF8.GetBytes(message);
-                    var arraySegment = new ArraySegment<byte>(bytes, 0, bytes.Length);
-                    await webSocket.SendAsync(arraySegment, // announce that games were inserted
-                        WebSocketMessageType.Text,
-                        true,
-                        CancellationToken.None);
-
-                    Thread.Sleep(3000); //generate 5 games every 3 seconds
-                }
             }
+
             else
             {
                 HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest; // not websocket request
             }
         }
+
+        private async Task GenerateGames(WebSocket webSocket)
+        {
+            var message = "wouldn't you like to know?";
+            var bytes = Encoding.UTF8.GetBytes(message);
+            var messageToSend = new ArraySegment<byte>(bytes, 0, bytes.Length);
+
+            const int THIS_IS_NOT_A_MAGIC_NUMBER = 1024;
+
+            var buffer = new byte[THIS_IS_NOT_A_MAGIC_NUMBER];
+            var receivedResult = await webSocket.ReceiveAsync(
+                new ArraySegment<byte>(buffer), CancellationToken.None);
+
+
+            while (!receivedResult.CloseStatus.HasValue) // generate games while the connection isn't closed (seen in the response)
+            {
+                List<Game> games = _fakeData.GenerateGames(3);
+                foreach (var game in games)
+                {
+                    _context.Games.Add(game); // add each game
+                }
+                await _context.SaveChangesAsync(); // save changes
+
+                await webSocket.SendAsync(messageToSend, // announce that games were inserted
+                    WebSocketMessageType.Text,
+                    true,
+                    CancellationToken.None);
+
+                Thread.Sleep(3000); //generate 5 games every 3 seconds
+
+                // wait to receive confirmation, or the fact that the connection was closed
+                receivedResult = await webSocket.ReceiveAsync(
+                    new ArraySegment<byte>(buffer), CancellationToken.None);
+            }
+
+            await webSocket.CloseAsync( // close websocket with the closing status received
+                receivedResult.CloseStatus.Value,
+                receivedResult.CloseStatusDescription,
+                CancellationToken.None);
+            
+    }
     }
 }

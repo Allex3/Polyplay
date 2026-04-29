@@ -25,7 +25,8 @@ namespace PolyplayAPI
                 .RuleFor(game => game.Description, f => f.Lorem.Paragraph())
                 .RuleFor(game => game.Rating, f => f.Random.Float() * 5)
                 .RuleFor(game => game.Developer, f => f.PickRandom(usernames))
-                .RuleFor(game => game.IsPublished, f => f.Random.Bool());
+                .RuleFor(game => game.IsPublished, f => f.Random.Bool())
+                .RuleFor(game => game.ThumbnailPath, f => "../../assets/logo.png");
         }
 
         public List<Game> GenerateGames(int noGames)

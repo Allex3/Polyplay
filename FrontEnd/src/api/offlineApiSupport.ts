@@ -47,7 +47,6 @@ export async function fetchCachedRequests() {
 
   cachedRequests.forEach(async (httpRequest: { URL: string; options: any }) => {
     // it stringifies when trying the request first, then when parsed it's not
-    console.log(httpRequest)
     httpRequest.options.body = JSON.stringify(httpRequest.options.body)
     const resposne = await fetch(httpRequest.URL, httpRequest.options)
   })
