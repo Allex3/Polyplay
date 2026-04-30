@@ -36,15 +36,15 @@ function goToGamePage(): void {
 <template>
   <div
     data-testid="gameItem"
-    class="text-sm flex flex-row items-center bg-[#f4b5ea] p-1 md:p-2 md:text-2xl border-2"
+    class="text-xs flex flex-row items-center bg-[#f4b5ea] p-1 md:p-2 md:text-2xl border-2"
   >
     <div
       @click="goToGamePage()"
-      class="hover:cursor-pointer hover:scale-120 text-center w-18 md:w-56 overflow-hidden text-ellipsis whitespace-nowrap"
+      class="text-xl hover:cursor-pointer hover:scale-105 text-center w-14 md:w-56 overflow-hidden text-ellipsis whitespace-nowrap"
     >
       {{ currentGame?.name }}
     </div>
-    <div class="text-center w-10 md:w-30 overflow-hidden text-ellipsis whitespace-nowrap">
+    <div class="text-xl text-center w-10 md:w-30 overflow-hidden text-ellipsis whitespace-nowrap">
       {{
         currentGame?.postedDate.getFullYear() +
         '/' +
@@ -53,13 +53,13 @@ function goToGamePage(): void {
         currentGame?.postedDate.getDay()
       }}
     </div>
-    <div class="text-center w-10 md:w-30 overflow-hidden text-ellipsis whitespace-nowrap">
-      {{ currentGame?.rating }}
+    <div class="text-xl text-center w-10 md:w-30 overflow-hidden text-ellipsis whitespace-nowrap">
+      {{ currentGame?.rating.toPrecision(3) }}
     </div>
-    <div class="text-center w-16 md:w-48 overflow-hidden text-ellipsis whitespace-nowrap">
+    <div class="text-xl text-center w-16 md:w-48 overflow-hidden text-ellipsis whitespace-nowrap">
       {{ currentGame?.mainTag }}
     </div>
-    <div class="text-center w-16 md:w-48 overflow-hidden text-ellipsis whitespace-nowrap">
+    <div class="text-xl text-center w-16 md:w-48 overflow-hidden text-ellipsis whitespace-nowrap">
       {{ currentGame?.developer }}
     </div>
     <button

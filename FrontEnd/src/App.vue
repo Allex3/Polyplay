@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Suspense } from 'vue'
 import { useShowProfileAndHideLogin } from './composables/useShowProfileAndHideLogin'
 
 const { isUserLoggedIn } = useShowProfileAndHideLogin()
@@ -25,7 +26,10 @@ const { isUserLoggedIn } = useShowProfileAndHideLogin()
       <router-link to="/stats" class="hover_scale single_link">Statistics</router-link>
     </div>
   </div>
-  <router-view />
+  <suspense>
+    <router-view />
+    <template #fallback>Loading...</template>
+  </suspense>
 </template>
 
 <style scoped>
