@@ -1,4 +1,4 @@
-import type { Game } from '@/data/model'
+import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
 
 class GamesApiInterface {

@@ -10,7 +10,7 @@ import {
   LinearScale,
 } from 'chart.js'
 import { computed, getCurrentInstance, reactive, ref, useTemplateRef } from 'vue'
-import { createGame, type Game } from '@/data/model'
+import { createGame, type Game } from '@/data/Game'
 import apiService from '@/api/apiService'
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import apiService from '@/api/apiService'
-import { createGame, type Game } from '@/data/model'
+import { createGame, type Game } from '@/data/Game'
 import { onBeforeMount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 

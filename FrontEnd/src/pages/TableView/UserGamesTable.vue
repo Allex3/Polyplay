@@ -9,7 +9,7 @@ import { usePagination } from '@/composables/usePagination'
 
 import { useInfiniteScroll } from '@vueuse/core'
 import { ref, useTemplateRef } from 'vue'
-import type { Game } from '@/data/model'
+import type { Game } from '@/data/Game'
 import apiService from '@/api/apiService'
 
 const { isUserLoggedIn } = useShowProfileAndHideLogin()

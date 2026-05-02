@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, reactive, useTemplateRef } from 'vue'
 import { useAddGameModal } from '@/composables/useAddGameModal'
-import { createGame, type Game } from '@/data/model'
-import { useUserRepo } from '@/stores/userRepo'
+import { createGame, type Game } from '@/data/Game'
+import { useUserStore } from '@/stores/userStore'
 import apiService from '@/api/apiService'
 
 const { isAddGameModalOpen, closeAddGameModal } = useAddGameModal()
 
-const userRepo = useUserRepo()
+const userStore = useUserStore()
 
-const gameFromForm = reactive(createGame({ developer: userRepo.user.username }))
+const gameFromForm = reactive(createGame({ developer: userStore.user.username }))
 const tagList: string[] = reactive([])
 
 const isInvalidFormat = ref(false) // show error when true
@@ -99,7 +99,7 @@ function closeOnBackdropClick(e: Event) {
             placeholder="Enter description"
           />
 
-          <label for="tags">Tags:</label>
+          <label for="tags">Main Tag:</label>
           <input
             id="addGameTagField"
             type="text"

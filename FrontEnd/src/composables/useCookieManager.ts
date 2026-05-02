@@ -19,5 +19,14 @@ export function useCookieManager() {
 
     document.cookie = `${cookieName}=${cookieValueString};expires=${cookieExpiryDateUTCString};path=/`
   }
-  return { readCookie, writeCookie }
+
+  const writeVisitedGamesCookie = (gameId: number) => {
+    var visitedGames: any = readCookie('VisitedGames') ?? {}
+
+    if (visitedGames.hasOwnProperty(gameId)) visitedGames[gameId] += 1
+    else visitedGames[gameId] = 1
+
+    writeCookie('VisitedGames', visitedGames, 99)
+  }
+  return { readCookie, writeCookie, writeVisitedGamesCookie }
 }

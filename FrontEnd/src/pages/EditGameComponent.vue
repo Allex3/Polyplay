@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
-import { useUserRepo } from '@/stores/userRepo'
-import { type Game, type User, createGame } from '@/data/model'
+import { useUserStore } from '@/stores/userStore'
+import { type Game, createGame } from '@/data/Game'
+import { type User } from '@/data/User'
 import apiService from '@/api/apiService'
 
-const userRepo = useUserRepo()
+const userStore = useUserStore()
 
 const router = useRouter()
 const route = useRoute()
@@ -24,7 +25,7 @@ const currentGame = ref<Game>(
   (await apiService.games.getGame(Number(route.params.gameid))).gamesData,
 )
 
-if (userRepo.user.username != currentGame.value.developer)
+if (userStore.user.username != currentGame.value.developer)
   //TODO change tihs, for testing
   router.push('/PermissionDenied')
 

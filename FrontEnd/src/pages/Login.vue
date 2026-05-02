@@ -70,14 +70,15 @@ label {
 </style>
 
 <script setup lang="ts">
-import { useUserRepo } from '@/stores/userRepo'
+import { useUserStore } from '@/stores/userStore'
 import { ref } from 'vue'
 import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
 import { useRouter } from 'vue-router'
+import { createUser } from '@/data/User'
 
 const { logIn } = useShowProfileAndHideLogin()
 
-const userRepo = useUserRepo()
+const userStore = useUserStore()
 
 const loginFailed = ref(false)
 const loginFailedErrorText = ref('')
@@ -88,25 +89,25 @@ const username = ref('')
 const password = ref('')
 
 function loginInputsAreValid(): boolean {
-  loginFailed.value = false
+  /*loginFailed.value = false
 
-  if (!userRepo.userExists(username.value)) {
+  if (!userStore.userExists(username.value)) {
     loginFailedErrorText.value = 'User with that username does not exist'
     loginFailed.value = true
-  } else if (!(userRepo.getUser(username.value).password == password.value)) {
+  } else if (!(userStore.getUser(username.value).password == password.value)) {
     loginFailedErrorText.value = 'Password is incorrect.'
     loginFailed.value = true
   }
 
   if (loginFailed.value) return false
-
+*/
   return true
 }
 
 async function login() {
   if (!loginInputsAreValid()) return
 
-  userRepo.user = userRepo.getUser(username.value)
+  userStore.user = createUser({ username: 'alex', password: 'alex.2005' })
 
   logIn()
   router.push('/user/table')

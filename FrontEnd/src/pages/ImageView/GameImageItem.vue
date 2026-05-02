@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { type Game, createGame } from '@/data/model'
-import { useGamesStore } from '@/stores/gameStore'
+import { type Game, createGame } from '@/data/Game'
 import { useRouter } from 'vue-router'
 
 const props = defineProps<{
@@ -10,8 +9,6 @@ const props = defineProps<{
 const router = useRouter()
 
 const currentGame: Game = props.game
-
-const gamesStore = useGamesStore()
 
 function goToGamePage(): void {
   router.push('/games/' + currentGame?.id)
