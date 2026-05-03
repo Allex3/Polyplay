@@ -18,10 +18,10 @@ namespace PolyplayAPI.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
-        private readonly GameDbContext _context;
+        private readonly PolyplayDbContext _context;
         private FakeData _fakeData;
 
-        public GamesController(GameDbContext context)
+        public GamesController(PolyplayDbContext context)
         {
             _context = context;
             _fakeData = new FakeData();
@@ -58,6 +58,7 @@ namespace PolyplayAPI.Controllers
 
         // PUT: api/Games/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //TODO see if I add a filter validation here, if the modelstate.isvalid is still needed
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGame(long id, Game game)
         {
@@ -175,7 +176,7 @@ namespace PolyplayAPI.Controllers
                     true,
                     CancellationToken.None);
 
-                Thread.Sleep(3000); //generate 5 games every 3 seconds
+                Thread.Sleep(1500); //generate 5 games every 3 seconds
 
                 // wait to receive confirmation, or the fact that the connection was closed
                 receivedResult = await webSocket.ReceiveAsync(

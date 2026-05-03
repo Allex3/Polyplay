@@ -17,6 +17,10 @@ namespace PolyplayAPI.Models
         public double Rating { get; set; }
         [Required]
         public string? Developer { get; set; }
-        public bool IsPublished { get; set; }
+
+        public bool IsPublished { get; set; } = false;
+        public ICollection<GameComment> GameComments { get; } = new List<GameComment>();
+        public virtual ICollection<User> UsersWhoFavorited { get; set; } = []; // many to many basic relationship from User to Games
+
     }
 }

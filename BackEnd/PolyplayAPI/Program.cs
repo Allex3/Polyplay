@@ -4,6 +4,17 @@ using PolyplayAPI;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
 
+static string getConnString()
+{
+    var configBuilder = new ConfigurationBuilder();
+    configBuilder.AddJsonFile("appsettings.json");
+
+    IConfiguration configuration = configBuilder.Build();
+    return configuration.GetConnectionString("DefaultConnection");
+}
+
+string connString = getConnString();
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -26,8 +37,8 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-// adding the DB Contexts
-builder.Services.AddDbContext<GameDbContext>(options => options.UseInMemoryDatabase("Games"));
+// adding the DB Context for the polyplay database
+builder.Services.AddDbContext<PolyplayDbContext>(options => options.UseSqlServer(connString));
 
 var app = builder.Build();
 
