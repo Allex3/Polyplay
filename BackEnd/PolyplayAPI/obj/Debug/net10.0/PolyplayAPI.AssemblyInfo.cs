@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PolyplayAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1d5ad1678f0df2577e8d908b7b896a080794b723")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ce2c108cfa5c87250a155945fa601dfbb4daeaa")]
 [assembly: System.Reflection.AssemblyProductAttribute("PolyplayAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PolyplayAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
