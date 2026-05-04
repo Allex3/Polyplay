@@ -13,7 +13,7 @@ export type User = {
 export function createUser(data: Partial<User> = {}): User {
   return {
     id: data.id ?? -1,
-    username: data.username ?? '0',
+    username: data.username ?? '',
     email: data.email ?? '',
     password: data.password ?? '',
     wantsNewsletter: data.wantsNewsletter ?? false,

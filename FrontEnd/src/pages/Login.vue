@@ -4,8 +4,8 @@ import { ref } from 'vue'
 import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
 import { useRouter } from 'vue-router'
 import { createUser } from '@/data/User'
-
-const { logIn } = useShowProfileAndHideLogin()
+import apiService from '@/api/apiService'
+import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
 
 const userStore = useUserStore()
 
@@ -17,10 +17,30 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 
+const currentlyLoggingIn = ref(false)
+
+const { validateInput } = usePostPutApiCallWithErrors()
+const { logIn } = useShowProfileAndHideLogin()
+
 async function login() {
-  userStore.user = createUser({ id: 1, username: 'alex', password: 'alex.2005' })
+  currentlyLoggingIn.value = true
+
+  loginFailed.value = false
+
+  let apiResponse: any = await apiService.users.getUser(username.value, password.value)
+  if (!apiResponse.success) {
+    loginFailed.value = true
+    loginFailedErrorText.value = apiResponse.errors
+    currentlyLoggingIn.value = false
+    return
+  }
+
+  userStore.user = apiResponse.user
 
   logIn()
+
+  currentlyLoggingIn.value = false
+
   router.push('/user/table')
 }
 </script>
@@ -59,7 +79,7 @@ async function login() {
         ></span
       >
       <input
-        @submit="login"
+        :disabled="currentlyLoggingIn"
         id="login"
         class="login hover_scale hover:cursor-pointer"
         type="submit"

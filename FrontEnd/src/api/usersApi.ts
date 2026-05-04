@@ -43,8 +43,12 @@ class UsersApi {
     }
   }
 
-  public async getUser(id: number) {
-    return this.callApi('GET', `/api/users/${id}`)
+  public async getUser(username: string, password: string) {
+    let response = await this.callApi('GET', `/api/users/${username}`)
+    if (response.errors !== undefined) return { success: false, errors: 'Username does not exist' }
+    let user: User = response.usersData
+    if (user.password != password) return { success: false, errors: 'Password is incorrect' }
+    return { success: true, user: response.usersData }
   }
 
   public postUser(user: User) {

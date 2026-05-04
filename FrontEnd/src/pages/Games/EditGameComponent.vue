@@ -28,9 +28,7 @@ const currentGame = ref<Game>(
   (await apiService.games.getGame(Number(route.params.gameid))).gamesData,
 )
 
-if (userStore.user.username != currentGame.value.developer)
-  //TODO change tihs, for testing
-  router.push('/PermissionDenied')
+if (userStore.user.username != currentGame.value.developer) router.push('/PermissionDenied')
 
 const currentlySaving = ref(false)
 

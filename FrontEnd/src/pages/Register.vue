@@ -3,6 +3,9 @@ import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { createUser } from '@/data/User'
 import { useRouter } from 'vue-router'
+import apiService from '@/api/apiService'
+import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
+import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
 
 const userStore = useUserStore()
 
@@ -15,13 +18,22 @@ const registerUser = ref(createUser())
 
 const currentlyPostingRegister = ref(false)
 
+const { validateInput } = usePostPutApiCallWithErrors()
+const { logIn } = useShowProfileAndHideLogin()
+
 async function register() {
   currentlyPostingRegister.value = true
 
-  
+  const apiResponse = await apiService.users.postUser(registerUser.value)
+  console.log(apiResponse)
+  if (validateInput(apiResponse, registerFailed, registerFailedErrorText)) {
+    currentlyPostingRegister.value = false
+    userStore.user = registerUser.value
+    logIn()
+    router.push('/user/table')
+  }
 
   currentlyPostingRegister.value = false
-  router.push('/login')
 }
 </script>
 
@@ -70,13 +82,15 @@ async function register() {
         />
         <label for="newsletter">Subscribe to the new creations newsletter</label>
       </div>
-      <span class="text-[#ee0a0a] text-center" id="errorText" v-show="registerFailed">{{
-        registerFailedErrorText
-      }}</span>
+      <span
+        class="text-[#ee0a0a] text-center whitespace-pre-line"
+        id="errorText"
+        v-show="registerFailed"
+        >{{ registerFailedErrorText }}</span
+      >
       <input
         id="register"
         :disabled="currentlyPostingRegister"
-        @submit="register()"
         class="register hover_scale hover:cursor-pointer"
         type="submit"
         value="Register"
