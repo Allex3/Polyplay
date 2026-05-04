@@ -14,12 +14,8 @@ const route = useRoute()
 
 const tags = ref([])
 
-const { validateInput } = usePostPutApiCallWithErrors()
-
-const isInvalidFormat = ref(false)
-const errorText = ref('')
-const isSavedSuccessfully = ref(false)
-const successText = ref('')
+const { validateInput, isInvalidFormat, errorText, isPostedSuccessfully, successText } =
+  usePostPutApiCallWithErrors()
 
 if (!(await apiService.games.getGame(Number(route.params.gameid))).success)
   router.push('/PermissionDenied') // game doesn't exist, 404 probably
@@ -36,14 +32,7 @@ async function sendInputAndClose() {
   //TODO later make actual tags
   currentlySaving.value = true
   const response = await apiService.games.putGame(currentGame.value)
-  validateInput(
-    response,
-    isInvalidFormat,
-    errorText,
-    isSavedSuccessfully,
-    successText,
-    'Saved Successfully',
-  )
+  validateInput(response, 'Saved Successfully')
   currentlySaving.value = false
 }
 </script>
@@ -98,7 +87,7 @@ async function sendInputAndClose() {
         >
         <span
           class="text-[green] text-center whitespace-pre-line"
-          v-show="isSavedSuccessfully"
+          v-show="isPostedSuccessfully"
           id="addGameSuccessfully"
           >{{ successText }}</span
         >

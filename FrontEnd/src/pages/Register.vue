@@ -9,16 +9,13 @@ import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideL
 
 const userStore = useUserStore()
 
-const registerFailed = ref(false)
-const registerFailedErrorText = ref('')
-
 const router = useRouter()
 
 const registerUser = ref(createUser())
 
 const currentlyPostingRegister = ref(false)
 
-const { validateInput } = usePostPutApiCallWithErrors()
+const { validateInput, isInvalidFormat, errorText } = usePostPutApiCallWithErrors()
 const { logIn } = useShowProfileAndHideLogin()
 
 async function register() {
@@ -26,7 +23,7 @@ async function register() {
 
   const apiResponse = await apiService.users.postUser(registerUser.value)
   console.log(apiResponse)
-  if (validateInput(apiResponse, registerFailed, registerFailedErrorText)) {
+  if (validateInput(apiResponse)) {
     currentlyPostingRegister.value = false
     userStore.user = registerUser.value
     logIn()
@@ -85,8 +82,8 @@ async function register() {
       <span
         class="text-[#ee0a0a] text-center whitespace-pre-line"
         id="errorText"
-        v-show="registerFailed"
-        >{{ registerFailedErrorText }}</span
+        v-show="isInvalidFormat"
+        >{{ errorText }}</span
       >
       <input
         id="register"

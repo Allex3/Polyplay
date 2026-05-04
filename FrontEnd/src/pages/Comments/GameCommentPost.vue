@@ -1,53 +1,53 @@
 <script setup lang="ts">
-import { createGameComment } from '@/data/GameComment'
-import { ref } from 'vue'
+import { createGameComment, type GameComment } from '@/data/GameComment'
+import { computed, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import apiService from '@/api/apiService'
 import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
 
-const userStore = useUserStore()
-
-const { validateInput } = usePostPutApiCallWithErrors()
+const { validateInput, errorText, isPostedSuccessfully, isInvalidFormat, successText } =
+  usePostPutApiCallWithErrors()
 
 const props = defineProps<{
-  gameId: number
+  editMode: boolean
+  comment: GameComment
 }>()
 
 const emit = defineEmits(['postedComment'])
 
 const currentlyPosting = ref(false)
 
-const currentComment = ref(createGameComment({ userId: userStore.user.id, gameId: props.gameId }))
+const submitButtonText = computed(() => (props.editMode ? 'Edit' : 'Post'))
 
-const isInvalidFormat = ref(false) // the comment is >1000 chars or empty
-const errorText = ref('')
-const isPostedSuccessfully = ref(false)
-const successText = ref('')
+const currentComment = ref(props.comment) // clone
 
-async function postComment(): Promise<void> {
-  currentlyPosting.value = true
-  console.log('aaa')
+async function postComment() {
   let apiResponse = await apiService.gamesComments.postGameComment(currentComment.value)
-  if (
-    validateInput(
-      apiResponse,
-      isInvalidFormat,
-      errorText,
-      isPostedSuccessfully,
-      successText,
-      'Posted Successfully!',
-    )
-  ) {
+  if (validateInput(apiResponse, 'Posted successfully :3')) {
     currentComment.value.body = '' // empty it if it posted
     emit('postedComment')
   }
+}
+async function editComment() {
+  let apiResponse = await apiService.gamesComments.putGameComment(currentComment.value)
+  if (validateInput(apiResponse, 'Edited successfully :3')) {
+    emit('postedComment')
+  }
+}
+
+async function saveComment(): Promise<void> {
+  currentlyPosting.value = true
+
+  if (!props.editMode) {
+    postComment()
+  } else editComment()
 
   currentlyPosting.value = false
 }
 </script>
 <template>
   <div class="flex flex-col items-center">
-    <form @submit.prevent="postComment" class="flex flex-row w-full">
+    <form @submit.prevent="saveComment" class="flex flex-row w-full">
       <input
         type="textarea"
         v-model="currentComment.body"
@@ -59,7 +59,7 @@ async function postComment(): Promise<void> {
         :disabled="currentlyPosting"
         type="submit"
         class="p-2 comic-neue-bold border-2 border-l-0 bg-[#f4b5ea] hover:cursor-pointer hover:bg-[#e4a6d9]"
-        value="Post"
+        :value="submitButtonText"
       />
     </form>
     <span class="wrap-break-word whitespace-pre-line text-[#d01010]" v-show="isInvalidFormat">{{

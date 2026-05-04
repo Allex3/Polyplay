@@ -83,6 +83,11 @@ namespace PolyplayAPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult<GameComment>> PostGameComment(GameComment gameComment)
         {
+            //TODO see how to streamline the process of error object creation
+            if (gameComment.UserId == -1)
+                return BadRequest(new {User = new List<string>(["Log In first!"])});
+            if (gameComment.GameId == -1)
+                return BadRequest(new { Game = new List<string>(["Game does not exist"])});
             _context.GameComments.Add(gameComment);
             await _context.SaveChangesAsync();
 

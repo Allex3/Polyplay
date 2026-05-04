@@ -14,7 +14,7 @@ namespace PolyplayAPI.Models
         public required string Username { get; set; }
         [Required]
         [StringLength(250, MinimumLength = 8)]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$", ErrorMessage = "Password must only contain legal characters: a-z, A-Z, 0-9, @.,!, it should have at least one digit, no space, and at least one symbol [@$!%*?&]")]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*[.,@$!%*?&])(?=.*[0-9]).{8,}$", ErrorMessage = "Password must only contain legal characters: a-z, A-Z, 0-9,  it should have at least one digit, capital letter, no space, and at least one symbol [@$!%*?&.,], and 8 characters minimum")]
         public required string Password { get; set; }
         [Required]
         [EmailAddress]

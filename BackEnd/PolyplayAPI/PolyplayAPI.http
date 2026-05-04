@@ -96,3 +96,27 @@ Content-Type: application/json
 }
 
 ###
+
+GET {{PolyplayAPI_HostAddress}}/api/gamecomments
+
+###
+
+POST {{PolyplayAPI_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "username": "alex",
+  "password": "Aleggggggg.333@",
+  "email": "aaa@ff.com"
+}
+
+###
+
+@username="aaaaa"
+GET {{PolyplayAPI_HostAddress}}/api/users/
+
+###
+
+GET {{PolyplayAPI_HostAddress}}/api/games?pageSize=12&pageNumber=2
+
+###

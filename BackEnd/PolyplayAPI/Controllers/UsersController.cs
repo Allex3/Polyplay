@@ -28,11 +28,27 @@ namespace PolyplayAPI.Controllers
             return await _context.Users.ToListAsync();
         }
 
+        /*
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(long id)
         {
             var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+        */
+
+        // GET: api/Users/alex
+        [HttpGet("{username}")]
+        public async Task<ActionResult<User>> GetUser(string username)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
 
             if (user == null)
             {
@@ -78,6 +94,12 @@ namespace PolyplayAPI.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            if (_context.Users.AsQueryable().Any(u => u.Username == user.Username))
+            {
+                return BadRequest(new {Username = new List<string> (["user with this username already exists"])}); 
+                // JSON with { "username" : ["error"] }
+            }
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 

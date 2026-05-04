@@ -1,23 +1,25 @@
 import { ref, type Ref } from 'vue'
 
 export function usePostPutApiCallWithErrors() {
+  // reset errors on new call so it's unique for each component that uses this composable
+  const isInvalidFormat = ref(false)
+  const errorText = ref('')
+  const isPostedSuccessfully = ref(false)
+  const successText = ref('')
+
   const validateInput = (
     apiResponse: any,
-    isInvalidFormat: Ref,
-    errorText: Ref,
-    isSavedSuccessfully: Ref = ref(false), // in case there is no
-    successText: Ref = ref(''), // in case there is no success text ref
     successString: string = 'Saved Successfully',
   ): boolean => {
     if (apiResponse.success || apiResponse.errors === undefined) {
       // no errors but failure => no connection, act as added because cache {
       isInvalidFormat.value = false
       successText.value = successString
-      isSavedSuccessfully.value = true
+      isPostedSuccessfully.value = true
       return true
     }
 
-    isSavedSuccessfully.value = false
+    isPostedSuccessfully.value = false
 
     errorText.value = ''
     for (const [key, value] of Object.entries(apiResponse.errors)) {
@@ -32,5 +34,5 @@ export function usePostPutApiCallWithErrors() {
     return false
   }
 
-  return { validateInput }
+  return { validateInput, isInvalidFormat, errorText, successText, isPostedSuccessfully }
 }
