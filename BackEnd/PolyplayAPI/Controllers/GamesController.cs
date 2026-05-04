@@ -83,21 +83,14 @@ namespace PolyplayAPI.Controllers
 
         // PUT: api/Games/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //TODO see if I add a filter validation here, if the modelstate.isvalid is still needed
+        // it works with filter, im stoopid, i forgot to put filter, but good lesson if ModelState.Valid
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> PutGame(long id, Game game)
         {
             if (id != game.Id)
             {
                 return BadRequest();
-            }
-
-            if (!ModelState.IsValid) // for some reason filter doesn't check as it does when POSTing
-            {
-                var errorsList = ModelState.SelectMany(property => property.Value.Errors)
-                    .Select(error => error.ErrorMessage)
-                    .ToList();
-                return BadRequest(error: errorsList); // return this object, which is a list of strings
             }
 
 

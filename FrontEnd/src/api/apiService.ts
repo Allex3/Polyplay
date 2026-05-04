@@ -1,10 +1,14 @@
-import { type GamesApiInterface } from './gamesApiInterface'
-import gamesApi from './gamesApiInterface'
+import { type GamesApi } from './gamesApi'
+import gamesApi from './gamesApi'
+import { gameCommentsApi, type GameCommentsApi } from './gameCommentsApi.ts'
+import gamesComments from './gameCommentsApi.ts'
 
 class APIService {
-  games: GamesApiInterface
+  games: GamesApi
+  gamesComments: GameCommentsApi
   constructor() {
     this.games = gamesApi
+    this.gamesComments = gameCommentsApi
   }
 }
 

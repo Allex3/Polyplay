@@ -1,4 +1,5 @@
 export type User = {
+  id: number
   username: string
   email: string
   password: string
@@ -11,6 +12,7 @@ export type User = {
 
 export function createUser(data: Partial<User> = {}): User {
   return {
+    id: data.id ?? -1,
     username: data.username ?? '0',
     email: data.email ?? '',
     password: data.password ?? '',

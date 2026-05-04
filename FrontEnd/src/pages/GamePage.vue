@@ -16,32 +16,17 @@ const router = useRouter()
 const route = useRoute()
 
 const gameApiResponse = await apiService.games.getGame(Number(route.params.gameid))
+const gameCommentsApiResponse = await apiService.gamesComments.getFromGame(Number(route.params.gameid))
 
 const gameExists = ref(gameApiResponse.success)
 
 const currentGame = ref<Game>(createGame())
 
 const gameComments = ref<GameCom[]>([])
-gameComments.value.push(
-  createGameComment({ gameId: currentGame.value.id, commentBody: 'aaaa', username: 'alex' }),
-)
-gameComments.value.push(
-  createGameComment({ gameId: currentGame.value.id, commentBody: 'hhhhh', username: 'alex' }),
-)
-gameComments.value.push(
-  createGameComment({ gameId: currentGame.value.id, commentBody: 'gfdg', username: 'alex' }),
-)
-gameComments.value.push(
-  createGameComment({
-    gameId: currentGame.value.id,
-    commentBody:
-      'eeeeeegggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeee\neggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggeeeeeeggggggggggggggggg',
-    username: 'alex',
-  }),
-)
 
 if (gameExists) {
   currentGame.value = gameApiResponse.gamesData
+  gameComments.value = ()
   useCookieManager().writeVisitedGamesCookie(currentGame.value.id)
 
   // for some reason it  was STILL IN ISO 8601 FORMAT, NOT A DATE
@@ -137,14 +122,14 @@ if (gameExists) {
       </div>
     </div>
 
-    <!-- Comments div -->
+    <!-- Comments div TODO: TRY TO PUT THE COMMENTS "TITLE" ON THE "WINDOW" UPPER BAR -->
     <div class="w-5/6 retro-window md:w-220 gap-5 m-auto flex flex-col mt-12 pl-4 pr-4 pt-5 pb-5">
-      <div class="text-3xl">Comments</div>
+      <div class="text-3xl absolute">Comments</div>
       <div v-for="gameComment in gameComments" :key="gameComment.commentId">
         <GameComment :game-comment="gameComment" />
       </div>
     </div>
   </div>
 
-  <div v-show="!gameExists" class="m-auto">GAME NOT FOUND</div>
+  <div v-show="!gameExists" class="m-auto w-full h-full">GAME NOT FOUND</div>
 </template>

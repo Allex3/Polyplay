@@ -8,8 +8,8 @@ POST {{PolyplayAPI_HostAddress}}/api/games
 Content-Type: application/json
 
 {
-  "name": "aaa",
-  "description": "No",
+  "name": "birb",
+  "description": "dgfghfdghdfgf",
   "mainTag": "incremental",
   "thumbnailPath": "../../assets/logo.png",
   "developer": "alex",
@@ -24,8 +24,8 @@ Content-Type: application/json
 
 {
   "id": 1,
-  "name": "aaa",
-  "description": "No",
+  "name": "name changed",
+  "description": "hmm changed?",
   "mainTag": "incremental",
   "thumbnailPath": "nope",
   "postedDate": "2025-03-20",
@@ -66,5 +66,33 @@ GET {{PolyplayAPI_HostAddress}}/ws/startTestGames
 ###
 
 GET {{PolyplayAPI_HostAddress}}/api/games/stats
+
+###
+
+POST {{PolyplayAPI_HostAddress}}/api/gamecomments
+Content-Type: application/json
+
+{
+  //GameComment
+}
+
+###
+
+GET {{PolyplayAPI_HostAddress}}/api/gamecomments?gameId=2
+
+###
+
+GET {{PolyplayAPI_HostAddress}}/api/gamecomments
+
+###
+
+POST {{PolyplayAPI_HostAddress}}/api/gamecomments
+Content-Type: application/json
+
+{
+  "gameId": 2,
+  "userId": 1,
+  "body": "wowoowoowooowow"
+}
 
 ###

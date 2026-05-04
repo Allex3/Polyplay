@@ -1,7 +1,7 @@
 import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
 
-class GamesApiInterface {
+class GamesApi {
   baseURL: string
   generateGamesWebSocket: undefined | WebSocket
 
@@ -87,6 +87,6 @@ class GamesApiInterface {
   }
 }
 
-const gamesApi = new GamesApiInterface()
-export { gamesApi as default, type GamesApiInterface }
+const gamesApi = new GamesApi()
+export { gamesApi as default, type GamesApi }
 // NOTE: default export means that you can export that using any name, like import {games} from ..

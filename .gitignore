@@ -1,3 +1,5 @@
+# FRONT-END
+
 # Logs
 logs
 *.log
@@ -46,3 +48,19 @@ playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# BACKEND:
+
+# Visual Studio
+.vs/
+*.user
+
+# Build folders
+bin/
+obj/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store

@@ -13,8 +13,9 @@ namespace PolyplayAPI.Models
         [StringLength(1000,MinimumLength = 1)]
         public string Body { get; set; }
 
-        public Game Game { get; set; } = null!; // references, so it discovers the relationship by convention
-        public User User { get; set; } = null!;
+        //TODO PLS MAKE DTO OF USER
+        //public Game Game { get; set; } = null!; // references, so it discovers the relationship by convention
+        //public User User { get; set; } = null!;
 
     }
 }

@@ -21,11 +21,16 @@ namespace PolyplayAPI.Controllers
             _context = context;
         }
 
-        // GET: api/GameComments
+        // GET: api/GameComments?gameId=X (without game id, get NOTHING)
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameComment>>> GetGameComments()
+        public async Task<ActionResult<IEnumerable<GameComment>>> GetGameComments([FromQuery] long GameId=-1)
         {
-            return await _context.GameComments.ToListAsync();
+            if (GameId == -1)
+                return Ok(new List<GameComment>());
+            var gameComments = _context.GameComments.AsQueryable();
+            var thisGameComments = await gameComments.Where(gameComment => gameComment.GameId == GameId).ToListAsync();
+            return Ok(thisGameComments);
+
         }
 
         // GET: api/GameComments/5
@@ -45,6 +50,7 @@ namespace PolyplayAPI.Controllers
         // PUT: api/GameComments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> PutGameComment(long id, GameComment gameComment)
         {
             if (id != gameComment.Id)

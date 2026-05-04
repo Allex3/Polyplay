@@ -1,5 +1,5 @@
 export type GameComment = {
-  commentId: number
+  id: number
   gameId: number
   username: string
   commentBody: string
@@ -7,7 +7,7 @@ export type GameComment = {
 
 export function createGameComment(gameComment: Partial<GameComment> = {}): GameComment {
   return {
-    commentId: gameComment.commentId ?? -1,
+    id: gameComment.id ?? -1,
     gameId: gameComment.gameId ?? -1,
     username: gameComment.username ?? '0',
     commentBody: gameComment.commentBody ?? 'Bug',

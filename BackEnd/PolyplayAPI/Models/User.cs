@@ -28,6 +28,7 @@ namespace PolyplayAPI.Models
         // limitations: the saem navigation (Friends) cannot be use for both ends
         // so we need, when adding a friend, to add it to BOTH of the users' lists
         public virtual ICollection<User> Friends { get; } = []; 
+        //TODO PLEASE MAKE DTO OF USER
 
 
     }
