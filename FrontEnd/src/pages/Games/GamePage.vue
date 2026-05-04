@@ -35,7 +35,7 @@ if (gameExists) {
 </script>
 <template>
   <!-- wrapper div-->
-  <div v-show="gameExists" class="w-2/3 m-auto">
+  <div v-show="gameExists" class="w-2/3 m-auto mb-10">
     <!-- Game Details div: Two items: For the game details, and for the chat  -->
     <div class="w-5/6 retro-window md:w-220 m-auto mt-1 flex flex-row pl-4 pr-4 pt-5 pb-5">
       <!-- Game details -->

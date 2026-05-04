@@ -22,6 +22,9 @@ export function usePostPutApiCallWithErrors() {
     errorText.value = ''
     for (const [key, value] of Object.entries(apiResponse.errors)) {
       errorText.value += key + ': ' + value + '\n'
+
+      // TODO HERE FORMAT ERRORS BETTER DEPENDING ON THE TPYE OF OBJECT
+      // NOT JUST Name : VS GIBBERISH
     }
 
     isInvalidFormat.value = true

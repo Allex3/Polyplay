@@ -89,11 +89,14 @@ async function sendInputAndClose() {
           placeholder="Enter image URL"
         />
         <img v-bind:src="currentGame.thumbnailPath" class="w-45" />
-        <span class="text-[red] text-center" v-show="isInvalidFormat" id="addGameError">{{
-          errorText
-        }}</span>
         <span
-          class="text-[green] text-center"
+          class="text-[red] text-center whitespace-pre-line"
+          v-show="isInvalidFormat"
+          id="addGameError"
+          >{{ errorText }}</span
+        >
+        <span
+          class="text-[green] text-center whitespace-pre-line"
           v-show="isSavedSuccessfully"
           id="addGameSuccessfully"
           >{{ successText }}</span

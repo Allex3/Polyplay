@@ -1,3 +1,29 @@
+<script setup lang="ts">
+import { useUserStore } from '@/stores/userStore'
+import { ref } from 'vue'
+import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
+import { useRouter } from 'vue-router'
+import { createUser } from '@/data/User'
+
+const { logIn } = useShowProfileAndHideLogin()
+
+const userStore = useUserStore()
+
+const loginFailed = ref(false)
+const loginFailedErrorText = ref('')
+
+const router = useRouter()
+
+const username = ref('')
+const password = ref('')
+
+async function login() {
+  userStore.user = createUser({ id: 1, username: 'alex', password: 'alex.2005' })
+
+  logIn()
+  router.push('/user/table')
+}
+</script>
 <template>
   <div class="retro-window flex flex-col gap-5 w-5/6 md:2/5 items-center m-auto relative">
     <span style="font-size: 2rem; margin-top: 4rem; margin-bottom: -1rem">Login</span>
@@ -68,48 +94,3 @@ label {
   width: 15rem;
 }
 </style>
-
-<script setup lang="ts">
-import { useUserStore } from '@/stores/userStore'
-import { ref } from 'vue'
-import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
-import { useRouter } from 'vue-router'
-import { createUser } from '@/data/User'
-
-const { logIn } = useShowProfileAndHideLogin()
-
-const userStore = useUserStore()
-
-const loginFailed = ref(false)
-const loginFailedErrorText = ref('')
-
-const router = useRouter()
-
-const username = ref('')
-const password = ref('')
-
-function loginInputsAreValid(): boolean {
-  /*loginFailed.value = false
-
-  if (!userStore.userExists(username.value)) {
-    loginFailedErrorText.value = 'User with that username does not exist'
-    loginFailed.value = true
-  } else if (!(userStore.getUser(username.value).password == password.value)) {
-    loginFailedErrorText.value = 'Password is incorrect.'
-    loginFailed.value = true
-  }
-
-  if (loginFailed.value) return false
-*/
-  return true
-}
-
-async function login() {
-  if (!loginInputsAreValid()) return
-
-  userStore.user = createUser({ username: 'alex', password: 'alex.2005' })
-
-  logIn()
-  router.push('/user/table')
-}
-</script>

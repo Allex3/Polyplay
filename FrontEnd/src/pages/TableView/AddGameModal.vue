@@ -120,7 +120,9 @@ function closeOnBackdropClick(e: Event) {
           />
           <img v-bind:src="gameFromForm.thumbnailPath" class="w-45" />
 
-          <span class="text-[red]" v-show="isInvalidFormat" id="addGameError">{{ errorText }}</span>
+          <span class="text-[red] whitespace-pre-line" v-show="isInvalidFormat" id="addGameError">{{
+            errorText
+          }}</span>
           <button
             id="addGameButton"
             ref="addGameButton"

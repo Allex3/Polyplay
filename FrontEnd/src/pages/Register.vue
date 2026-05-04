@@ -11,31 +11,14 @@ const registerFailedErrorText = ref('')
 
 const router = useRouter()
 
-const username = ref('')
-const email = ref('')
-const password = ref('')
-const newsletter = ref(false)
+const registerUser = ref(createUser())
 
-function registerInputsAreValid(): boolean {
-  registerFailed.value = false
-
-  if (registerFailed.value) return false //it fails
-
-  return true
-}
+const currentlyPostingRegister = ref(false)
 
 async function register() {
-  if (!registerInputsAreValid()) return
-  /* TODO REFACTOR IN API
-  userStore.addUser(
-    createUser({
-      username: username.value,
-      password: password.value,
-      email: email.value,
-      wantsNewsletter: newsletter.value,
-    }),
-  )*/
+  currentlyPostingRegister.value = true
 
+  currentlyPostingRegister.value = false
   router.push('/login')
 }
 </script>
@@ -50,7 +33,7 @@ async function register() {
           id="inputUsername"
           class="retro-input"
           name="username"
-          v-model="username"
+          v-model="registerUser.username"
           placeholder="username"
         />
       </div>
@@ -60,7 +43,7 @@ async function register() {
           id="inputEmail"
           class="retro-input"
           name="email"
-          v-model="email"
+          v-model="registerUser.email"
           placeholder="e-mail@something.me"
           type="e-mail"
         />
@@ -71,13 +54,18 @@ async function register() {
           id="inputPassword"
           class="retro-input"
           name="password"
-          v-model="password"
+          v-model="registerUser.password"
           placeholder="password"
           type="password"
         />
       </div>
       <div class="flex flex-row gap-3 items-center">
-        <input type="checkbox" id="newsletter" name="newsletter" v-model="newsletter" />
+        <input
+          type="checkbox"
+          id="newsletter"
+          name="newsletter"
+          v-model="registerUser.wantsNewsletter"
+        />
         <label for="newsletter">Subscribe to the new creations newsletter</label>
       </div>
       <span class="text-[#ee0a0a] text-center" id="errorText" v-show="registerFailed">{{
@@ -85,6 +73,7 @@ async function register() {
       }}</span>
       <input
         id="register"
+        :disabled="currentlyPostingRegister"
         @submit="register()"
         class="register hover_scale hover:cursor-pointer"
         type="submit"
