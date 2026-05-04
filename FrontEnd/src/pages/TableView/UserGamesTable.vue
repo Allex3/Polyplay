@@ -8,17 +8,13 @@ import { useRouter } from 'vue-router'
 import { usePagination } from '@/composables/usePagination'
 
 import { useInfiniteScroll } from '@vueuse/core'
-import { ref, useTemplateRef } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import type { Game } from '@/data/Game'
 import apiService from '@/api/apiService'
 
 const { isUserLoggedIn } = useShowProfileAndHideLogin()
 
 const router = useRouter()
-
-if (!isUserLoggedIn.value) {
-  router.push('/login')
-}
 
 const { openAddGameModal } = useAddGameModal()
 
@@ -32,8 +28,8 @@ const visibleGames = ref<Game[]>(
   (await apiService.games.getGames(pageNumber, VISIBLE_GAMES_ON_PAGE)).games,
 )
 
-const totalGames = (await apiService.games.getGames(pageNumber, VISIBLE_GAMES_ON_PAGE)).totalGames
-var loadedGames = 4
+var totalGames = (await apiService.games.getGames(pageNumber, VISIBLE_GAMES_ON_PAGE)).totalGames
+var loadedGames = VISIBLE_GAMES_ON_PAGE
 
 // here, I will act like "pages" are the times i reach the end of scroll
 // basically, first page with 4 games, then second with 4 gamees, and so on
@@ -59,6 +55,20 @@ const { reset } = useInfiniteScroll(
   },
 )
 const resetGamesList = reset
+async function updateGamesList() {
+  let apiResponse = await apiService.games.getGames(pageNumber, VISIBLE_GAMES_ON_PAGE)
+  pageNumber = 0
+  totalGames = apiResponse.totalGames
+  visibleGames.value = apiResponse.games
+  loadedGames = VISIBLE_GAMES_ON_PAGE
+  resetGamesList()
+}
+
+onMounted(() => {
+  if (!isUserLoggedIn.value) {
+    router.push('/login')
+  }
+})
 </script>
 
 <template>
@@ -81,7 +91,7 @@ const resetGamesList = reset
       class="flex flex-col gap-5 p-4 h-80 m-auto overflow-y-scroll w-11/12 md:w-216"
     >
       <div v-for="game in visibleGames" :key="game.id">
-        <GameTableItem @deleted-game="resetGamesList" :game="game" class="hover:bg-[#98518E]" />
+        <GameTableItem @deleted-game="updateGamesList" :game="game" class="hover:bg-[#98518E]" />
       </div>
     </div>
 
@@ -99,5 +109,5 @@ const resetGamesList = reset
     </div>
   </div>
 
-  <AddGameModal @added-game="resetGamesList" />
+  <AddGameModal @added-game="updateGamesList" />
 </template>

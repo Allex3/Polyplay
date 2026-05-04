@@ -9,7 +9,7 @@ const props = defineProps<{
 
 const userStore = useUserStore()
 
-const emit = defineEmits(['startedEdit', 'canceledEdit'])
+const emit = defineEmits(['startedEdit', 'canceledEdit', 'deletedGame'])
 const isEditing = ref(false)
 const editButtonText = ref('Edit')
 
@@ -24,6 +24,10 @@ function editComment(): void {
   isEditing.value = true
   editButtonText.value = 'Cancel Edit'
 }
+
+function deleteComment(): void {
+  emit('deletedGame')
+}
 </script>
 
 <template>
@@ -37,12 +41,21 @@ function editComment(): void {
     <!-- overflow-hidden text-ellipsis whitespace-nowrap -->
     <!-- if I add these classes, how do i make "show more?"-->
     <!-- maybe it's made by Vue code, with like a button that changes classes...-->
-    <button
-      v-show="gameComment.userId == userStore.user.id"
-      @click="editComment"
-      class="text-left w-fit comic-neue-bold p-0.5 hover:cursor-pointer text-[#905a88] hover:text-[#6e4467] active:text-[#563550]"
-    >
-      {{ editButtonText }}
-    </button>
+    <div class="flex flex-row gap-3">
+      <button
+        v-show="gameComment.userId == userStore.user.id"
+        @click="editComment"
+        class="text-left w-fit comic-neue-bold p-0.5 hover:cursor-pointer text-[#905a88] hover:text-[#6e4467] active:text-[#563550]"
+      >
+        {{ editButtonText }}
+      </button>
+      <button
+        v-show="gameComment.userId == userStore.user.id"
+        @click="deleteComment"
+        class="text-left w-fit comic-neue-bold p-0.5 hover:cursor-pointer text-[#905a88] hover:text-[#6e4467] active:text-[#563550]"
+      >
+        Delete
+      </button>
+    </div>
   </div>
 </template>

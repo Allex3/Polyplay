@@ -26,6 +26,11 @@ async function updateComments() {
     })
   }
 }
+
+async function deleteGame(gameCommentId: number) {
+  apiService.gamesComments.deleteGameComment(gameCommentId)
+  setTimeout(updateComments, 200) // wait 200ms so that the list updates
+}
 </script>
 <template>
   <div>
@@ -45,6 +50,7 @@ async function updateComments() {
           :game-comment="gameComment"
           @started-edit="showEdits[gameComment.id] = true"
           @canceled-edit="showEdits[gameComment.id] = false"
+          @deleted-game="deleteGame(gameComment.id)"
         />
         <!-- below it, a box to edit the game... that is shown only when we press the edit button -->
         <GameCommentPost
