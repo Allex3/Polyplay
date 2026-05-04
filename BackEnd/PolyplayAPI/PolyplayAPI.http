@@ -64,3 +64,7 @@ GET {{PolyplayAPI_HostAddress}}/api/games/1
 GET {{PolyplayAPI_HostAddress}}/ws/startTestGames
 
 ###
+
+GET {{PolyplayAPI_HostAddress}}/api/games/stats
+
+###

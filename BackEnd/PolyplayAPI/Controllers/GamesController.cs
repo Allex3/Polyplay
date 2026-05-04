@@ -42,6 +42,31 @@ namespace PolyplayAPI.Controllers
             return Ok(paginatedResponse); // 200 OK, page number, page size, total records, and data
         }
 
+        // GET game stats: api/Games/stats
+        [HttpGet("stats")]
+        public async Task<ActionResult<GamesStatistics>> GetGameStatistics()
+        {
+            var gamesList = _context.Games.ToAsyncEnumerable();
+            GamesStatistics gamesStatistics = new GamesStatistics();
+            await foreach (Game game in gamesList) // await so it actuall works
+            {
+                // without await, we should use await Task.WhenAll(gamesList), but we don't care about the order rn.
+                if (gamesStatistics.Labels.Contains(game.MainTag))
+                {
+                    // add 1 to this label's statistic, same index
+                    gamesStatistics.MainTagCount[gamesStatistics.Labels.IndexOf(game.MainTag)] += 1;
+                }
+                else
+                {
+                    // create new label (push 1)
+                    gamesStatistics.Labels.Add(game.MainTag);
+                    gamesStatistics.MainTagCount.Add(1); // same index, pushed at the same time
+                }
+            }
+
+            return Ok(gamesStatistics);
+        }
+
         // GET: api/Games/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(long id)
@@ -88,10 +113,8 @@ namespace PolyplayAPI.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
@@ -129,6 +152,8 @@ namespace PolyplayAPI.Controllers
         {
             return _context.Games.Any(e => e.Id == id);
         }
+
+
 
         // for web sockets... but still related to games, so I put it here
         [Route("~/ws/startTestGames")] // ~ overrides default routing, so

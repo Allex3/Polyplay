@@ -64,10 +64,8 @@ namespace PolyplayAPI.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return NoContent();
