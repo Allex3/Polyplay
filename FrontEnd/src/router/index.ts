@@ -27,11 +27,11 @@ const routes = [
   },
   {
     path: '/games/:gameid/edit',
-    component: () => import('../pages/EditGame.vue'),
+    component: () => import('../pages/Games/EditGame.vue'),
   },
   {
     path: '/games/:gameid',
-    component: () => import('../pages/GamePage.vue'),
+    component: () => import('../pages/Games/GamePage.vue'),
   },
   {
     path: '/PermissionDenied',

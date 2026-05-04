@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/userStore'
 import { type Game, createGame } from '@/data/Game'
 import { type User } from '@/data/User'
 import apiService from '@/api/apiService'
+import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
 
 const userStore = useUserStore()
 
@@ -12,6 +13,8 @@ const router = useRouter()
 const route = useRoute()
 
 const tags = ref([])
+
+const { validateInput } = usePostPutApiCallWithErrors()
 
 const isInvalidFormat = ref(false)
 const errorText = ref('')
@@ -33,32 +36,14 @@ async function sendInputAndClose() {
   //TODO later make actual tags
 
   const response = await apiService.games.putGame(currentGame.value)
-  /*
-  if (response.success) {
-    console.log('ok')
-    successText.value = 'Saved successfully!'
-    isSavedSuccessfully.value = true
-    isInvalidFormat.value = false
-    return
-  }
-  */
-
-  const errors = response.errors // this exists, as an array of strings
-  if (errors == undefined) {
-    // for some reason response.success doesn't work
-    // but if we have 0 errors technically it's all good
-    console.log('ok')
-    successText.value = 'Saved successfully!'
-    isSavedSuccessfully.value = true
-    isInvalidFormat.value = false
-    return
-  }
-  errorText.value = ''
-  errors.forEach((element: string) => {
-    errorText.value += element + '\n'
-  })
-  isInvalidFormat.value = true
-  isSavedSuccessfully.value = false
+  validateInput(
+    response,
+    isInvalidFormat,
+    isSavedSuccessfully,
+    errorText,
+    successText,
+    'Saved Successfully',
+  )
 }
 </script>
 <template>

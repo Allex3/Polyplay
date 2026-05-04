@@ -1,6 +1,7 @@
 import { type GamesApi } from './gamesApi'
 import gamesApi from './gamesApi'
-import { gameCommentsApi, type GameCommentsApi } from './gameCommentsApi.ts'
+import { type GameCommentsApi } from './gameCommentsApi.ts'
+import gameCommentsApi from './gameCommentsApi.ts'
 import gamesComments from './gameCommentsApi.ts'
 
 class APIService {

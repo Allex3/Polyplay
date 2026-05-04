@@ -9,10 +9,10 @@ const props = defineProps<{
 <template>
   <div class="border-2 p-1.5 flex flex-col">
     <!--(photo +) username (photo not yet) -->
-    <div class="text-xl comic-neue-bold p-0.5">{{ gameComment.username }}</div>
+    <div class="text-xl comic-neue-bold p-0.5">{{ gameComment.userId }}</div>
     <!-- Comment body-->
     <div class="text-sm comic-neue p-0.5 wrap-break-word">
-      {{ gameComment.commentBody }}
+      {{ gameComment.body }}
     </div>
     <!-- overflow-hidden text-ellipsis whitespace-nowrap -->
     <!-- if I add these classes, how do i make "show more?"-->
