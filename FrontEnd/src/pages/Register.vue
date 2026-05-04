@@ -18,6 +18,8 @@ const currentlyPostingRegister = ref(false)
 async function register() {
   currentlyPostingRegister.value = true
 
+  
+
   currentlyPostingRegister.value = false
   router.push('/login')
 }

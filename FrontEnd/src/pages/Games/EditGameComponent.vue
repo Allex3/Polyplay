@@ -32,18 +32,21 @@ if (userStore.user.username != currentGame.value.developer)
   //TODO change tihs, for testing
   router.push('/PermissionDenied')
 
+const currentlySaving = ref(false)
+
 async function sendInputAndClose() {
   //TODO later make actual tags
-
+  currentlySaving.value = true
   const response = await apiService.games.putGame(currentGame.value)
   validateInput(
     response,
     isInvalidFormat,
-    isSavedSuccessfully,
     errorText,
+    isSavedSuccessfully,
     successText,
     'Saved Successfully',
   )
+  currentlySaving.value = false
 }
 </script>
 <template>
@@ -102,6 +105,7 @@ async function sendInputAndClose() {
           >{{ successText }}</span
         >
         <button
+          :disabled="currentlySaving"
           @click="sendInputAndClose"
           id="saveButton"
           class="mt-5 md:mt-0 hover:cursor-pointer hover_scale bg-[#bfedef] w-30 self-center border-2"

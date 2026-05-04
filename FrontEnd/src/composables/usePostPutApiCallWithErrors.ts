@@ -4,10 +4,10 @@ export function usePostPutApiCallWithErrors() {
   const validateInput = (
     apiResponse: any,
     isInvalidFormat: Ref,
-    isSavedSuccessfully: Ref,
     errorText: Ref,
-    successText: Ref,
-    successString: string,
+    isSavedSuccessfully: Ref = ref(false), // in case there is no
+    successText: Ref = ref(''), // in case there is no success text ref
+    successString: string = 'Saved Successfully',
   ): boolean => {
     if (apiResponse.success || apiResponse.errors === undefined) {
       // no errors but failure => no connection, act as added because cache {

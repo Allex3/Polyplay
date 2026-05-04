@@ -31,6 +31,7 @@ async function sendInputAndClose(): Promise<void> {
     developer: userRepo.user.username,
   })
   */
+  //TODO refactor this awful code lmao noo document get elemeny by id WTF
   const addGameButton: any = document.getElementById('addGameButton')
   addGameButton.disabled = true
 

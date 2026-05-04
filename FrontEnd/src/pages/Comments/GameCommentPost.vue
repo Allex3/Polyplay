@@ -32,16 +32,17 @@ async function postComment(): Promise<void> {
     validateInput(
       apiResponse,
       isInvalidFormat,
-      isPostedSuccessfully,
       errorText,
+      isPostedSuccessfully,
       successText,
       'Posted Successfully!',
     )
-  )
+  ) {
     currentComment.value.body = '' // empty it if it posted
-  currentlyPosting.value = false
+    emit('postedComment')
+  }
 
-  emit('postedComment')
+  currentlyPosting.value = false
 }
 </script>
 <template>
