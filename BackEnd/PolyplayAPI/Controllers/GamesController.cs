@@ -1,16 +1,9 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.WebSockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PolyplayAPI.Controllers
 {
@@ -157,7 +150,7 @@ namespace PolyplayAPI.Controllers
             {
                 using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
 
-                await GenerateGames(webSocket); 
+                await GenerateGames(webSocket);
 
             }
 
@@ -205,7 +198,7 @@ namespace PolyplayAPI.Controllers
                 receivedResult.CloseStatus.Value,
                 receivedResult.CloseStatusDescription,
                 CancellationToken.None);
-            
-    }
+
+        }
     }
 }

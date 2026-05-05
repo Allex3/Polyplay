@@ -10,7 +10,7 @@ namespace PolyplayAPI.Models
         [Required]
         public long UserId { get; set; } // foreign key
         [Required]
-        [StringLength(1000,MinimumLength = 1)]
+        [StringLength(1000, MinimumLength = 1)]
         public string Body { get; set; }
 
         //TODO PLS MAKE DTO OF USER

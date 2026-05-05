@@ -117,6 +117,10 @@ GET {{PolyplayAPI_HostAddress}}/api/users/
 
 ###
 
-GET {{PolyplayAPI_HostAddress}}/api/games?pageSize=12&pageNumber=2
+GET {{PolyplayAPI_HostAddress}}/api/games?pageSize=12&pageNumber=1
+
+###
+
+GET {{PolyplayAPI_HostAddress}}/api/gamecomments?gameId=3
 
 ###

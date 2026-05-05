@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PolyplayAPI;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
+using PolyplayAPI.Models.Chats;
+using PolyplayAPI.Services;
+
 
 static string getConnString()
 {
@@ -25,11 +27,18 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod());
 });
 
+
+
 // add model validation for more legible HTTP failure responses to use in the front-end
 builder.Services.AddScoped<ValidationFilterAttribute>();
 // now disable the automatic validation (that returns the errors in errors, because now we will use a filter)
 builder.Services.Configure<ApiBehaviorOptions>(options
-    => options.SuppressModelStateInvalidFilter = true); 
+    => options.SuppressModelStateInvalidFilter = true);
+
+// add DI for MongoDB Chat database
+builder.Services.Configure<ChatDatabaseSettings>(
+    builder.Configuration.GetSection("ChatDatabase")); // maps to fields of same names as the properties, populated by DI
+builder.Services.AddSingleton<GeneralChatService>();
 
 
 // Add services to the container.

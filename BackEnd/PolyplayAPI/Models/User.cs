@@ -1,16 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace PolyplayAPI.Models
 {
-    [Index(nameof(Username), IsUnique=true)] // unique property on username
+    [Index(nameof(Username), IsUnique = true)] // unique property on username
     public class User
     {
         [Key] public long Id { get; set; }
 
         [Required]
         [StringLength(250, MinimumLength = 1)]
-        
+
         public required string Username { get; set; }
         [Required]
         [StringLength(250, MinimumLength = 8)]
@@ -27,7 +27,7 @@ namespace PolyplayAPI.Models
         // symmetrical self-referencing many to many relationship require 1 list, not 2
         // limitations: the saem navigation (Friends) cannot be use for both ends
         // so we need, when adding a friend, to add it to BOTH of the users' lists
-        public virtual ICollection<User> Friends { get; } = []; 
+        public virtual ICollection<User> Friends { get; } = [];
         //TODO PLEASE MAKE DTO OF USER
 
 

@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PolyplayAPI.Controllers
 {
@@ -96,7 +91,7 @@ namespace PolyplayAPI.Controllers
         {
             if (_context.Users.AsQueryable().Any(u => u.Username == user.Username))
             {
-                return BadRequest(new {Username = new List<string> (["user with this username already exists"])}); 
+                return BadRequest(new { Username = new List<string>(["user with this username already exists"]) });
                 // JSON with { "username" : ["error"] }
             }
 

@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PolyplayAPI.Controllers
 {
@@ -23,7 +18,7 @@ namespace PolyplayAPI.Controllers
 
         // GET: api/GameComments?gameId=X (without game id, get NOTHING)
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameComment>>> GetGameComments([FromQuery] long GameId=-1)
+        public async Task<ActionResult<IEnumerable<GameComment>>> GetGameComments([FromQuery] long GameId = -1)
         {
             if (GameId == -1)
                 return Ok(new List<GameComment>());
@@ -85,9 +80,9 @@ namespace PolyplayAPI.Controllers
         {
             //TODO see how to streamline the process of error object creation
             if (gameComment.UserId == -1)
-                return BadRequest(new {User = new List<string>(["Log In first!"])});
+                return BadRequest(new { User = new List<string>(["Log In first!"]) });
             if (gameComment.GameId == -1)
-                return BadRequest(new { Game = new List<string>(["Game does not exist"])});
+                return BadRequest(new { Game = new List<string>(["Game does not exist"]) });
             _context.GameComments.Add(gameComment);
             await _context.SaveChangesAsync();
 

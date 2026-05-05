@@ -1,6 +1,4 @@
 ﻿using Bogus;
-using Bogus.DataSets;
-using Bogus.Extensions;
 using PolyplayAPI.Models;
 
 namespace PolyplayAPI
@@ -12,7 +10,7 @@ namespace PolyplayAPI
         {
             Randomizer.Seed = new Random(67);
 
-            var tags = new[] { "incremental", "simulator", "action", "roguelike", "deckbuilder"};
+            var tags = new[] { "incremental", "simulator", "action", "roguelike", "deckbuilder" };
             var usernames = new[] { "alex", "axolotl", "equinox", "gabi" };
 
             var gameId = 1;
