@@ -4,6 +4,8 @@ using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
 using PolyplayAPI.Models.Chats;
 using PolyplayAPI.Services;
+using System.Collections.Concurrent;
+using System.Net.WebSockets;
 
 
 static string getConnString()
@@ -39,6 +41,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options
 builder.Services.Configure<ChatDatabaseSettings>(
     builder.Configuration.GetSection("ChatDatabase")); // maps to fields of same names as the properties, populated by DI
 builder.Services.AddSingleton<GeneralChatService>();
+builder.Services.AddSingleton<ConcurrentDictionary<string, WebSocket>>(); // for general chat... testing
 
 
 // Add services to the container.

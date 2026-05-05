@@ -138,3 +138,30 @@ Content-Type: application/json
 GET {{PolyplayAPI_HostAddress}}/api/generalchat
 
 ###
+
+GET {{PolyplayAPI_HostAddress}}/ws/generalChat
+
+###
+
+GET {{PolyplayAPI_HostAddress}}/api/generalchat
+
+###
+
+GET {{PolyplayAPI_HostAddress}}/api/users
+
+###
+
+POST {{PolyplayAPI_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "Test.2005",
+  "email": "aaaaa@aa.com"
+}
+
+###
+
+GET {{PolyplayAPI_HostAddress}}/api/users
+
+###

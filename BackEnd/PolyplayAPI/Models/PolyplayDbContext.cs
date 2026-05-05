@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PolyplayAPI.Models.Auth;
 
 namespace PolyplayAPI.Models;
 
@@ -8,12 +9,15 @@ public class PolyplayDbContext(DbContextOptions<PolyplayDbContext> options) : Db
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<GameComment> GameComments { get; set; } = null!;
 
+    public DbSet<Role> Roles { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // to map self-referencing many-to-many relationship
         modelBuilder.Entity<User>()
             .HasMany(e => e.Friends)
             .WithMany();
+
     }
 
 }

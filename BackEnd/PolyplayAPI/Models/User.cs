@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using PolyplayAPI.Models.Auth;
 
 namespace PolyplayAPI.Models
 {
@@ -20,14 +21,15 @@ namespace PolyplayAPI.Models
         [EmailAddress]
         [StringLength(250)]
         public required string Email { get; set; }
-        public ICollection<GameComment> GameComments { get; } = new List<GameComment>();
+        public List<GameComment> GameComments { get; } = new List<GameComment>();
 
-        public virtual ICollection<Game> FavoriteGames { get; set; } = []; // many to many basic relationship from User to Games
+        public List<Role> Roles { get; } = [];
+        public virtual List<Game> FavoriteGames { get; set; } = []; // many to many basic relationship from User to Games
 
         // symmetrical self-referencing many to many relationship require 1 list, not 2
         // limitations: the saem navigation (Friends) cannot be use for both ends
         // so we need, when adding a friend, to add it to BOTH of the users' lists
-        public virtual ICollection<User> Friends { get; } = [];
+        public virtual List<User> Friends { get; } = [];
         //TODO PLEASE MAKE DTO OF USER
 
 

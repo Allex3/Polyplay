@@ -32,7 +32,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Concur
             }
             string webSocketId = Guid.NewGuid().ToString(); // global ID for this websocket connection
 
-            wsConnections.TryAdd(webSocketId, webSocket); // to broadcast later
+            _wsConnections.TryAdd(webSocketId, webSocket); // to broadcast later
 
             await StartGeneralChatForUser(webSocket, webSocketId);
 
@@ -51,10 +51,9 @@ public class GeneralChatController(GeneralChatService generalChatService, Concur
 
         do
         {
-
             // this while just runs and waits to receive messages, then broadcasts them to the other clients
 
-            GeneralChatMessage receivedMessage = await WsUtilities.ReadJsonAsync<GeneralChatMessage>(webSocket, ct);
+            GeneralChatMessageDTO receivedMessage = await WsUtilities.ReadJsonAsync<GeneralChatMessageDTO>(webSocket, ct);
             if (receivedMessage == null)
             {
                 if (webSocket.State != WebSocketState.Open)
@@ -64,8 +63,9 @@ public class GeneralChatController(GeneralChatService generalChatService, Concur
 
                 continue; // act as if message doesn't exist
             }
+            
 
-            await _generalChatService.CreateAsync(receivedMessage);
+            await _generalChatService.CreateAsync(new GeneralChatMessage {Message=receivedMessage.Message, UserId=receivedMessage.UserId});
 
             foreach (var connection in _wsConnections) // not working broadcast
             {
@@ -74,7 +74,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Concur
                     continue;
                 }
 
-                await WsUtilities.SendJsonAsync<GeneralChatMessage>(connection.Value, receivedMessage, ct);
+                await WsUtilities.SendJsonAsync<GeneralChatMessageDTO>(connection.Value, receivedMessage, ct);
             }
         } while (!ct.IsCancellationRequested);
 

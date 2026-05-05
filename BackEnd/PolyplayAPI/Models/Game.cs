@@ -19,8 +19,8 @@ namespace PolyplayAPI.Models
         public string? Developer { get; set; }
 
         public bool IsPublished { get; set; } = false;
-        public ICollection<GameComment> GameComments { get; } = new List<GameComment>();
-        public virtual ICollection<User> UsersWhoFavorited { get; set; } = []; // many to many basic relationship from User to Games
+        public List<GameComment> GameComments { get; } = new List<GameComment>();
+        public virtual List<User> UsersWhoFavorited { get; set; } = []; // many to many basic relationship from User to Games
 
     }
 }
