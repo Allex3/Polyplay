@@ -124,3 +124,17 @@ GET {{PolyplayAPI_HostAddress}}/api/games?pageSize=12&pageNumber=1
 GET {{PolyplayAPI_HostAddress}}/api/gamecomments?gameId=3
 
 ###
+
+POST {{PolyplayAPI_HostAddress}}/api/generalchat
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "message": "hmm message 3 first posted"
+}
+
+###
+
+GET {{PolyplayAPI_HostAddress}}/api/generalchat
+
+###

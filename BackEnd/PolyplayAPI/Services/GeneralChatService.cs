@@ -29,11 +29,11 @@ public class GeneralChatService
     public async Task<GeneralChatMessage?> GetAsync(string id) =>
         await _generalChatCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-    public async Task CreateAsync(GeneralChatMessage newBook) =>
-        await _generalChatCollection.InsertOneAsync(newBook);
+    public async Task CreateAsync(GeneralChatMessage newMessage) =>
+        await _generalChatCollection.InsertOneAsync(newMessage);
 
-    public async Task UpdateAsync(string id, GeneralChatMessage updatedBook) =>
-        await _generalChatCollection.ReplaceOneAsync(x => x.Id == id, updatedBook);
+    public async Task UpdateAsync(string id, GeneralChatMessage updatedMessage) =>
+        await _generalChatCollection.ReplaceOneAsync(x => x.Id == id, updatedMessage);
 
     public async Task RemoveAsync(string id) =>
         await _generalChatCollection.DeleteOneAsync(x => x.Id == id);
