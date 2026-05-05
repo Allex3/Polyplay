@@ -45,6 +45,10 @@ const routes = [
     path: '/stats',
     component: () => import('../pages/Statistics/Statistics.vue'),
   },
+  {
+    path: '/general',
+    component: () => import('../pages/Chat/GeneralChat.vue'),
+  },
 ]
 
 const router = createRouter({

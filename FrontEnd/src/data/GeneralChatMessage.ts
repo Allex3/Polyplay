@@ -1,5 +1,5 @@
 export type GeneralChatMessage = {
-  id: number
+  id: string // string Id because... mongodb
   userId: number
   message: string
 }
@@ -8,7 +8,7 @@ export function createGeneralChatMessage(
   data: Partial<GeneralChatMessage> = {},
 ): GeneralChatMessage {
   return {
-    id: data.id ?? -1,
+    id: data.id ?? '',
     userId: data.userId ?? -1,
     message: data.message ?? '',
   }

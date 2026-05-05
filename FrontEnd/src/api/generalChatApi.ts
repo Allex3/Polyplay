@@ -2,7 +2,7 @@ import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
 import type { GeneralChatMessage } from '@/data/GeneralChatMessage'
 
-class GamesApi {
+class GeneralChatApi {
   baseURL: string
   generalChatWebSocket: undefined | WebSocket
 
@@ -34,7 +34,7 @@ class GamesApi {
 
       const result = await response.json()
 
-      return { success: true, gamesData: result }
+      return { success: true, chatData: result }
     } catch (error) {
       // actual connection down or user offline
       cacheRequest(fetchData)
@@ -45,18 +45,21 @@ class GamesApi {
     }
   }
 
-  public async getGames(pageNumber: number, pageSize: number = 12) {
+  public async getMessages() {
     // 12 by default
-    const response = await this.callApi(
-      'GET',
-      `/api/games?pageNumber=${pageNumber}&pageSize=${pageSize}`,
-    )
-    if (response.gamesData == undefined) return { games: [], totalGames: 0 } // request didn't work
-    return { games: response.gamesData.data, totalGames: response.gamesData.totalRecords }
+    const response = await this.callApi('GET', `/api/generalChat`)
+    if (response.chatData == undefined) return { messages: [] } // request didn't work
+    return { messages: response.chatData }
+  }
+
+  public async sendMessage(message: GeneralChatMessage) {
+    const messageWithoutId: object = (({ id, ...restOfMessage }) => restOfMessage)(message)
+    console.log(messageWithoutId)
+    this.generalChatWebSocket?.send(JSON.stringify(messageWithoutId))
   }
 
   public startChatConnection(updateView: Function) {
-    this.generalChatWebSocket = new WebSocket(this.baseURL + '/ws/startTestGames')
+    this.generalChatWebSocket = new WebSocket(this.baseURL + '/ws/generalChat')
 
     this.generalChatWebSocket.onopen = function () {
       console.log('Connected to general chat')
@@ -64,6 +67,7 @@ class GamesApi {
     this.generalChatWebSocket.onmessage = async function (event) {
       // received a message (broadcasted to all)
       const message: GeneralChatMessage = JSON.parse(event.data)
+      console.log(message)
       await updateView(message) // update view with new message
     }
     this.generalChatWebSocket.onclose = function () {
@@ -76,6 +80,6 @@ class GamesApi {
   }
 }
 
-const gamesApi = new GamesApi()
-export { gamesApi as default, type GamesApi }
+const generalChatApi = new GeneralChatApi()
+export { generalChatApi as default, type GeneralChatApi }
 // NOTE: default export means that you can export that using any name, like import {games} from ..
