@@ -8,7 +8,7 @@ export function cacheRequest(fetchData: { URL: string; options: any }) {
   localStorage.setItem('cachedApiRequests', JSON.stringify(cachedRequests))
 }
 
-const url = 'https://localhost:7114/api/games'
+const url = 'https://172.30.248.197:5001/api/games'
 
 async function connectionEstablished(): Promise<boolean> {
   try {

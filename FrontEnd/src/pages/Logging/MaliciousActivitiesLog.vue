@@ -1,18 +1,24 @@
 <script setup lang="ts">
 import apiService from '@/api/apiService'
 import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
+import { useUserRoles } from '@/composables/useUserRoles'
+import type { MaliciousActivity } from '@/data/MaliciousActivity'
 import { type UserActivity } from '@/data/UserActivity'
 import { useUserStore } from '@/stores/userStore'
-import { onMounted, ref } from 'vue'
+import { onBeforeMount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const { isUserLoggedIn } = useShowProfileAndHideLogin()
 
-const userActivitiesLog = ref<UserActivity[]>(await apiService.userActivity.getUserActivities())
+const maliciousActivitiesLog = ref<MaliciousActivity[]>(
+  await apiService.maliciousActivity.getMaliciousActivities(),
+)
 
-onMounted(() => {
-  if (!isUserLoggedIn.value) {
+const { isUserAdmin } = useUserRoles()
+
+onBeforeMount(() => {
+  if (!isUserLoggedIn.value || !isUserAdmin) {
     router.push('/login')
   }
 })
@@ -29,16 +35,13 @@ onMounted(() => {
       <div>Extra Info</div>
       <div>IP</div>
     </div>
-    <div v-for="userAcitivity in userActivitiesLog">
+    <div v-for="maliciousAcitivity in maliciousActivitiesLog">
       <div class="flex flex-row gap-22 comic-neue items-center w-full text-center justify-center">
-        <div>{{ userAcitivity.id }}</div>
-        <div>{{ userAcitivity.user?.username }}</div>
-        <div class="w-100">{{ userAcitivity.activityType?.info }}</div>
-        <div class="w-100">
-          {{ new Date(userAcitivity.activityTimestamp).toLocaleString() }}
-        </div>
-        <div>{{ userAcitivity.additionalInfo }}</div>
-        <div>{{ userAcitivity.ipAddress }}</div>
+        <div>{{ maliciousAcitivity.id }}</div>
+        <div>{{ maliciousAcitivity.user?.username }}</div>
+        <div class="w-100">{{ maliciousAcitivity.activityType?.info }}</div>
+        <div>{{ maliciousAcitivity.info }}</div>
+        <div>{{ maliciousAcitivity.ipAddress }}</div>
       </div>
     </div>
   </div>

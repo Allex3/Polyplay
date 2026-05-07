@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PolyplayAPI.Models;
 
@@ -11,9 +12,11 @@ using PolyplayAPI.Models;
 namespace PolyplayAPI.Migrations
 {
     [DbContext(typeof(PolyplayDbContext))]
-    partial class PolyplayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260507105232_AddedMaliciousActivityLog")]
+    partial class AddedMaliciousActivityLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

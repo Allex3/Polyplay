@@ -11,9 +11,10 @@ namespace PolyplayAPI.Controllers.Chat;
 
 [ApiController]
 [Route("api/[controller]")]
-public class GeneralChatController(GeneralChatService generalChatService, ConcurrentDictionary<string, WebSocket> wsConnections) : ControllerBase
+public class GeneralChatController(GeneralChatService generalChatService, PolyplayDbContext dbContext, ConcurrentDictionary<string, WebSocket> wsConnections) : ControllerBase
 {
     private readonly GeneralChatService _generalChatService = generalChatService;
+    private readonly PolyplayDbContext _dbContext = dbContext;
     private readonly ConcurrentDictionary<string, WebSocket> _wsConnections = wsConnections;
 
     [Route("~/ws/generalChat")] // ~ overrides default routing, so
@@ -88,7 +89,19 @@ public class GeneralChatController(GeneralChatService generalChatService, Concur
     }
 
     [HttpGet]
-    public async Task<List<GeneralChatMessage>> Get() => await _generalChatService.GetAsync();
+    public async Task<List<GeneralChatMessageDTO>> Get()
+    {
+        var messages = await _generalChatService.GetAsync();
+        List<GeneralChatMessageDTO> realMessages = [];
+        messages.ForEach(message => realMessages.Add(new GeneralChatMessageDTO
+        {
+            Message = message.Message, 
+            UserId = message.UserId,
+            Username = _dbContext.Users.Find(message.UserId)?.Username!
+        }));
+
+        return realMessages;
+    }
 
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<GeneralChatMessage>> Get(string id)

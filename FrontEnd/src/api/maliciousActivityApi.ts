@@ -1,12 +1,10 @@
 import type { GameComment } from '@/data/GameComment'
 import { cacheRequest } from './offlineApiSupport'
+import type { UserActivity } from '@/data/UserActivity'
+import type { MaliciousActivity } from '@/data/MaliciousActivity'
 
-class GameCommentsApi {
-  generateGamesWebSocket: undefined | WebSocket
-
-  constructor() {
-    this.generateGamesWebSocket = undefined
-  }
+class MaliciousActivityApi {
+  constructor() {}
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
     const fetchData: { URL: string; options: any } = {
@@ -31,7 +29,7 @@ class GameCommentsApi {
 
       const result = await response.json()
 
-      return { success: true, gameCommentsData: result }
+      return { success: true, maliciousActivitiesData: result }
     } catch (error) {
       // actual connection down or user offline
       cacheRequest(fetchData)
@@ -42,29 +40,20 @@ class GameCommentsApi {
     }
   }
 
-  public async getGameComments(gameId: number) {
-    // 12 by default
-    const response = await this.callApi('GET', `/api/GameComments?gameId=${gameId}`)
-    return response.gameCommentsData // list, already parsed from JSON
+  public async getMaliciousActivities() {
+    const response = await this.callApi('GET', `/api/MaliciousActivities`)
+    return response.maliciousActivitiesData // list, already parsed from JSON
   }
 
-  public postGameComment(gameComment: GameComment) {
-    const gameCommentWithoutID: object = (({ id, ...restOfGameComment }) => restOfGameComment)(
-      gameComment,
-    )
-    return this.callApi('POST', '/api/gameComments', { body: JSON.stringify(gameCommentWithoutID) })
-  }
-
-  public putGameComment(gameComment: GameComment) {
-    return this.callApi('PUT', `/api/gameComments/${gameComment.id}`, {
-      body: JSON.stringify(gameComment),
+  public postMaliciousActivity(maliciousActivity: MaliciousActivity) {
+    const maliciousActivityWithoutId: object = (({ id, ...restOfMaliciousActivity }) =>
+      restOfMaliciousActivity)(maliciousActivity)
+    return this.callApi('POST', `/api/MaliciousActivities`, {
+      body: JSON.stringify(maliciousActivityWithoutId),
     })
-  }
-  public deleteGameComment(id: number) {
-    return this.callApi('DELETE', `/api/gameComments/${id}`)
   }
 }
 
-const gameCommentsApi = new GameCommentsApi()
-export { gameCommentsApi as default, type GameCommentsApi }
+const maliciousActivityApi = new MaliciousActivityApi()
+export { maliciousActivityApi as default, type MaliciousActivityApi }
 // NOTE: default export means that you can export that using any name, like import {games} from ..

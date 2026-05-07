@@ -20,6 +20,8 @@ public class PolyplayDbContext(DbContextOptions<PolyplayDbContext> options) : Db
 
     public DbSet<Role> Roles { get; set; } = null!;
 
+    public DbSet<MaliciousActivity> MaliciousActivityLog { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // to map self-referencing many-to-many relationship

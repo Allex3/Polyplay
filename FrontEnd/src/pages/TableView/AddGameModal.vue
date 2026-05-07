@@ -4,6 +4,7 @@ import { useAddGameModal } from '@/composables/useAddGameModal'
 import { createGame, type Game } from '@/data/Game'
 import { useUserStore } from '@/stores/userStore'
 import apiService from '@/api/apiService'
+import { createUserActivity, USER_ACTIVITIES } from '@/data/UserActivity'
 
 const { isAddGameModalOpen, closeAddGameModal } = useAddGameModal()
 
@@ -55,6 +56,10 @@ async function sendInputAndClose(): Promise<void> {
     gameFromForm.mainTag = ''
 
     addGameButton.disabled = false
+
+    apiService.userActivity.postUserActivity(
+      createUserActivity({ userId: userStore.user.id, activityTypeId: USER_ACTIVITIES.POST_GAME }),
+    )
     return
   }
 

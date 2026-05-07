@@ -50,8 +50,8 @@ const routes = [
     component: () => import('../pages/Chat/GeneralChat.vue'),
   },
   {
-    path: '/userActivity',
-    component: () => import('../pages/Logging/UserActivitiesLog.vue'),
+    path: '/adminLog',
+    component: () => import('../pages/Logging/AdminLogView.vue'),
   },
 ]
 

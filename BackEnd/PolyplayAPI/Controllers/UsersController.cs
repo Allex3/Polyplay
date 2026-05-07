@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
+using PolyplayAPI.Models.Auth;
 
 namespace PolyplayAPI.Controllers
 {
@@ -99,6 +100,15 @@ namespace PolyplayAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        }
+
+        [HttpGet("{id}/roles")]
+        public async Task<ActionResult<IEnumerable<long>>> GetUserRoles(long id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            var roles = await _context.UsersRoles.AsQueryable().Where(ur => ur.UserId == id).Select(ur => ur.RoleId).ToListAsync();
+
+            return roles;
         }
 
         // DELETE: api/Users/5

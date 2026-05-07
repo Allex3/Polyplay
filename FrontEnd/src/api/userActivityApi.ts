@@ -3,15 +3,13 @@ import { cacheRequest } from './offlineApiSupport'
 import type { UserActivity } from '@/data/UserActivity'
 
 class UserActivityApi {
-  baseURL: string
 
   constructor() {
-    this.baseURL = 'https://localhost:7114'
   }
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
     const fetchData: { URL: string; options: any } = {
-      URL: this.baseURL + endpoint,
+      URL: endpoint,
       options: {
         method: method,
         mode: 'cors',

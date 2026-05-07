@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { useUserRoles } from '@/composables/useUserRoles'
 import type { GameComment } from '@/data/GameComment'
 import { useUserStore } from '@/stores/userStore'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   gameComment: GameComment
@@ -28,6 +29,10 @@ function editComment(): void {
 function deleteComment(): void {
   emit('deletedGame')
 }
+
+const { isUserAdmin } = useUserRoles()
+
+const isOwnerOrAdmin = computed(() => isUserAdmin || props.gameComment.userId == userStore.user.id)
 </script>
 
 <template>
@@ -50,7 +55,7 @@ function deleteComment(): void {
         {{ editButtonText }}
       </button>
       <button
-        v-show="gameComment.userId == userStore.user.id"
+        v-show="isOwnerOrAdmin"
         @click="deleteComment"
         class="text-left w-fit comic-neue-bold p-0.5 hover:cursor-pointer text-[#905a88] hover:text-[#6e4467] active:text-[#563550]"
       >

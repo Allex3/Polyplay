@@ -6,6 +6,7 @@ import { type Game, createGame } from '@/data/Game'
 import { type User } from '@/data/User'
 import apiService from '@/api/apiService'
 import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
+import { createUserActivity, USER_ACTIVITIES } from '@/data/UserActivity'
 
 const userStore = useUserStore()
 
@@ -32,7 +33,11 @@ async function sendInputAndClose() {
   //TODO later make actual tags
   currentlySaving.value = true
   const response = await apiService.games.putGame(currentGame.value)
-  validateInput(response, 'Saved Successfully')
+  if (validateInput(response, 'Saved Successfully')) {
+    apiService.userActivity.postUserActivity(
+      createUserActivity({ userId: userStore.user.id, activityTypeId: USER_ACTIVITIES.PUT_GAME }),
+    )
+  }
   currentlySaving.value = false
 }
 </script>

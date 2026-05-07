@@ -3,15 +3,11 @@ import { cacheRequest } from './offlineApiSupport'
 import type { User } from '@/data/User'
 
 class UsersApi {
-  baseURL: string
-
-  constructor() {
-    this.baseURL = 'https://localhost:7114' //TODO NO
-  }
+  constructor() {}
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
     const fetchData: { URL: string; options: any } = {
-      URL: this.baseURL + endpoint,
+      URL: endpoint,
       options: {
         method: method,
         mode: 'cors',
@@ -54,6 +50,10 @@ class UsersApi {
   public postUser(user: User) {
     const userWithoutID: object = (({ id, ...restOfUser }) => restOfUser)(user)
     return this.callApi('POST', '/api/users', { body: JSON.stringify(userWithoutID) })
+  }
+
+  public getUserRole(id: number) {
+    return this.callApi('GET', `/api/users/${id}/roles`)
   }
 }
 

@@ -15,4 +15,21 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://172.30.248.197:5000',
+        changeOrigin: true,
+        secure: true,
+      },
+      '/ws': {
+        target: 'http://172.30.248.197:5000',
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
 })

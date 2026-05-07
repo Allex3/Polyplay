@@ -5,6 +5,7 @@ import { createGameComment, type GameComment as GameCom } from '@/data/GameComme
 import GameComment from './GameComment.vue'
 import GameCommentPost from './GameCommentPost.vue'
 import { useUserStore } from '@/stores/userStore'
+import { createUserActivity, USER_ACTIVITIES } from '@/data/UserActivity'
 
 const userStore = useUserStore()
 
@@ -29,6 +30,12 @@ async function updateComments() {
 
 async function deleteGame(gameCommentId: number) {
   apiService.gamesComments.deleteGameComment(gameCommentId)
+  apiService.userActivity.postUserActivity(
+    createUserActivity({
+      userId: userStore.user.id,
+      activityTypeId: USER_ACTIVITIES.DELETE_GAME_COMMENT,
+    }),
+  )
   setTimeout(updateComments, 200) // wait 200ms so that the list updates
 }
 </script>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import apiService from '@/api/apiService'
 import { createGame, type Game } from '@/data/Game'
+import { createUserActivity, USER_ACTIVITIES } from '@/data/UserActivity'
+import { useUserStore } from '@/stores/userStore'
 import { onBeforeMount, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -16,6 +18,12 @@ const currentGame: Game = props.game
 
 function deleteGame(): void {
   apiService.games.deleteGame(currentGame.id)
+  apiService.userActivity.postUserActivity(
+    createUserActivity({
+      userId: useUserStore().user.id,
+      activityTypeId: USER_ACTIVITIES.DELETE_GAME,
+    }),
+  )
   emit('deletedGame')
 }
 

@@ -8,6 +8,7 @@ export type User = {
   following: string[]
   followers: string[]
   pronouns: string
+  roles: number[]
 }
 
 export function createUser(data: Partial<User> = {}): User {
@@ -21,5 +22,6 @@ export function createUser(data: Partial<User> = {}): User {
     following: data.following ?? [],
     followers: data.followers ?? [],
     pronouns: data.pronouns ?? 'they/them',
+    roles: data.roles ?? [1], // just user
   }
 }

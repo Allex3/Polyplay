@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { Suspense } from 'vue'
 import { useShowProfileAndHideLogin } from './composables/useShowProfileAndHideLogin'
+import { useUserRoles } from './composables/useUserRoles'
 
 const { isUserLoggedIn } = useShowProfileAndHideLogin()
+
+const { isUserAdmin } = useUserRoles()
 </script>
 <template>
   <div
@@ -18,7 +21,9 @@ const { isUserLoggedIn } = useShowProfileAndHideLogin()
       <router-link to="/games" class="hover_scale single_link">Games</router-link>
       <router-link to="/user/table" class="hover_scale single_link">Dashboard</router-link>
       <router-link to="/stats" class="hover_scale single_link">Statistics</router-link>
-      <router-link to="/userActivity" class="hover_scale single_link">User Log</router-link>
+      <router-link v-show="isUserAdmin" to="/userActivity" class="hover_scale single_link"
+        >User Log</router-link
+      >
       <router-link to="/general" class="hover_scale single_link">General</router-link>
     </div>
     <div class="flex flex-row justify-end gap-8 flex-1 mr-8">

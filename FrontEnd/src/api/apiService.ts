@@ -8,6 +8,8 @@ import type { GeneralChatApi } from './generalChatApi.ts'
 import generalChatApi from './generalChatApi.ts'
 import type { UserActivityApi } from './userActivityApi.ts'
 import userActivityApi from './userActivityApi.ts'
+import type { MaliciousActivityApi } from './maliciousActivityApi.ts'
+import maliciousActivityApi from './maliciousActivityApi.ts'
 
 class APIService {
   games: GamesApi
@@ -15,12 +17,14 @@ class APIService {
   users: UsersApi
   generalChat: GeneralChatApi
   userActivity: UserActivityApi
+  maliciousActivity: MaliciousActivityApi
   constructor() {
     this.games = gamesApi
     this.gamesComments = gameCommentsApi
     this.users = usersApi
     this.generalChat = generalChatApi
     this.userActivity = userActivityApi
+    this.maliciousActivity = maliciousActivityApi
   }
 }
 

@@ -7,8 +7,9 @@ namespace PolyplayAPI.Models.Chats
     {
         [JsonPropertyName("userId")]
         public long UserId { get; set; }
-        [JsonPropertyName("message")]
 
-        public string Message { get; set; } = null!;
+         [JsonPropertyName("username")] public string Username { get; set; } = null!;
+
+         [JsonPropertyName("message")]  public string Message { get; set; } = null!;
     }
 }

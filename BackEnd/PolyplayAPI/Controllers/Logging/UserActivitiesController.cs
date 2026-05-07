@@ -25,7 +25,28 @@ namespace PolyplayAPI.Controllers.Logging
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserActivity>>> GetUserActivityLog()
         {
-            return await _context.UserActivityLog.ToListAsync();
+            // TODO MAKE THIS MORE EFFICIENT CUZ WTF
+            var userActivities = await _context.UserActivityLog.ToListAsync();
+            userActivities.ForEach(ua => ua.User = _context.Users.Find(ua.UserId));
+            userActivities.ForEach(ua => ua.ActivityType = _context.ActivityTypes.Find(ua.ActivityTypeId));
+
+            return userActivities;
+        }
+
+        [HttpGet("malicious")]
+        public async Task<ActionResult<IEnumerable<UserActivity>>> GetUserActivityLogMalicious()
+        {
+            /*
+            // TODO MAKE THIS MORE EFFICIENT CUZ WTF
+            var userActivities = await _context.UserActivityLog.AsQueryable().Where(ua => ua.ActivityTypeId == 5)
+                .Where(ua => (DateTime.Now - ua.ActivityTimestamp).Value.TotalMinutes < 2);
+
+            userActivities.ForEach(ua => ua.User = _context.Users.Find(ua.UserId));
+            userActivities.ForEach(ua => ua.ActivityType = _context.ActivityTypes.Find(ua.ActivityTypeId));
+
+            return userActivities;
+            */
+            return null;
         }
 
         // GET: api/UserActivities/5
@@ -35,8 +56,9 @@ namespace PolyplayAPI.Controllers.Logging
             var userActivity = await _context.UserActivityLog.FindAsync(id);
             userActivity?.ActivityType = await _context.ActivityTypes.FindAsync(userActivity.ActivityTypeId) ?? new ActivityType
             {
-                Id = 0, Info = "Mysterious Activity"
+                Id = 0, Info = "M Activity"
             };
+            userActivity?.User = await _context.Users.FindAsync(userActivity.UserId);
 
             if (userActivity == null)
             {

@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router'
 import { createUser } from '@/data/User'
 import apiService from '@/api/apiService'
 import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
+import { createUserActivity, USER_ACTIVITIES } from '@/data/UserActivity'
 
 const userStore = useUserStore()
 
@@ -37,6 +38,9 @@ async function login() {
 
   userStore.user = apiResponse.user
 
+  userStore.user.roles = (await apiService.users.getUserRole(userStore.user.id)).usersData // array of roles
+
+  console.log(userStore.user.roles)
   logIn()
 
   currentlyLoggingIn.value = false

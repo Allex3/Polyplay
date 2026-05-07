@@ -3,17 +3,15 @@ import { cacheRequest } from './offlineApiSupport'
 import type { GeneralChatMessage } from '@/data/GeneralChatMessage'
 
 class GeneralChatApi {
-  baseURL: string
   generalChatWebSocket: undefined | WebSocket
 
   constructor() {
-    this.baseURL = 'https://localhost:7114'
     this.generalChatWebSocket = undefined
   }
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
     const fetchData: { URL: string; options: any } = {
-      URL: this.baseURL + endpoint,
+      URL: endpoint,
       options: {
         method: method,
         mode: 'cors',
@@ -59,7 +57,7 @@ class GeneralChatApi {
   }
 
   public startChatConnection(updateView: Function) {
-    this.generalChatWebSocket = new WebSocket(this.baseURL + '/ws/generalChat')
+    this.generalChatWebSocket = new WebSocket('/ws/generalChat')
 
     this.generalChatWebSocket.onopen = function () {
       console.log('Connected to general chat')

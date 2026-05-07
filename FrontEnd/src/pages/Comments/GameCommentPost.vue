@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import apiService from '@/api/apiService'
 import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
+import { createUserActivity, USER_ACTIVITIES } from '@/data/UserActivity'
 
 const { validateInput, errorText, isPostedSuccessfully, isInvalidFormat, successText } =
   usePostPutApiCallWithErrors()
@@ -25,12 +26,24 @@ async function postComment() {
   let apiResponse = await apiService.gamesComments.postGameComment(currentComment.value)
   if (validateInput(apiResponse, 'Posted successfully :3')) {
     currentComment.value.body = '' // empty it if it posted
+    apiService.userActivity.postUserActivity(
+      createUserActivity({
+        userId: useUserStore().user.id,
+        activityTypeId: USER_ACTIVITIES.POST_GAME_COMMENT,
+      }),
+    )
     emit('postedComment')
   }
 }
 async function editComment() {
   let apiResponse = await apiService.gamesComments.putGameComment(currentComment.value)
   if (validateInput(apiResponse, 'Edited successfully :3')) {
+    apiService.userActivity.postUserActivity(
+      createUserActivity({
+        userId: useUserStore().user.id,
+        activityTypeId: USER_ACTIVITIES.PUT_GAME_COMMENT,
+      }),
+    )
     emit('postedComment')
   }
 }
