@@ -16,14 +16,18 @@ const { isUserLoggedIn } = useShowProfileAndHideLogin()
     >
       <router-link to="/" class="hover_scale single_link">Home</router-link>
       <router-link to="/games" class="hover_scale single_link">Games</router-link>
-      <router-link v-show="!isUserLoggedIn" to="/Register" class="hover_scale single_link"
-        >Register</router-link
-      >
+      <router-link to="/user/table" class="hover_scale single_link">Dashboard</router-link>
+      <router-link to="/stats" class="hover_scale single_link">Statistics</router-link>
+      <router-link to="/userActivity" class="hover_scale single_link">User Log</router-link>
+      <router-link to="/general" class="hover_scale single_link">General</router-link>
+    </div>
+    <div class="flex flex-row justify-end gap-8 flex-1 mr-8">
       <router-link v-show="!isUserLoggedIn" to="/Login" class="hover_scale single_link"
         >Login</router-link
       >
-      <router-link to="/user/table" class="hover_scale single_link">Dashboard</router-link>
-      <router-link to="/stats" class="hover_scale single_link">Statistics</router-link>
+      <router-link v-show="!isUserLoggedIn" to="/Register" class="hover_scale single_link"
+        >Register</router-link
+      >
     </div>
   </div>
   <suspense>

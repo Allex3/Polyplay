@@ -1,10 +1,14 @@
+import type { User } from './User'
+
 export type ActivityType = {
   id: number
-  name: string
+  info: string
 }
 
 export type UserActivity = {
   id: number
+  user: User
+  activityType: ActivityType
   userId: number
   activityTypeId: number
   activityTimestamp: Date

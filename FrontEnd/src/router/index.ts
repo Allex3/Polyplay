@@ -49,6 +49,10 @@ const routes = [
     path: '/general',
     component: () => import('../pages/Chat/GeneralChat.vue'),
   },
+  {
+    path: '/userActivity',
+    component: () => import('../pages/Logging/UserActivitiesLog.vue'),
+  },
 ]
 
 const router = createRouter({

@@ -32,29 +32,29 @@ onUnmounted(() => {
 })
 </script>
 <template>
-  <div class="retro-window w-2/3 h-2/3 m-auto p-4">
-    <div class="overflow-y-scroll flex flex-col gap-2">
+  <div class="retro-window w-2/3 h-135 m-auto p-4">
+    <div class="overflow-y-scroll h-115 flex flex-col gap-2">
       <div class="flex flex-row gap-2 wrap-break-word" v-for="message in messages">
         <span>{{ message.userId }}:</span>
         <span>{{ message.message }}</span>
       </div>
-      <div v-show="isUserLoggedIn" class="flex flex-col items-center">
-        <form @submit.prevent="postMessage" class="flex flex-row w-full">
-          <input
-            type="textarea"
-            v-model="messageToSend.message"
-            name="messageInput"
-            placeholder="Message"
-            class="comic-neue flex-1 resize-none overflow-hidden wrap-break-word border-2 p-2 bg-[#bfedef]"
-          />
-          <input
-            type="submit"
-            name="sendMessageInput"
-            class="p-2 comic-neue-bold border-2 border-l-0 bg-[#f4b5ea] hover:cursor-pointer hover:bg-[#e4a6d9]"
-            value="Send"
-          />
-        </form>
-      </div>
+    </div>
+    <div v-show="isUserLoggedIn" class="flex flex-col items-center">
+      <form @submit.prevent="postMessage" class="flex flex-row w-full">
+        <input
+          type="textarea"
+          v-model="messageToSend.message"
+          name="messageInput"
+          placeholder="Message"
+          class="comic-neue flex-1 resize-none overflow-hidden wrap-break-word border-2 p-2 bg-[#bfedef]"
+        />
+        <input
+          type="submit"
+          name="sendMessageInput"
+          class="p-2 comic-neue-bold border-2 border-l-0 bg-[#f4b5ea] hover:cursor-pointer hover:bg-[#e4a6d9]"
+          value="Send"
+        />
+      </form>
     </div>
   </div>
 </template>
