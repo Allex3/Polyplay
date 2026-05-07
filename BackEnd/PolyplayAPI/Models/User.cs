@@ -22,8 +22,6 @@ namespace PolyplayAPI.Models
         [StringLength(250)]
         public required string Email { get; set; }
         public List<GameComment> GameComments { get; } = new List<GameComment>();
-
-        public List<Role> Roles { get; } = [];
         public virtual List<Game> FavoriteGames { get; set; } = []; // many to many basic relationship from User to Games
 
         // symmetrical self-referencing many to many relationship require 1 list, not 2

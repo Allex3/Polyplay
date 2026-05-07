@@ -16,7 +16,7 @@ namespace PolyplayAPI
             var gameId = 1;
             TestGames = new Faker<Game>()
                 .StrictMode(true)
-                .RuleFor(game => game.Id, f => gameId++)
+                .RuleFor(game => game.Id,  f=> 0)
                 .RuleFor(game => game.Name, f => f.Name.JobTitle())
                 .RuleFor(game => game.PostedDate, f => f.Date.Past(1))
                 .RuleFor(game => game.MainTag, f => f.PickRandom(tags))
@@ -24,7 +24,8 @@ namespace PolyplayAPI
                 .RuleFor(game => game.Rating, f => f.Random.Float() * 5)
                 .RuleFor(game => game.Developer, f => f.PickRandom(usernames))
                 .RuleFor(game => game.IsPublished, f => f.Random.Bool())
-                .RuleFor(game => game.ThumbnailPath, f => "../../assets/logo.png");
+                .RuleFor(game => game.ThumbnailPath, f => "../../assets/logo.png")
+                .RuleFor(game => game.UsersWhoFavorited, f => null);
         }
 
         public List<Game> GenerateGames(int noGames)

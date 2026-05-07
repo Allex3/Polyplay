@@ -6,10 +6,7 @@ namespace PolyplayAPI.Models.Auth
     {
         [Key]
         public long Id { get; set; }
-
         public string Feature { get; set; } = null!;
         public string Action { get; set; } = null!;
-
-        public List<Role> Roles { get; } = [];
     }
 }

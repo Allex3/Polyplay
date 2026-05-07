@@ -33,33 +33,12 @@ const MAX_GAMES_ON_PAGE = 20
 await updateData()
 
 async function updateData(): Promise<any> {
-  chartDataLabels = []
+  let gamesMainTagStats = (await apiService.games.getTagStats()).gamesData
+
+  chartDataLabels = gamesMainTagStats.labels
   chartDataDatasets = [{}]
-  chartDataDatasets[0].data = []
+  chartDataDatasets[0].data = gamesMainTagStats.mainTagCount
 
-  let games: [] = [] // empty array now
-  let pageNumber: number = 1
-  let currentPageGames = (await apiService.games.getGames(1, MAX_GAMES_ON_PAGE)).games
-  while (currentPageGames.length > 0) {
-    // run this while there are games in the API, to get them all
-    games.push.apply(games, currentPageGames)
-    pageNumber++
-    currentPageGames = (await apiService.games.getGames(pageNumber, MAX_GAMES_ON_PAGE)).games
-  }
-
-  games.forEach((game: Game) => {
-    let currentTag = game.mainTag ?? 'No Tag'
-    if (!chartDataLabels.includes(currentTag)) // new tag
-    {
-      chartDataLabels.push(currentTag) // push the new tag
-      chartDataDatasets[0].data.push(1) // push the new tag at the end
-      return
-    }
-
-    // for each game also see what tag it is to add to that specific dataset position
-    let currentTagIndex = chartDataLabels.findIndex((tag) => tag === currentTag)
-    chartDataDatasets[0].data[currentTagIndex] += 1 // one more game
-  })
   chartDataDatasets[0].label = 'Game Tags'
   chartDataDatasets[0].backgroundColor = '#f4b5ea'
 

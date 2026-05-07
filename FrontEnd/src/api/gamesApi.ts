@@ -85,6 +85,10 @@ class GamesApi {
   public stopGeneratingTestGames() {
     this.generateGamesWebSocket?.close() // close connection
   }
+
+  public getTagStats() {
+    return this.callApi('GET', '/api/games/stats')
+  }
 }
 
 const gamesApi = new GamesApi()

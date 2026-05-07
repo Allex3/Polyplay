@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PolyplayAPI.Models;
 
@@ -11,9 +12,11 @@ using PolyplayAPI.Models;
 namespace PolyplayAPI.Migrations
 {
     [DbContext(typeof(PolyplayDbContext))]
-    partial class PolyplayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260507033641_AddUserActivityLog")]
+    partial class AddUserActivityLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,6 +204,9 @@ namespace PolyplayAPI.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ActivityId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("ActivityTimestamp")
                         .HasColumnType("datetime2");
