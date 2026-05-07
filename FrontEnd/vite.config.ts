@@ -23,12 +23,11 @@ export default defineConfig({
       '/api': {
         target: 'http://172.30.248.197:5000',
         changeOrigin: true,
-        secure: true,
       },
       '/ws': {
         target: 'http://172.30.248.197:5000',
         changeOrigin: true,
-        secure: true,
+        ws: true,
       },
     },
   },

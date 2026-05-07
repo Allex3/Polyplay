@@ -4,9 +4,15 @@ import type { GeneralChatMessage } from '@/data/GeneralChatMessage'
 
 class GeneralChatApi {
   generalChatWebSocket: undefined | WebSocket
+  typingIndicatorsWebSocket: undefined | WebSocket
+  typingTimeout: any
+  isTyping: boolean
 
   constructor() {
     this.generalChatWebSocket = undefined
+    this.typingIndicatorsWebSocket = undefined
+    this.isTyping = false
+    this.typingTimeout = null
   }
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
@@ -56,8 +62,11 @@ class GeneralChatApi {
     this.generalChatWebSocket?.send(JSON.stringify(messageWithoutId))
   }
 
-  public startChatConnection(updateView: Function) {
-    this.generalChatWebSocket = new WebSocket('/ws/generalChat')
+  public startChatConnection(updateView: Function, updateTypingIndicators: Function) {
+    this.generalChatWebSocket = new WebSocket('https://172.30.248.197:5001/ws/generalChat')
+    this.typingIndicatorsWebSocket = new WebSocket(
+      'https://172.30.248.197:5001/ws/generalChatTypingIndicators',
+    )
 
     this.generalChatWebSocket.onopen = function () {
       console.log('Connected to general chat')
@@ -71,10 +80,40 @@ class GeneralChatApi {
     this.generalChatWebSocket.onclose = function () {
       console.log('Disconnected from general chat')
     }
+
+    this.typingIndicatorsWebSocket.onmessage = async function (event) {
+      console.log(JSON.parse(event.data))
+      const count: number = JSON.parse(event.data).count
+      await updateTypingIndicators(count)
+    }
   }
 
   public stopChatConnection() {
     this.generalChatWebSocket?.close() // close connection
+  }
+
+  public handleKeypress() {
+    if (!this.isTyping) {
+      this.isTyping = true
+      this.typingIndicatorsWebSocket?.send(
+        JSON.stringify({
+          type: 'typing',
+          room: 'general',
+          active: true,
+        }),
+      )
+    }
+    clearTimeout(this.typingTimeout)
+    this.typingTimeout = setTimeout(() => {
+      this.isTyping = false
+      this.typingIndicatorsWebSocket?.send(
+        JSON.stringify({
+          type: 'typing',
+          room: 'general',
+          active: false,
+        }),
+      )
+    }, 4000)
   }
 }
 

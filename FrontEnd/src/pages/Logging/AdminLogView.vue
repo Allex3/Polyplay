@@ -4,6 +4,8 @@ import UserActivitiesLog from './UserActivitiesLog.vue'
 </script>
 
 <template>
-  <UserActivitiesLog />
-  <MaliciousActivitiesLog />
+  <div class="flex flex-col gap-10">
+    <UserActivitiesLog />
+    <MaliciousActivitiesLog />
+  </div>
 </template>

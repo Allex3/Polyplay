@@ -21,13 +21,12 @@ namespace PolyplayAPI.Controllers.Chat
                 {
 
                     ct.ThrowIfCancellationRequested();
+                    receivedResult = await ws.ReceiveAsync(buffer, ct);
                 }
                 catch (System.Net.WebSockets.WebSocketException e)
                 {
                     return default;
                 }
-
-                receivedResult = await ws.ReceiveAsync(buffer, ct);
 
                 ms.Write(buffer.Array, buffer.Offset, receivedResult.Count);
 
@@ -47,7 +46,7 @@ namespace PolyplayAPI.Controllers.Chat
 
         public static Task SendJsonAsync<T>(WebSocket ws, T data, CancellationToken ct = default)
         {
-            var buffer = System.Text.Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data));
+            var buffer = System.Text.Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data, options: new JsonSerializerOptions(JsonSerializerDefaults.Web)));
             var segment = new ArraySegment<byte>(buffer);
             return ws.SendAsync(segment, WebSocketMessageType.Text, true, ct);
         }

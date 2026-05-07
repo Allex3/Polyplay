@@ -21,7 +21,7 @@ const { isUserAdmin } = useUserRoles()
       <router-link to="/games" class="hover_scale single_link">Games</router-link>
       <router-link to="/user/table" class="hover_scale single_link">Dashboard</router-link>
       <router-link to="/stats" class="hover_scale single_link">Statistics</router-link>
-      <router-link v-show="isUserAdmin" to="/userActivity" class="hover_scale single_link"
+      <router-link v-show="isUserAdmin" to="/adminLog" class="hover_scale single_link"
         >User Log</router-link
       >
       <router-link to="/general" class="hover_scale single_link">General</router-link>

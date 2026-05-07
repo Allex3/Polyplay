@@ -31,8 +31,7 @@ onBeforeMount(() => {
       <div>Id</div>
       <div>Username</div>
       <div>Activity Type</div>
-      <div class="ml-10">Timestamp</div>
-      <div>Extra Info</div>
+      <div class="ml-10">Info</div>
       <div>IP</div>
     </div>
     <div v-for="maliciousAcitivity in maliciousActivitiesLog">

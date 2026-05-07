@@ -6,6 +6,7 @@ using PolyplayAPI.Models.Chats;
 using PolyplayAPI.Services;
 using System.Net.WebSockets;
 using System.Text;
+using PolyplayAPI.Models.Logging;
 
 namespace PolyplayAPI.Controllers.Chat;
 
@@ -44,11 +45,56 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
             HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest; // not websocket request
         }
     }
+
+    [Route("~/ws/generalChatTypingIndicators")] // ~ overrides default routing, so
+    // instead of api/games/ws/... it will be just /ws/startTestGames
+    public async Task EstablishGeneralChatTypingIndicatorsWs()
+    {   // HttpContext of the executing action
+        if (HttpContext.WebSockets.IsWebSocketRequest)
+        {
+            WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+
+            CancellationToken ct = HttpContext.RequestAborted;
+
+            if (ct.IsCancellationRequested)
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest; // idk
+            }
+
+            do
+            {
+                var typingIndicators = await WsUtilities.ReadJsonAsync<TypingIndicators>(webSocket, ct);
+
+                if (typingIndicators == null)
+                    continue;
+
+                if (typingIndicators.Active)
+                {
+                    WsUtilities.SendJsonAsync(webSocket, new UsersCount { Count = 1 });
+                }
+                else // remove user from typing
+                {
+                    WsUtilities.SendJsonAsync(webSocket, new UsersCount { Count = -1 });
+                }
+
+            } while (!ct.IsCancellationRequested);
+
+
+        }
+
+        else
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest; // not websocket request
+        }
+    }
     private async Task StartGeneralChatForUser(WebSocket webSocket, string webSocketId)
     {
         const int THIS_IS_NOT_A_MAGIC_NUMBER = 1024;
 
         CancellationToken ct = CancellationToken.None;
+
+        var lastTime = DateTime.Now;
+        int messagesSentInOneMinute = 0;
 
         do
         {
@@ -63,6 +109,29 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
                 }
 
                 continue; // act as if message doesn't exist
+            }
+
+            messagesSentInOneMinute += 1;
+
+            // message received
+            if ((DateTime.Now - lastTime).TotalMinutes <= 1) // check spam
+            {
+                if (messagesSentInOneMinute > 15)
+                {
+                    _dbContext.MaliciousActivityLog.AddAsync(new MaliciousActivity
+                    {
+                        ActivityTypeId = 5,
+                        Info = "YOu are a bad person!",
+                        IpAddress = "????",
+                        UserId = receivedMessage.UserId
+                    });
+                    _dbContext.SaveChangesAsync();
+                } 
+            }
+            else
+            {
+                lastTime = DateTime.Now;
+                messagesSentInOneMinute = 0;
             }
             
 

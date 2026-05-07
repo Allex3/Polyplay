@@ -4,9 +4,9 @@ import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideL
 import { createGeneralChatMessage, type GeneralChatMessage } from '@/data/GeneralChatMessage'
 import { createUserActivity, USER_ACTIVITIES } from '@/data/UserActivity'
 import { useUserStore } from '@/stores/userStore'
-import { onUnmounted, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 
-apiService.generalChat.startChatConnection(updateChatView)
+apiService.generalChat.startChatConnection(updateChatView, updateTypingIndicators)
 
 const messages = ref<GeneralChatMessage[]>((await apiService.generalChat.getMessages()).messages)
 
@@ -34,6 +34,16 @@ function updateChatView(newMessage: GeneralChatMessage): void {
   )
 }
 
+const usersTyping = ref(0)
+const showTypingIndicators = ref(false)
+
+function updateTypingIndicators(count: any): void {
+  console.log(count)
+  usersTyping.value += count
+  if (usersTyping.value == 0) showTypingIndicators.value = false
+  else showTypingIndicators.value = true
+}
+
 onUnmounted(() => {
   apiService.generalChat.stopChatConnection()
 })
@@ -47,8 +57,10 @@ onUnmounted(() => {
       </div>
     </div>
     <div v-show="isUserLoggedIn" class="flex flex-col items-center">
+      <span v-show="showTypingIndicators">{{ usersTyping }} users typing...</span>
       <form @submit.prevent="postMessage" class="flex flex-row w-full">
         <input
+          v-on:input="apiService.generalChat.handleKeypress()"
           type="textarea"
           v-model="messageToSend.message"
           name="messageInput"

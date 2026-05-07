@@ -69,7 +69,7 @@ class GamesApi {
   }
 
   public generateTestGames(updateView: Function) {
-    this.generateGamesWebSocket = new WebSocket('/ws/startTestGames')
+    this.generateGamesWebSocket = new WebSocket('https://172.30.248.197:5001/ws/startTestGames')
 
     this.generateGamesWebSocket.onopen = function (event) {
       this.send('connection started') // announce it can start the loop
