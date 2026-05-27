@@ -7,6 +7,8 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 import tailwindcss from '@tailwindcss/vite'
 
+const fs = require('fs')
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue(), vueJsx(), vueDevTools(), tailwindcss()],
@@ -15,20 +17,12 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-
   server: {
     host: '0.0.0.0',
-    port: 5173,
-    proxy: {
-      '/api': {
-        target: 'http://172.30.248.197:5000',
-        changeOrigin: true,
-      },
-      '/ws': {
-        target: 'http://172.30.248.197:5000',
-        changeOrigin: true,
-        ws: true,
-      },
+    port: 8080,
+    https: {
+      key: fs.readFileSync(`./cert/privatekey.pem`),
+      cert: fs.readFileSync(`./cert/certificate.crt`),
     },
   },
 })

@@ -1,5 +1,6 @@
 import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
+import BASE_URL from './apiService'
 
 class GamesApi {
   generateGamesWebSocket: undefined | WebSocket
@@ -10,7 +11,7 @@ class GamesApi {
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
     const fetchData: { URL: string; options: any } = {
-      URL: endpoint,
+      URL: BASE_URL + endpoint,
       options: {
         method: method,
         mode: 'cors',

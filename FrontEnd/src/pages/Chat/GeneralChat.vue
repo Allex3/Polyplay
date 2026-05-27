@@ -6,7 +6,7 @@ import { createUserActivity, USER_ACTIVITIES } from '@/data/UserActivity'
 import { useUserStore } from '@/stores/userStore'
 import { computed, onUnmounted, ref } from 'vue'
 
-apiService.generalChat.startChatConnection(updateChatView, updateTypingIndicators)
+apiService.generalChat.startChatConnection(updateChatView, updateTypingIndicators, updateUserExit)
 
 const messages = ref<GeneralChatMessage[]>((await apiService.generalChat.getMessages()).messages)
 
@@ -47,10 +47,14 @@ function updateTypingIndicators(count: any): void {
 onUnmounted(() => {
   apiService.generalChat.stopChatConnection()
 })
+
+function updateUserExit(username: string): void {
+  messages.value.push(createGeneralChatMessage({ message: `User ${username} exited! Good... bye` }))
+}
 </script>
 <template>
   <div class="retro-window w-2/3 h-135 m-auto p-4">
-    <div class="overflow-y-scroll h-115 flex flex-col gap-2">
+    <div class="overflow-y-scroll h-110 flex flex-col gap-2">
       <div class="flex flex-row gap-2 wrap-break-word" v-for="message in messages">
         <span>{{ message.username }}:</span>
         <span>{{ message.message }}</span>

@@ -1,15 +1,14 @@
 import type { GameComment } from '@/data/GameComment'
 import { cacheRequest } from './offlineApiSupport'
 import type { UserActivity } from '@/data/UserActivity'
+import BASE_URL from './apiService'
 
 class UserActivityApi {
-
-  constructor() {
-  }
+  constructor() {}
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
     const fetchData: { URL: string; options: any } = {
-      URL: endpoint,
+      URL: BASE_URL + endpoint,
       options: {
         method: method,
         mode: 'cors',

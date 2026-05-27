@@ -1,10 +1,12 @@
 import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
 import type { GeneralChatMessage } from '@/data/GeneralChatMessage'
+import { useUserStore } from '@/stores/userStore'
 
 class GeneralChatApi {
-  generalChatWebSocket: undefined | WebSocket
+  public generalChatWebSocket: undefined | WebSocket
   typingIndicatorsWebSocket: undefined | WebSocket
+  userExitingWebSocket: undefined | WebSocket
   typingTimeout: any
   isTyping: boolean
 
@@ -62,7 +64,11 @@ class GeneralChatApi {
     this.generalChatWebSocket?.send(JSON.stringify(messageWithoutId))
   }
 
-  public startChatConnection(updateView: Function, updateTypingIndicators: Function) {
+  public startChatConnection(
+    updateView: Function,
+    updateTypingIndicators: Function,
+    updateUserExiting: Function,
+  ) {
     this.generalChatWebSocket = new WebSocket('https://172.30.248.197:5001/ws/generalChat')
     this.typingIndicatorsWebSocket = new WebSocket(
       'https://172.30.248.197:5001/ws/generalChatTypingIndicators',
@@ -71,20 +77,17 @@ class GeneralChatApi {
     this.generalChatWebSocket.onopen = function () {
       console.log('Connected to general chat')
     }
-    this.generalChatWebSocket.onmessage = async function (event) {
+    this.generalChatWebSocket.onmessage = function (event) {
       // received a message (broadcasted to all)
       const message: GeneralChatMessage = JSON.parse(event.data)
       console.log(message)
-      await updateView(message) // update view with new message
-    }
-    this.generalChatWebSocket.onclose = function () {
-      console.log('Disconnected from general chat')
+      updateView(message) // update view with new message
     }
 
-    this.typingIndicatorsWebSocket.onmessage = async function (event) {
+    this.typingIndicatorsWebSocket.onmessage = function (event) {
       console.log(JSON.parse(event.data))
       const count: number = JSON.parse(event.data).count
-      await updateTypingIndicators(count)
+      updateTypingIndicators(count)
     }
   }
 
