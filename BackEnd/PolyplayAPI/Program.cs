@@ -56,6 +56,24 @@ builder.Services.AddDbContext<PolyplayDbContext>(options =>
 // Add controller services to the container.
 builder.Services.AddControllers();
 
+// add Token Validation Parameters
+var tokenValidationParameters = new TokenValidationParameters
+{
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey =
+        new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("JWT:Secret") ?? "uhhhwelpsecretkeynotwork?")),
+
+    ValidateIssuer = true,
+    ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer"),
+
+    ValidateAudience = true,
+    ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience"),
+
+    ValidateLifetime = true
+};
+
+builder.Services.AddSingleton(tokenValidationParameters);
+
 // ASP.NET Core Identity
 
 builder.Services.AddIdentity<User, IdentityRole>()
@@ -75,18 +93,7 @@ builder.Services.AddAuthentication(options =>
     {
         options.SaveToken = true;  // save jwt token
         options.RequireHttpsMetadata = true; // only use https
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey =
-                new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("JWT:Secret") ?? "uhhhwelpsecretkeynotwork?")),
-
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration.GetValue<string>("JWT:Issuer"),
-
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration.GetValue<string>("JWT:Audience")
-        };
+        options.TokenValidationParameters = tokenValidationParameters;
 
     });
 
