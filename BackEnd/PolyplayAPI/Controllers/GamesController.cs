@@ -30,6 +30,8 @@ namespace PolyplayAPI.Controllers
                 .Take(paginationParams.PageSize)
                 .ToListAsync();
 
+
+
             var paginatedResponse = new PaginatedResponse<Game>(games, paginationParams.PageNumber, paginationParams.PageSize, totalGames);
 
             return Ok(paginatedResponse); // 200 OK, page number, page size, total records, and data

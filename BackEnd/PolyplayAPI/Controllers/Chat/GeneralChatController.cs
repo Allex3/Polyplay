@@ -1,12 +1,10 @@
-﻿using System.Collections.Concurrent;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using PolyplayAPI.Models;
 using PolyplayAPI.Models.Chats;
-using PolyplayAPI.Services;
-using System.Net.WebSockets;
-using System.Text;
 using PolyplayAPI.Models.Logging;
+using PolyplayAPI.Services;
+using System.Collections.Concurrent;
+using System.Net.WebSockets;
 
 namespace PolyplayAPI.Controllers.Chat;
 
@@ -87,6 +85,46 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
             HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest; // not websocket request
         }
     }
+
+    [Route("~/ws/generalChatDisconnectedUsers")] // ~ overrides default routing, so
+    // instead of api/games/ws/... it will be just /ws/startTestGames
+    public async Task EstablishGeneralChatDisconnectedUsersWs()
+    {   // HttpContext of the executing action
+        if (HttpContext.WebSockets.IsWebSocketRequest)
+        {
+            WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+
+            CancellationToken ct = HttpContext.RequestAborted;
+
+            if (ct.IsCancellationRequested)
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest; // idk
+            }
+
+            var userExiting = await WsUtilities.ReadJsonAsync<UserExiting>(webSocket, ct);
+
+            var user = await _dbContext.Users.FindAsync(userExiting.UserId);
+
+            if (user == null)
+                return;
+
+
+            foreach (var connection in _wsConnections) // not working broadcast
+            {
+                if (connection.Value.State != WebSocketState.Open)
+                {
+                    continue;
+                }
+
+                await WsUtilities.SendJsonAsync(webSocket, new UserExiting { UserId = user.Id, Username = user.UserName }, ct);
+            }
+        }
+
+        else
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest; // not websocket request
+        }
+    }
     private async Task StartGeneralChatForUser(WebSocket webSocket, string webSocketId)
     {
         const int THIS_IS_NOT_A_MAGIC_NUMBER = 1024;
@@ -126,16 +164,16 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
                         UserId = receivedMessage.UserId
                     });
                     _dbContext.SaveChangesAsync();
-                } 
+                }
             }
             else
             {
                 lastTime = DateTime.Now;
                 messagesSentInOneMinute = 0;
             }
-            
 
-            await _generalChatService.CreateAsync(new GeneralChatMessage {Message=receivedMessage.Message, UserId=receivedMessage.UserId});
+
+            await _generalChatService.CreateAsync(new GeneralChatMessage { Message = receivedMessage.Message, UserId = receivedMessage.UserId });
 
             foreach (var connection in _wsConnections) // not working broadcast
             {
@@ -164,9 +202,9 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
         List<GeneralChatMessageDTO> realMessages = [];
         messages.ForEach(message => realMessages.Add(new GeneralChatMessageDTO
         {
-            Message = message.Message, 
+            Message = message.Message,
             UserId = message.UserId,
-            Username = _dbContext.Users.Find(message.UserId)?.Username!
+            Username = _dbContext.Users.Find(message.UserId)?.UserName!
         }));
 
         return realMessages;

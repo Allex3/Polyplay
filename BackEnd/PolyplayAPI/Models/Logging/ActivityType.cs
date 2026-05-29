@@ -7,6 +7,6 @@ namespace PolyplayAPI.Models.Logging
         [Key] public long Id { get; set; }
         public string Info { get; set; } = null!;
 
-        
+
     }
 }

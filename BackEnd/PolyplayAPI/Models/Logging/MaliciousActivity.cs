@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PolyplayAPI.Models.Auth;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PolyplayAPI.Models.Logging
@@ -8,7 +9,7 @@ namespace PolyplayAPI.Models.Logging
         [Key]
         public long Id { get; set; }
         [ForeignKey(nameof(User))]
-        public long UserId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey(nameof(ActivityType))]
         public long ActivityTypeId { get; set; }
 

@@ -1,6 +1,5 @@
 ﻿using System.Net.WebSockets;
 using System.Text.Json;
-using PolyplayAPI.Models.Chats;
 
 namespace PolyplayAPI.Controllers.Chat
 {
@@ -9,12 +8,12 @@ namespace PolyplayAPI.Controllers.Chat
         private const int THIS_IS_NOT_A_MAGIC_NUMBER = 1024;
         public static async Task<T?> ReadJsonAsync<T>(WebSocket ws, CancellationToken ct = default)
         {
-            var buffer = new ArraySegment<byte>(new byte[THIS_IS_NOT_A_MAGIC_NUMBER*16]); //16kb
+            var buffer = new ArraySegment<byte>(new byte[THIS_IS_NOT_A_MAGIC_NUMBER * 16]); //16kb
 
             using MemoryStream ms = new MemoryStream();
             WebSocketReceiveResult receivedResult;
 
-            
+
             do
             {
                 try
@@ -41,7 +40,7 @@ namespace PolyplayAPI.Controllers.Chat
 
             using var reader = new StreamReader(ms, System.Text.Encoding.UTF8);
             string jsonSerialized = await reader.ReadToEndAsync(ct);
-            return JsonSerializer.Deserialize <T>(jsonSerialized, options: new JsonSerializerOptions(JsonSerializerDefaults.Web)); // decoding message
+            return JsonSerializer.Deserialize<T>(jsonSerialized, options: new JsonSerializerOptions(JsonSerializerDefaults.Web)); // decoding message
         }
 
         public static Task SendJsonAsync<T>(WebSocket ws, T data, CancellationToken ct = default)

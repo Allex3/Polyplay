@@ -165,3 +165,23 @@ Content-Type: application/json
 GET {{PolyplayAPI_HostAddress}}/api/users
 
 ###
+
+POST {{PolyplayAPI_HostAddress}}/api/games
+Content-Type: application/json
+
+{
+  //Game
+}
+
+###
+
+POST {{PolyplayAPI_HostAddress}}/api/authentication/register
+Content-Type: application/json
+
+{
+  "UserName": "alaaaex",
+  "Email": "axolotism@proton.me",
+  "Password": "2005"
+}
+
+###
