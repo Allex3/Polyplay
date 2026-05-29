@@ -108,12 +108,30 @@ namespace PolyplayAPI.Controllers.Auth
             await _context.SaveChangesAsync();
 
             // the response VM that we send to the browser
-            return new AuthenticationResultViewModel()
+            var response = new AuthenticationResultViewModel()
             {
                 Token = jwtToken,
                 RefreshToken = refreshToken.Token,
                 ExpiresAt = token.ValidTo // comes from "Expires" in JwtSecurityToken
             };
+            return response;
+        }
+
+        [HttpPost("login")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel login)
+        {
+            var user = await _userManager.FindByNameAsync(login.UserName);
+
+            // user exists and password is ok
+            if (user != null && await _userManager.CheckPasswordAsync(user, login.Password))
+            {
+                var tokenValue = await GenerateJwtToken(user);
+
+                return Ok(tokenValue); // is this stored automatically? hope so
+            }
+
+            return Unauthorized(new {User = "Invalid username or password"});
         }
     }
 }
