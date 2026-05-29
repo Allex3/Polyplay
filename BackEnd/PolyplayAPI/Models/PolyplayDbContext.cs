@@ -17,6 +17,8 @@ public class PolyplayDbContext(DbContextOptions<PolyplayDbContext> options) : Id
 
     public DbSet<MaliciousActivity> MaliciousActivityLog { get; set; } = null!;
 
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

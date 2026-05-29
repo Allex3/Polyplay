@@ -26,7 +26,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("VueSite", policy => policy
-        .WithOrigins("http://localhost:8080", "https://localhost:8080", "https://192.168.1.128:8080", "http://192.168.1.128:8080", "https://192.168.1.128")
+        .WithOrigins("https://localhost:8080", "https://192.168.1.128:8080", "https://192.168.1.128", "https://192.168.1.128:8080/", "https://192.168.1.128/")
         .AllowAnyHeader()
         .AllowAnyMethod());
 });
@@ -99,16 +99,13 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseAuthentication();
-
 app.UseHttpsRedirection();
+app.UseCors("VueSite");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseWebSockets(); // use web sockets, all origins allowed, ping every 2 minutes by default
-
-
-app.UseCors("VueSite");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -116,10 +113,12 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+/*
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
+*/
 
 app.MapControllers();
 

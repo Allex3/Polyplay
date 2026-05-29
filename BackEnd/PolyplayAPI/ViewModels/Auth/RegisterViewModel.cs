@@ -12,5 +12,7 @@ namespace PolyplayAPI.ViewModels.Auth
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; } = null!;
+
+        public bool WantsToReceiveGameMails { get; set; } = false;
     }
 }

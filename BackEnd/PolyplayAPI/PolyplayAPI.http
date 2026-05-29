@@ -179,9 +179,6 @@ POST {{PolyplayAPI_HostAddress}}/api/authentication/register
 Content-Type: application/json
 
 {
-  "UserName": "alaaaex",
-  "Email": "axolotism@proton.me",
-  "Password": "2005"
 }
 
 ###
