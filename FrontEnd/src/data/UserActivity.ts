@@ -7,9 +7,8 @@ export type ActivityType = {
 
 export type UserActivity = {
   id: number
-  user: User | null
   activityType: ActivityType | null
-  userId: number
+  userName: string
   activityTypeId: number
   activityTimestamp: Date
   ipAddress: string
@@ -19,9 +18,8 @@ export type UserActivity = {
 export function createUserActivity(data: Partial<UserActivity>): UserActivity {
   return {
     id: data.id ?? 0,
-    user: null,
     activityType: null,
-    userId: data.userId ?? 0,
+    userName: data.userName ?? '',
     activityTypeId: data.activityTypeId ?? 0,
     activityTimestamp: new Date(),
     ipAddress: 'no',

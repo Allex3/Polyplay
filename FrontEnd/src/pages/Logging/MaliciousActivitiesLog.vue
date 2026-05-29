@@ -37,7 +37,7 @@ onBeforeMount(() => {
     <div v-for="maliciousAcitivity in maliciousActivitiesLog">
       <div class="flex flex-row gap-22 comic-neue items-center w-full text-center justify-center">
         <div>{{ maliciousAcitivity.id }}</div>
-        <div>{{ maliciousAcitivity.user?.username }}</div>
+        <div>{{ maliciousAcitivity.user?.userName }}</div>
         <div class="w-100">{{ maliciousAcitivity.activityType?.info }}</div>
         <div>{{ maliciousAcitivity.info }}</div>
         <div>{{ maliciousAcitivity.ipAddress }}</div>

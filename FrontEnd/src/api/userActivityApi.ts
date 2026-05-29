@@ -1,7 +1,7 @@
 import type { GameComment } from '@/data/GameComment'
 import { cacheRequest } from './offlineApiSupport'
 import type { UserActivity } from '@/data/UserActivity'
-import BASE_URL from './apiService'
+import {BASE_URL} from './apiService'
 
 class UserActivityApi {
   constructor() {}

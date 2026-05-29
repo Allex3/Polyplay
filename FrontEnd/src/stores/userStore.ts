@@ -1,12 +1,13 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
-import { createUser, type User } from '@/data/User'
+import { createJwtToken, createUser, type JwtToken, type User } from '@/data/User'
 import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
 import { USER_ROLE } from '@/data/Roles'
 import { useUserRoles } from '@/composables/useUserRoles'
 
 export const useUserStore = defineStore('userStore', () => {
   const user = ref<User>(createUser())
+  const jwtToken = ref<JwtToken>(createJwtToken())
   const { logIn } = useShowProfileAndHideLogin()
 
   if (localStorage.getItem('activeUser')) {
@@ -25,7 +26,22 @@ export const useUserStore = defineStore('userStore', () => {
     { deep: true },
   )
 
+  if (localStorage.getItem('jwtToken')) {
+    jwtToken.value = JSON.parse(localStorage.getItem('jwtToken') ?? '')
+  } else {
+    jwtToken.value = createJwtToken()
+  }
+
+  watch(
+    jwtToken,
+    (jwtTokenVal) => {
+      localStorage.setItem('jwtToken', JSON.stringify(jwtTokenVal))
+    },
+    { deep: true },
+  )
+
   return {
     user,
+    jwtToken,
   }
 })

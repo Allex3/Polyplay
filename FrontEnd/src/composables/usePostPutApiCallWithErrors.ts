@@ -15,6 +15,7 @@ export function usePostPutApiCallWithErrors() {
       // no errors but failure => no connection, act as added because cache {
       isInvalidFormat.value = false
       successText.value = successString
+      if (apiResponse.message !== undefined) successText.value = apiResponse.message
       isPostedSuccessfully.value = true
       return true
     }
@@ -22,8 +23,15 @@ export function usePostPutApiCallWithErrors() {
     isPostedSuccessfully.value = false
 
     errorText.value = ''
-    for (const [key, value] of Object.entries(apiResponse.errors)) {
-      errorText.value += key + ': ' + value + '\n'
+
+    let key: string
+    for (key in apiResponse.errors) {
+      const value: any = apiResponse.errors[key]
+      if (value.constructor === Array) {
+        value.forEach((element: string) => {
+          errorText.value += key + ': ' + element + '\n'
+        })
+      } else errorText.value += key + ': ' + value + '\n'
 
       // TODO HERE FORMAT ERRORS BETTER DEPENDING ON THE TPYE OF OBJECT
       // NOT JUST Name : VS GIBBERISH

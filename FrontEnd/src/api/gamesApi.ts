@@ -1,6 +1,6 @@
 import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
-import BASE_URL from './apiService'
+import { BASE_URL } from './apiService'
 
 class GamesApi {
   generateGamesWebSocket: undefined | WebSocket
@@ -24,6 +24,7 @@ class GamesApi {
     }
 
     try {
+      console.log(BASE_URL)
       const response = await fetch(fetchData.URL, fetchData.options)
 
       if (!response.ok) {
@@ -70,7 +71,7 @@ class GamesApi {
   }
 
   public generateTestGames(updateView: Function) {
-    this.generateGamesWebSocket = new WebSocket('https://172.30.248.197:5001/ws/startTestGames')
+    this.generateGamesWebSocket = new WebSocket(BASE_URL + '/ws/startTestGames')
 
     this.generateGamesWebSocket.onopen = function (event) {
       this.send('connection started') // announce it can start the loop

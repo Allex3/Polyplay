@@ -32,7 +32,7 @@ onMounted(() => {
     <div v-for="userAcitivity in userActivitiesLog">
       <div class="flex flex-row gap-22 comic-neue items-center w-full text-center justify-center">
         <div>{{ userAcitivity.id }}</div>
-        <div>{{ userAcitivity.user?.username }}</div>
+        <div>{{ userAcitivity.userName }}</div>
         <div class="w-100">{{ userAcitivity.activityType?.info }}</div>
         <div class="w-100">
           {{ new Date(userAcitivity.activityTimestamp).toLocaleString() }}

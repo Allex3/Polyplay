@@ -1,7 +1,7 @@
 import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
-import type { User } from '@/data/User'
-import BASE_URL from './apiService'
+import type { RegisterUser, User } from '@/data/User'
+import { BASE_URL } from './apiService'
 
 class UsersApi {
   constructor() {}
@@ -11,7 +11,6 @@ class UsersApi {
       URL: BASE_URL + endpoint,
       options: {
         method: method,
-        mode: 'cors',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -40,21 +39,20 @@ class UsersApi {
     }
   }
 
-  public async getUser(username: string, password: string) {
-    let response = await this.callApi('GET', `/api/users/${username}`)
-    if (response.errors !== undefined) return { success: false, errors: 'Username does not exist' }
-    let user: User = response.usersData
-    if (user.password != password) return { success: false, errors: 'Password is incorrect' }
-    return { success: true, user: response.usersData }
+  public async loginUser(username: string, password: string) {
+    return this.callApi('POST', '/api/authentication/login', {
+      body: JSON.stringify({ userName: username, password: password }),
+    })
   }
 
-  public postUser(user: User) {
-    const userWithoutID: object = (({ id, ...restOfUser }) => restOfUser)(user)
-    return this.callApi('POST', '/api/users', { body: JSON.stringify(userWithoutID) })
+  public registerUser(user: RegisterUser) {
+    return this.callApi('POST', '/api/authentication/register', {
+      body: JSON.stringify(user),
+    })
   }
 
-  public getUserRole(id: number) {
-    return this.callApi('GET', `/api/users/${id}/roles`)
+  public getUserRoles(username: string) {
+    return this.callApi('GET', `/api/authentication/${username}/roles`)
   }
 }
 

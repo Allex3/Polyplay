@@ -32,13 +32,15 @@ function deleteComment(): void {
 
 const { isUserAdmin } = useUserRoles()
 
-const isOwnerOrAdmin = computed(() => isUserAdmin || props.gameComment.userId == userStore.user.id)
+const isOwnerOrAdmin = computed(
+  () => isUserAdmin || props.gameComment.userName == userStore.user.userName,
+)
 </script>
 
 <template>
   <div class="border-2 p-1.5 flex flex-col">
     <!--(photo +) username (photo not yet) -->
-    <div class="text-xl comic-neue-bold p-0.5">{{ gameComment.userId }}</div>
+    <div class="text-xl comic-neue-bold p-0.5">{{ gameComment.userName }}</div>
     <!-- Comment body-->
     <div class="text-sm comic-neue p-0.5 wrap-break-word">
       {{ gameComment.body }}
@@ -48,7 +50,7 @@ const isOwnerOrAdmin = computed(() => isUserAdmin || props.gameComment.userId ==
     <!-- maybe it's made by Vue code, with like a button that changes classes...-->
     <div class="flex flex-row gap-3">
       <button
-        v-show="gameComment.userId == userStore.user.id"
+        v-show="gameComment.userName == userStore.user.userName"
         @click="editComment"
         class="text-left w-fit comic-neue-bold p-0.5 hover:cursor-pointer text-[#905a88] hover:text-[#6e4467] active:text-[#563550]"
       >

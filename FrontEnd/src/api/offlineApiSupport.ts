@@ -1,3 +1,5 @@
+import { BASE_URL } from './apiService'
+
 export function cacheRequest(fetchData: { URL: string; options: any }) {
   if (fetchData.options.method == 'GET') return
 
@@ -8,7 +10,7 @@ export function cacheRequest(fetchData: { URL: string; options: any }) {
   localStorage.setItem('cachedApiRequests', JSON.stringify(cachedRequests))
 }
 
-const url = 'https://172.30.248.197:5001/api/games'
+const url = BASE_URL + '/api/games'
 
 async function connectionEstablished(): Promise<boolean> {
   try {

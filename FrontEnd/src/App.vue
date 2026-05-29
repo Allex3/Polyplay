@@ -5,6 +5,8 @@ import { useUserRoles } from './composables/useUserRoles'
 
 const { isUserLoggedIn } = useShowProfileAndHideLogin()
 
+if (localStorage.getItem('jwtToken') != undefined) isUserLoggedIn.value = true
+
 const { isUserAdmin } = useUserRoles()
 </script>
 <template>

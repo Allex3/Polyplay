@@ -20,7 +20,7 @@ function deleteGame(): void {
   apiService.games.deleteGame(currentGame.id)
   apiService.userActivity.postUserActivity(
     createUserActivity({
-      userId: useUserStore().user.id,
+      userName: useUserStore().user.userName,
       activityTypeId: USER_ACTIVITIES.DELETE_GAME,
     }),
   )

@@ -3,7 +3,7 @@ import { useUserStore } from '@/stores/userStore'
 import { ref } from 'vue'
 import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
 import { useRouter } from 'vue-router'
-import { createUser } from '@/data/User'
+import { createJwtToken, createUser } from '@/data/User'
 import apiService from '@/api/apiService'
 import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
 import { createUserActivity, USER_ACTIVITIES } from '@/data/UserActivity'
@@ -13,7 +13,6 @@ import { useUserRoles } from '@/composables/useUserRoles'
 const userStore = useUserStore()
 
 const loginFailed = ref(false)
-const loginFailedErrorText = ref('')
 
 const router = useRouter()
 
@@ -22,7 +21,7 @@ const password = ref('')
 
 const currentlyLoggingIn = ref(false)
 
-const { validateInput } = usePostPutApiCallWithErrors()
+const { validateInput, errorText } = usePostPutApiCallWithErrors()
 const { logIn } = useShowProfileAndHideLogin()
 
 async function login() {
@@ -30,17 +29,26 @@ async function login() {
 
   loginFailed.value = false
 
-  let apiResponse: any = await apiService.users.getUser(username.value, password.value)
-  if (!apiResponse.success) {
-    loginFailed.value = true
-    loginFailedErrorText.value = apiResponse.errors
+  let apiResponse: any = await apiService.users.loginUser(username.value, password.value)
+
+  if (!validateInput(apiResponse)) {
     currentlyLoggingIn.value = false
+    loginFailed.value = true
+    userStore.jwtToken = createJwtToken()
     return
   }
+  loginFailed.value = false
 
-  userStore.user = apiResponse.user
+  currentlyLoggingIn.value = false
 
-  userStore.user.roles = (await apiService.users.getUserRole(userStore.user.id)).usersData // array of roles
+  userStore.jwtToken = apiResponse.usersData
+  userStore.user = createUser({ userName: username.value, roles: [USER_ROLE.USER] })
+
+  console.log(apiResponse)
+
+  let userRoles: string[] = (await apiService.users.getUserRoles(userStore.user.userName)).usersData // array of roles
+  console.log(userRoles)
+  if (userRoles.includes('Admin')) userStore.user.roles = [USER_ROLE.ADMIN, USER_ROLE.USER]
 
   const { isUserAdmin } = useUserRoles()
   if (userStore.user.roles.includes(USER_ROLE.ADMIN)) {
@@ -78,9 +86,7 @@ async function login() {
           type="password"
         />
       </div>
-      <span class="text-[#ee0a0a] text-center" v-show="loginFailed">{{
-        loginFailedErrorText
-      }}</span>
+      <span class="text-[#ee0a0a] text-center" v-show="loginFailed">{{ errorText }}</span>
       <span
         >Don't have an account?
         <router-link to="/Register" class="register_link hover_scale"

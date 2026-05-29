@@ -2,6 +2,7 @@ import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
 import type { GeneralChatMessage } from '@/data/GeneralChatMessage'
 import { useUserStore } from '@/stores/userStore'
+import { BASE_URL } from './apiService'
 
 class GeneralChatApi {
   public generalChatWebSocket: undefined | WebSocket
@@ -19,7 +20,7 @@ class GeneralChatApi {
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
     const fetchData: { URL: string; options: any } = {
-      URL: endpoint,
+      URL: BASE_URL + endpoint,
       options: {
         method: method,
         mode: 'cors',
@@ -69,10 +70,8 @@ class GeneralChatApi {
     updateTypingIndicators: Function,
     updateUserExiting: Function,
   ) {
-    this.generalChatWebSocket = new WebSocket('https://172.30.248.197:5001/ws/generalChat')
-    this.typingIndicatorsWebSocket = new WebSocket(
-      'https://172.30.248.197:5001/ws/generalChatTypingIndicators',
-    )
+    this.generalChatWebSocket = new WebSocket(BASE_URL + '/ws/generalChat')
+    this.typingIndicatorsWebSocket = new WebSocket(BASE_URL + '/ws/generalChatTypingIndicators')
 
     this.generalChatWebSocket.onopen = function () {
       console.log('Connected to general chat')

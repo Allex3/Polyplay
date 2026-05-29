@@ -1,6 +1,6 @@
 import type { GameComment } from '@/data/GameComment'
 import { cacheRequest } from './offlineApiSupport'
-import BASE_URL from './apiService'
+import { BASE_URL } from './apiService'
 
 class GameCommentsApi {
   generateGamesWebSocket: undefined | WebSocket

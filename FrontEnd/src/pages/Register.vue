@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import { createUser } from '@/data/User'
+import { createRegisterUser, createUser } from '@/data/User'
 import { useRouter } from 'vue-router'
 import apiService from '@/api/apiService'
 import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
@@ -11,7 +11,7 @@ const userStore = useUserStore()
 
 const router = useRouter()
 
-const registerUser = ref(createUser())
+const registerUser = ref(createRegisterUser())
 
 const currentlyPostingRegister = ref(false)
 
@@ -21,11 +21,11 @@ const { logIn } = useShowProfileAndHideLogin()
 async function register() {
   currentlyPostingRegister.value = true
 
-  const apiResponse = await apiService.users.postUser(registerUser.value)
-  console.log(apiResponse)
+  const apiResponse = await apiService.users.registerUser(registerUser.value)
+
   if (validateInput(apiResponse)) {
     currentlyPostingRegister.value = false
-    userStore.user = registerUser.value
+    userStore.user = createUser({ userName: registerUser.value.userName, pronouns: 'uhh' })
     logIn()
     router.push('/user/table')
   }
@@ -44,7 +44,7 @@ async function register() {
           id="inputUsername"
           class="retro-input"
           name="username"
-          v-model="registerUser.username"
+          v-model="registerUser.userName"
           placeholder="username"
         />
       </div>
@@ -75,7 +75,7 @@ async function register() {
           type="checkbox"
           id="newsletter"
           name="newsletter"
-          v-model="registerUser.wantsNewsletter"
+          v-model="registerUser.wantsToReceiveGameMails"
         />
         <label for="newsletter">Subscribe to the new creations newsletter</label>
       </div>

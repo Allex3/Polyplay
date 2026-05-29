@@ -1,27 +1,45 @@
+import { USER_ROLE } from './Roles'
+
 export type User = {
-  id: number
-  username: string
-  email: string
-  password: string
-  wantsNewsletter: boolean
-  favoriteGames: number[]
-  following: string[]
-  followers: string[]
+  userName: string
   pronouns: string
   roles: number[]
 }
 
 export function createUser(data: Partial<User> = {}): User {
   return {
-    id: data.id ?? -1,
-    username: data.username ?? '',
+    userName: data.userName ?? '',
+    pronouns: data.pronouns ?? 'they/them',
+    roles: data.roles ?? [USER_ROLE.USER],
+  }
+}
+
+export type RegisterUser = {
+  userName: string
+  email: string
+  password: string
+  wantsToReceiveGameMails: boolean
+}
+
+export function createRegisterUser(data: Partial<RegisterUser> = {}): RegisterUser {
+  return {
+    userName: data.userName ?? '',
     email: data.email ?? '',
     password: data.password ?? '',
-    wantsNewsletter: data.wantsNewsletter ?? false,
-    favoriteGames: data.favoriteGames ?? [],
-    following: data.following ?? [],
-    followers: data.followers ?? [],
-    pronouns: data.pronouns ?? 'they/them',
-    roles: data.roles ?? [1], // just user
+    wantsToReceiveGameMails: data.wantsToReceiveGameMails ?? false,
+  }
+}
+
+export type JwtToken = {
+  token: string
+  refreshToken: string
+  expiresAt: Date
+}
+
+export function createJwtToken(data: Partial<JwtToken> = {}): JwtToken {
+  return {
+    token: data.token ?? '',
+    refreshToken: data.token ?? '',
+    expiresAt: data.expiresAt ?? new Date(),
   }
 }

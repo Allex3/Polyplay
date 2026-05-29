@@ -13,7 +13,7 @@ const messages = ref<GeneralChatMessage[]>((await apiService.generalChat.getMess
 const userStore = useUserStore()
 
 const messageToSend = ref<GeneralChatMessage>(
-  createGeneralChatMessage({ userId: userStore.user.id, username: userStore.user.username }),
+  createGeneralChatMessage({ userName: userStore.user.userName }),
 )
 
 const { isUserLoggedIn } = useShowProfileAndHideLogin()
@@ -28,7 +28,7 @@ function updateChatView(newMessage: GeneralChatMessage): void {
   messages.value.push(newMessage)
   apiService.userActivity.postUserActivity(
     createUserActivity({
-      userId: userStore.user.id,
+      userName: userStore.user.userName,
       activityTypeId: USER_ACTIVITIES.POST_GENERAL_CHAT,
     }),
   )
@@ -56,7 +56,7 @@ function updateUserExit(username: string): void {
   <div class="retro-window w-2/3 h-135 m-auto p-4">
     <div class="overflow-y-scroll h-110 flex flex-col gap-2">
       <div class="flex flex-row gap-2 wrap-break-word" v-for="message in messages">
-        <span>{{ message.username }}:</span>
+        <span>{{ message.userName }}:</span>
         <span>{{ message.message }}</span>
       </div>
     </div>

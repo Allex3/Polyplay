@@ -11,7 +11,7 @@ import userActivityApi from './userActivityApi.ts'
 import type { MaliciousActivityApi } from './maliciousActivityApi.ts'
 import maliciousActivityApi from './maliciousActivityApi.ts'
 
-export const BASE_URL = 'https://192.168.1.128:5001'
+export const BASE_URL = 'https://172.30.248.197:7114'
 
 class APIService {
   games: GamesApi

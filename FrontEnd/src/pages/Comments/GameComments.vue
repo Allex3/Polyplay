@@ -32,7 +32,7 @@ async function deleteGame(gameCommentId: number) {
   apiService.gamesComments.deleteGameComment(gameCommentId)
   apiService.userActivity.postUserActivity(
     createUserActivity({
-      userId: userStore.user.id,
+      userName: userStore.user.userName,
       activityTypeId: USER_ACTIVITIES.DELETE_GAME_COMMENT,
     }),
   )
@@ -48,7 +48,7 @@ async function deleteGame(gameCommentId: number) {
       <!-- will (probably) get an error if no logged in user -->
       <GameCommentPost
         :edit-mode="false"
-        :comment="createGameComment({ gameId: props.gameId, userId: userStore.user.id })"
+        :comment="createGameComment({ gameId: props.gameId, userName: userStore.user.userName })"
         @posted-comment="updateComments"
       />
       <div v-for="gameComment in gameComments" :key="gameComment.id">
@@ -63,8 +63,8 @@ async function deleteGame(gameCommentId: number) {
         <GameCommentPost
           v-show="
             showEdits[gameComment.id] &&
-            userStore.user.id ==
-              gameComment.userId /* even if forced, don't show if it's not same user TODO look later how to make it safe login auth idk*/
+            userStore.user.userName ==
+              gameComment.userName /* even if forced, don't show if it's not same user TODO look later how to make it safe login auth idk*/
           "
           :edit-mode="true"
           :comment="createGameComment(gameComment) /*copy*/"

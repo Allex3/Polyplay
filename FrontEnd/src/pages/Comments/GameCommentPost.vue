@@ -28,7 +28,7 @@ async function postComment() {
     currentComment.value.body = '' // empty it if it posted
     apiService.userActivity.postUserActivity(
       createUserActivity({
-        userId: useUserStore().user.id,
+        userName: useUserStore().user.userName,
         activityTypeId: USER_ACTIVITIES.POST_GAME_COMMENT,
       }),
     )
@@ -40,7 +40,7 @@ async function editComment() {
   if (validateInput(apiResponse, 'Edited successfully :3')) {
     apiService.userActivity.postUserActivity(
       createUserActivity({
-        userId: useUserStore().user.id,
+        userName: useUserStore().user.userName,
         activityTypeId: USER_ACTIVITIES.PUT_GAME_COMMENT,
       }),
     )

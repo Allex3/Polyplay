@@ -10,7 +10,7 @@ const { isAddGameModalOpen, closeAddGameModal } = useAddGameModal()
 
 const userStore = useUserStore()
 
-const gameFromForm = reactive(createGame({ developer: userStore.user.username }))
+const gameFromForm = reactive(createGame({ developer: userStore.user.userName }))
 const tagList: string[] = reactive([])
 
 const isInvalidFormat = ref(false) // show error when true
@@ -58,7 +58,10 @@ async function sendInputAndClose(): Promise<void> {
     addGameButton.disabled = false
 
     apiService.userActivity.postUserActivity(
-      createUserActivity({ userId: userStore.user.id, activityTypeId: USER_ACTIVITIES.POST_GAME }),
+      createUserActivity({
+        userName: userStore.user.userName,
+        activityTypeId: USER_ACTIVITIES.POST_GAME,
+      }),
     )
     return
   }

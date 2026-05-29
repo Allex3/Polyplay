@@ -2,7 +2,7 @@ import type { GameComment } from '@/data/GameComment'
 import { cacheRequest } from './offlineApiSupport'
 import type { UserActivity } from '@/data/UserActivity'
 import type { MaliciousActivity } from '@/data/MaliciousActivity'
-import BASE_URL from './apiService'
+import { BASE_URL } from './apiService'
 
 class MaliciousActivityApi {
   constructor() {}
