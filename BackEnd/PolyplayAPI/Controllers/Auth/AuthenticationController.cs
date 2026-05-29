@@ -63,6 +63,8 @@ namespace PolyplayAPI.Controllers.Auth
                 return BadRequest(errorJson);
             }
 
+            await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+
             return Created(nameof(Register), new { Message = $"User {register.UserName} created" });
         }
 
@@ -78,6 +80,14 @@ namespace PolyplayAPI.Controllers.Auth
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+
+            // Add User Roles
+            var userRoles = await _userManager.GetRolesAsync(user);
+            foreach (var role in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            //TODO add permission based on what games the user has, idk how tho
 
             // same as in program.cs
             var authSigningKey = new SymmetricSecurityKey(
@@ -128,7 +138,7 @@ namespace PolyplayAPI.Controllers.Auth
             {
                 var tokenValue = await GenerateJwtToken(user);
 
-                return Ok(tokenValue); // is this stored automatically? hope so
+                return Ok(tokenValue); // will be stored in client.. soemhow
             }
 
             return Unauthorized(new {User = "Invalid username or password"});

@@ -12,6 +12,7 @@ using System.Collections.Concurrent;
 using System.Configuration;
 using System.Net.WebSockets;
 using System.Text;
+using PolyplayAPI;
 
 
 var configBuilder = new ConfigurationBuilder();
@@ -121,5 +122,9 @@ if (!app.Environment.IsDevelopment())
 */
 
 app.MapControllers();
+
+// after everything, initialize the Identity part of the db (Roles)
+
+DbInitializer.SeedRoles(app).Wait();
 
 app.Run();
