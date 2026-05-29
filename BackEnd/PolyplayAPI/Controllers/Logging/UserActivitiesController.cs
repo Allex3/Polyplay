@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PolyplayAPI.Models;
 using PolyplayAPI.Models.Logging;
@@ -22,7 +23,6 @@ namespace PolyplayAPI.Controllers.Logging
         {
             // TODO MAKE THIS MORE EFFICIENT CUZ WTF
             var userActivities = await _context.UserActivityLog.ToListAsync();
-            userActivities.ForEach(ua => ua.User = _context.Users.Find(ua.UserId));
             userActivities.ForEach(ua => ua.ActivityType = _context.ActivityTypes.Find(ua.ActivityTypeId));
 
             return userActivities;
@@ -54,7 +54,6 @@ namespace PolyplayAPI.Controllers.Logging
                 Id = 0,
                 Info = "M Activity"
             };
-            userActivity?.User = await _context.Users.FindAsync(userActivity.UserId);
 
             if (userActivity == null)
             {
@@ -107,6 +106,7 @@ namespace PolyplayAPI.Controllers.Logging
         }
 
         // DELETE: api/UserActivities/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserActivity(long id)
         {

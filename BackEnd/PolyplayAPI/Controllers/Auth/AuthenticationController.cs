@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
 using PolyplayAPI.Models.Auth;
@@ -241,12 +242,19 @@ namespace PolyplayAPI.Controllers.Auth
             // user exists and password is ok
             if (user != null && await _userManager.CheckPasswordAsync(user, login.Password))
             {
-                var tokenValue = await GenerateJwtTokenAsync(user, "");
+                var tokenValue = await GenerateJwtTokenAsync(user,  "");
 
                 return Ok(tokenValue); // will be stored in client.. soemhow
             }
 
             return Unauthorized(new {User = "Invalid username or password"});
+        }
+
+        [HttpGet("/api/authentication/{userName}/roles")]
+        public async Task<ActionResult<IEnumerable<int>>> GetRoles(string userName)
+        {
+            var userRoles = await _userManager.GetRolesAsync(await _userManager.FindByNameAsync(userName));
+            return Ok(userRoles);
         }
 
         private DateTime UnixTimeStampToDateTimeInUtc(long unixTimeStamp)

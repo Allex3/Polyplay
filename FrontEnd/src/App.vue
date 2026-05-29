@@ -2,12 +2,22 @@
 import { Suspense } from 'vue'
 import { useShowProfileAndHideLogin } from './composables/useShowProfileAndHideLogin'
 import { useUserRoles } from './composables/useUserRoles'
+import { useUserStore } from './stores/userStore'
+import { useRouter } from 'vue-router'
 
 const { isUserLoggedIn } = useShowProfileAndHideLogin()
 
-if (localStorage.getItem('jwtToken') != undefined) isUserLoggedIn.value = true
+if (useUserStore().jwtToken.token != '') isUserLoggedIn.value = true
 
 const { isUserAdmin } = useUserRoles()
+
+const router = useRouter()
+
+function logOut() {
+  useUserStore().jwtToken.token = ''
+  isUserLoggedIn.value = false
+  router.push('/login')
+}
 </script>
 <template>
   <div
@@ -22,7 +32,9 @@ const { isUserAdmin } = useUserRoles()
       <router-link to="/" class="hover_scale single_link">Home</router-link>
       <router-link to="/games" class="hover_scale single_link">Games</router-link>
       <router-link to="/user/table" class="hover_scale single_link">Dashboard</router-link>
-      <router-link to="/stats" class="hover_scale single_link">Statistics</router-link>
+      <router-link v-show="isUserAdmin" to="/stats" class="hover_scale single_link"
+        >Statistics</router-link
+      >
       <router-link v-show="isUserAdmin" to="/adminLog" class="hover_scale single_link"
         >User Log</router-link
       >
@@ -35,6 +47,9 @@ const { isUserAdmin } = useUserRoles()
       <router-link v-show="!isUserLoggedIn" to="/Register" class="hover_scale single_link"
         >Register</router-link
       >
+      <button @click="logOut" v-show="isUserLoggedIn" class="hover_scale single_link">
+        Log Out
+      </button>
     </div>
   </div>
   <suspense>

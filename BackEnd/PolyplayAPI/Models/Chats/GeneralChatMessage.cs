@@ -9,7 +9,7 @@ namespace PolyplayAPI.Models.Chats
         [BsonRepresentation(BsonType.ObjectId)] // handles conversion from string to ObjectId
         public string? Id { get; set; }
         // the JSON representation will still be userId, camelCase, not PascalCase
-        [BsonElement("UserId")] public string UserId { get; set; } = null!; // it's called "UserId" inside MongoDB
+        [BsonElement("UserName")] public string UserName { get; set; } = null!; // it's called "UserId" inside MongoDB
 
         public string Message { get; set; } = null!;
     }

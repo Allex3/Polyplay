@@ -8,8 +8,7 @@ namespace PolyplayAPI.Models.Logging
     {
         [Key]
         public long Id { get; set; }
-        [ForeignKey(nameof(User))]
-        public string UserId { get; set; }
+        public string UserName { get; set; }
         [ForeignKey(nameof(ActivityType))]
         public long ActivityTypeId { get; set; }
 

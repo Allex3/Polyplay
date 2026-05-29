@@ -50,7 +50,7 @@ const isOwnerOrAdmin = computed(
     <!-- maybe it's made by Vue code, with like a button that changes classes...-->
     <div class="flex flex-row gap-3">
       <button
-        v-show="gameComment.userName == userStore.user.userName"
+        v-show="isOwnerOrAdmin"
         @click="editComment"
         class="text-left w-fit comic-neue-bold p-0.5 hover:cursor-pointer text-[#905a88] hover:text-[#6e4467] active:text-[#563550]"
       >

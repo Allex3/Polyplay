@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PolyplayAPI.Models;
 
@@ -11,9 +12,11 @@ using PolyplayAPI.Models;
 namespace PolyplayAPI.Migrations
 {
     [DbContext(typeof(PolyplayDbContext))]
-    partial class PolyplayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260529102422_UpdateUserNames")]
+    partial class UpdateUserNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,13 +322,15 @@ namespace PolyplayAPI.Migrations
                     b.Property<long>("GameId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GameId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("GameComments");
                 });
@@ -400,13 +405,15 @@ namespace PolyplayAPI.Migrations
                     b.Property<string>("IpAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserActivityLog");
                 });
@@ -480,6 +487,14 @@ namespace PolyplayAPI.Migrations
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("PolyplayAPI.Models.Auth.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PolyplayAPI.Models.Logging.MaliciousActivity", b =>
@@ -507,7 +522,15 @@ namespace PolyplayAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PolyplayAPI.Models.Auth.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ActivityType");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PolyplayAPI.Models.Game", b =>

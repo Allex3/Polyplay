@@ -22,7 +22,7 @@ namespace PolyplayAPI.Controllers.Chat
                     ct.ThrowIfCancellationRequested();
                     receivedResult = await ws.ReceiveAsync(buffer, ct);
                 }
-                catch (System.Net.WebSockets.WebSocketException e)
+                catch (Exception e)
                 {
                     return default;
                 }

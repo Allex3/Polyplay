@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PolyplayAPI.Models;
 using PolyplayAPI.Models.Logging;
@@ -17,11 +18,12 @@ namespace PolyplayAPI.Controllers.Logging
         }
 
         // GET: api/MaliciousActivities
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MaliciousActivity>>> GetMaliciousActivityLog()
         {
             var maliciousActivities = await _context.MaliciousActivityLog.ToListAsync();
-            maliciousActivities.ForEach(ua => ua.User = _context.Users.Find(ua.UserId));
+            maliciousActivities.ForEach(ua => ua.User = _context.Users.Find(ua.UserName));
             maliciousActivities.ForEach(ua => ua.ActivityType = _context.ActivityTypes.Find(ua.ActivityTypeId));
 
             return maliciousActivities;
@@ -29,6 +31,7 @@ namespace PolyplayAPI.Controllers.Logging
 
         // GET: api/MaliciousActivities/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<MaliciousActivity>> GetMaliciousActivity(long id)
         {
             var maliciousActivity = await _context.MaliciousActivityLog.FindAsync(id);

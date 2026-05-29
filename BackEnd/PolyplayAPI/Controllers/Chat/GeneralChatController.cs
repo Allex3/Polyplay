@@ -161,7 +161,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
                         ActivityTypeId = 5,
                         Info = "YOu are a bad person!",
                         IpAddress = "????",
-                        UserId = receivedMessage.UserId
+                        UserName = receivedMessage.UserName
                     });
                     _dbContext.SaveChangesAsync();
                 }
@@ -173,7 +173,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
             }
 
 
-            await _generalChatService.CreateAsync(new GeneralChatMessage { Message = receivedMessage.Message, UserId = receivedMessage.UserId });
+            await _generalChatService.CreateAsync(new GeneralChatMessage { Message = receivedMessage.Message, UserName = receivedMessage.UserName });
 
             foreach (var connection in _wsConnections) // not working broadcast
             {
@@ -203,8 +203,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
         messages.ForEach(message => realMessages.Add(new GeneralChatMessageDTO
         {
             Message = message.Message,
-            UserId = message.UserId,
-            Username = _dbContext.Users.Find(message.UserId)?.UserName!
+            UserName = message.UserName
         }));
 
         return realMessages;

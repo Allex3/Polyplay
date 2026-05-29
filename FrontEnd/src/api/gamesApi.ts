@@ -1,6 +1,7 @@
 import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
 import { BASE_URL } from './apiService'
+import { useUserStore } from '@/stores/userStore'
 
 class GamesApi {
   generateGamesWebSocket: undefined | WebSocket
@@ -18,6 +19,7 @@ class GamesApi {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${useUserStore().jwtToken.token}`,
         },
         ...requestParams, // put the requestParams object: body, etc.
       }, //TODO after POST return websocket

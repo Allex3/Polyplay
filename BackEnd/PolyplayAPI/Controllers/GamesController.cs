@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
@@ -9,6 +10,7 @@ namespace PolyplayAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "User")]
     public class GamesController : ControllerBase
     {
         private readonly PolyplayDbContext _context;
@@ -39,6 +41,7 @@ namespace PolyplayAPI.Controllers
 
         // GET game stats: api/Games/stats
         [HttpGet("stats")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<GamesStatistics>> GetGameStatistics()
         {
             var gamesList = _context.Games.ToAsyncEnumerable();
@@ -146,6 +149,7 @@ namespace PolyplayAPI.Controllers
         // for web sockets... but still related to games, so I put it here
         [Route("~/ws/startTestGames")] // ~ overrides default routing, so
         // instead of api/games/ws/... it will be just /ws/startTestGames
+        [Authorize(Roles = "Admin")]
         public async Task EstablishGenerateGamesWs()
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)

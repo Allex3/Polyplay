@@ -27,7 +27,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("VueSite", policy => policy
-        .WithOrigins("https://localhost:8080", "https://192.168.1.128:8080", "https://192.168.1.128", "https://192.168.1.128:8080/", "https://192.168.1.128/")
+        .WithOrigins("https://172.30.248.197:8080", "https://172.30.248.197", "https://localhost:8080", "https://192.168.1.128:8080", "https://192.168.1.128", "https://192.168.1.128:8080/", "https://192.168.1.128/")
         .AllowAnyHeader()
         .AllowAnyMethod());
 });
