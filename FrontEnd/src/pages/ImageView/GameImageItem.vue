@@ -23,7 +23,7 @@ function goToGamePage(): void {
       <span>{{ currentGame.name }}</span>
       <!-- Rating -->
       <div class="self-end -mt-2 flex flex-row gap-1">
-        <span class="self-center">{{ currentGame.rating }}</span>
+        <span class="self-center">{{ currentGame.rating.toFixed(2) }}</span>
         <img
           src="../../../assets/Games/RatingStar.png"
           class="w-4 h-4 self-center mb-0.5"

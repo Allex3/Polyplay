@@ -1,13 +1,7 @@
 import { BASE_URL } from './apiService'
 
 export function cacheRequest(fetchData: { URL: string; options: any }) {
-  if (fetchData.options.method == 'GET') return
-
-  fetchData.options.body = JSON.parse(fetchData.options.body) // it's stringified, not good
-  // since it will be stringified anyway again
-  var cachedRequests: object[] = JSON.parse(localStorage.getItem('cachedApiRequests') ?? '[]')
-  cachedRequests.push(fetchData)
-  localStorage.setItem('cachedApiRequests', JSON.stringify(cachedRequests))
+  return
 }
 
 const url = BASE_URL + '/api/games'

@@ -25,7 +25,7 @@ const gameExists = ref(gameApiResponse.success)
 
 const currentGame = ref<Game>(createGame())
 
-if (gameExists) {
+if (gameExists.value) {
   currentGame.value = gameApiResponse.gamesData
   useCookieManager().writeVisitedGamesCookie(currentGame.value.id)
 
@@ -127,5 +127,10 @@ if (gameExists) {
     <GameComments :gameId="currentGame.id" />
   </div>
 
-  <div v-show="!gameExists" class="m-auto w-full h-full">GAME NOT FOUND</div>
+  <div
+    v-show="!gameExists"
+    class="flex justify-center w-2/3 m-auto h-100 items-center retro-window"
+  >
+    <div>GAME NOT FOUND</div>
+  </div>
 </template>

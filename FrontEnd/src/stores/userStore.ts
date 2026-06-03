@@ -10,6 +10,13 @@ export const useUserStore = defineStore('userStore', () => {
   const jwtToken = ref<JwtToken>(createJwtToken())
   const { logIn } = useShowProfileAndHideLogin()
 
+  if (!localStorage.getItem('jwtToken') || localStorage.getItem('jwtToken') === undefined) {
+    localStorage.removeItem('activeUser')
+    localStorage.removeItem('jwtToken')
+    user.value = createUser()
+    jwtToken.value = createJwtToken()
+  }
+
   if (localStorage.getItem('activeUser')) {
     logIn()
     user.value = JSON.parse(localStorage.getItem('activeUser') ?? '')
@@ -40,8 +47,13 @@ export const useUserStore = defineStore('userStore', () => {
     { deep: true },
   )
 
+  function jwtTokenExpired(): boolean {
+    return new Date(jwtToken.value.expiresAt) < new Date()
+  }
+
   return {
     user,
     jwtToken,
+    jwtTokenExpired,
   }
 })

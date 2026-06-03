@@ -35,13 +35,13 @@ function updateChatView(newMessage: GeneralChatMessage): void {
 }
 
 const usersTyping = ref(0)
-const showTypingIndicators = ref(false)
+const showTypingIndicators = ref('invisible')
 
 function updateTypingIndicators(count: any): void {
   console.log(count)
   usersTyping.value += count
-  if (usersTyping.value == 0) showTypingIndicators.value = false
-  else showTypingIndicators.value = true
+  if (usersTyping.value == 0) showTypingIndicators.value = 'invisible'
+  else showTypingIndicators.value = ''
 }
 
 onUnmounted(() => {
@@ -61,7 +61,7 @@ function updateUserExit(username: string): void {
       </div>
     </div>
     <div v-show="isUserLoggedIn" class="flex flex-col items-center">
-      <span v-show="showTypingIndicators">{{ usersTyping }} users typing...</span>
+      <span :class="showTypingIndicators">{{ usersTyping }} users typing...</span>
       <form @submit.prevent="postMessage" class="flex flex-row w-full">
         <input
           v-on:input="apiService.generalChat.handleKeypress()"
@@ -81,3 +81,8 @@ function updateUserExit(username: string): void {
     </div>
   </div>
 </template>
+<style scoped>
+.invisible {
+  visibility: hidden;
+}
+</style>
