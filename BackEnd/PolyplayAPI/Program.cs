@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PolyplayAPI;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
 using PolyplayAPI.Models.Auth;
@@ -12,7 +14,7 @@ using System.Collections.Concurrent;
 using System.Configuration;
 using System.Net.WebSockets;
 using System.Text;
-using PolyplayAPI;
+using System.Threading.RateLimiting;
 
 
 var configBuilder = new ConfigurationBuilder();
@@ -32,6 +34,34 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod());
 });
 
+// prevent DoS by rate limiting requests per user:
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+    
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.User.Identity?.Name ?? httpContext.Request.Headers.Host.ToString(),
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true, // refresh counter
+                PermitLimit = 20, // 20 requests per user or IP (anonymous)
+                QueueLimit = 0, // disable queue mechanism, just deny
+                Window = TimeSpan.FromMinutes(1), // per minute reset
+            })
+    );
+    // options.RejectionStatusCode = StatusCodes.Status429TooManyRequests; // too simple
+    options.OnRejected = async (context, cancellationToken) =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        context.HttpContext.Response.Headers["Retry-After"] = "60";
+
+        await context.HttpContext.Response.WriteAsync("Rate limit exceeded. Wait 1 minute.. or more", cancellationToken);
+
+        // Optional logging
+        //logger.LogWarning("Rate limit exceeded for IP: {IpAddress}",
+          //  context.HttpContext.Connection.RemoteIpAddress);
+    };
+});
 
 
 // add model validation for more legible HTTP failure responses to use in the front-end
@@ -127,6 +157,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 */
+
+app.UseRateLimiter();
 
 app.MapControllers();
 

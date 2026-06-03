@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Bogus.DataSets;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
+using PolyplayAPI.Models.Auth;
+using PolyplayAPI.ViewModels.Games;
 using System.Net.WebSockets;
 using System.Text;
 
@@ -14,10 +18,12 @@ namespace PolyplayAPI.Controllers
     {
         private readonly PolyplayDbContext _context;
         private FakeData _fakeData;
+        private readonly UserManager<User> _userManager;
 
-        public GamesController(PolyplayDbContext context)
+        public GamesController(PolyplayDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
             _fakeData = new FakeData();
         }
 
@@ -31,6 +37,18 @@ namespace PolyplayAPI.Controllers
                 .Take(paginationParams.PageSize)
                 .ToListAsync();
 
+            var gamesDto = new List<GameDto>();
+            games.ForEach(game => gamesDto.Add(new GameDto
+            {
+                Id = game.Id,
+                Name = game.Name,
+                PostedDate = game.PostedDate,
+                MainTag = game.MainTag,
+                ThumbnailPath = game.ThumbnailPath,
+                Rating = game.Rating,
+                Developer = game.Developer,
+                IsPublished = game.IsPublished
+            }));
 
 
             var paginatedResponse = new PaginatedResponse<Game>(games, paginationParams.PageNumber, paginationParams.PageSize, totalGames);
@@ -66,7 +84,7 @@ namespace PolyplayAPI.Controllers
 
         // GET: api/Games/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Game>> GetGame(long id)
+        public async Task<ActionResult<GameDto>> GetGame(long id)
         {
             var game = await _context.Games.FindAsync(id);
 
@@ -75,7 +93,19 @@ namespace PolyplayAPI.Controllers
                 return NotFound();
             }
 
-            return game;
+            GameDto gameDto = new GameDto
+            {
+                Id = game.Id,
+                Name = game.Name,
+                PostedDate = game.PostedDate,
+                MainTag = game.MainTag,
+                ThumbnailPath = game.ThumbnailPath,
+                Rating = game.Rating,
+                Developer = game.Developer,
+                IsPublished = game.IsPublished
+            };
+
+            return gameDto;
         }
 
         // PUT: api/Games/5
@@ -83,13 +113,37 @@ namespace PolyplayAPI.Controllers
         // it works with filter, im stoopid, i forgot to put filter, but good lesson if ModelState.Valid
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> PutGame(long id, Game game)
+        [Authorize(Roles = "User,Admin")]
+        public async Task<IActionResult> PutGame(long id, GameDto game)
         {
             if (id != game.Id)
             {
                 return BadRequest();
             }
 
+            string userId = _userManager.GetUserId(User);
+
+            Game currentGame = (await _context.Games.FindAsync(game.Id));
+            if (currentGame == null)
+                return NotFound();
+
+            string gameUserId = currentGame.UserId;
+
+            if ((userId != gameUserId || gameUserId == null) && !this.User.IsInRole("Admin"))
+                return Unauthorized(new { Error = "This isn't your game" });
+
+            Game gameToUpdate = new Game
+            {
+                Id = game.Id,
+                UserId = userId,
+                Name = game.Name,
+                PostedDate = game.PostedDate,
+                MainTag = game.MainTag,
+                ThumbnailPath = game.ThumbnailPath,
+                Rating = game.Rating,
+                Developer = game.Developer,
+                IsPublished = game.IsPublished
+            };
 
             _context.Entry(game).State = EntityState.Modified;
 
@@ -114,23 +168,46 @@ namespace PolyplayAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult<Game>> PostGame(Game game)
+        [Authorize(Roles = "User,Admin")]
+        public async Task<ActionResult<Game>> PostGame(GameDto game)
         {
-            _context.Games.Add(game);
+            Game gameToAdd = new Game
+            {
+                UserId = _userManager.GetUserId(User),
+                Name = game.Name,
+                PostedDate = game.PostedDate,
+                MainTag = game.MainTag,
+                ThumbnailPath = game.ThumbnailPath,
+                Rating = game.Rating,
+                Developer = game.Developer,
+                IsPublished = game.IsPublished
+            };
+
+            _context.Games.Add(gameToAdd);
             await _context.SaveChangesAsync();
 
+            game.Id = gameToAdd.Id;
             return CreatedAtAction(nameof(GetGame), new { id = game.Id }, game);
         }
 
         // DELETE: api/Games/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> DeleteGame(long id)
         {
             var game = await _context.Games.FindAsync(id);
+
             if (game == null)
             {
                 return NotFound();
             }
+
+            string userId = _userManager.GetUserId(User);
+
+            string gameUserId = game.UserId;
+
+            if ((userId != gameUserId || gameUserId == null) && !this.User.IsInRole("Admin"))
+                return Unauthorized(new { Error = "This isn't your game" });
 
             _context.Games.Remove(game);
             await _context.SaveChangesAsync();

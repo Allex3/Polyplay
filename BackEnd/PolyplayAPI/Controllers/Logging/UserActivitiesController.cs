@@ -19,33 +19,18 @@ namespace PolyplayAPI.Controllers.Logging
 
         // GET: api/UserActivities
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<UserActivity>>> GetUserActivityLog()
         {
-            // TODO MAKE THIS MORE EFFICIENT CUZ WTF
             var userActivities = await _context.UserActivityLog.ToListAsync();
             userActivities.ForEach(ua => ua.ActivityType = _context.ActivityTypes.Find(ua.ActivityTypeId));
 
             return userActivities;
         }
 
-        [HttpGet("malicious")]
-        public async Task<ActionResult<IEnumerable<UserActivity>>> GetUserActivityLogMalicious()
-        {
-            /*
-            // TODO MAKE THIS MORE EFFICIENT CUZ WTF
-            var userActivities = await _context.UserActivityLog.AsQueryable().Where(ua => ua.ActivityTypeId == 5)
-                .Where(ua => (DateTime.Now - ua.ActivityTimestamp).Value.TotalMinutes < 2);
-
-            userActivities.ForEach(ua => ua.User = _context.Users.Find(ua.UserId));
-            userActivities.ForEach(ua => ua.ActivityType = _context.ActivityTypes.Find(ua.ActivityTypeId));
-
-            return userActivities;
-            */
-            return null;
-        }
-
         // GET: api/UserActivities/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<UserActivity>> GetUserActivity(long id)
         {
             var userActivity = await _context.UserActivityLog.FindAsync(id);
@@ -66,6 +51,7 @@ namespace PolyplayAPI.Controllers.Logging
         // PUT: api/UserActivities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutUserActivity(long id, UserActivity userActivity)
         {
             if (id != userActivity.Id)

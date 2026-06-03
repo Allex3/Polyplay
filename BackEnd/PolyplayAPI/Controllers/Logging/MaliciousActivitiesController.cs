@@ -47,6 +47,7 @@ namespace PolyplayAPI.Controllers.Logging
         // PUT: api/MaliciousActivities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutMaliciousActivity(long id, MaliciousActivity maliciousActivity)
         {
             if (id != maliciousActivity.Id)
@@ -88,6 +89,7 @@ namespace PolyplayAPI.Controllers.Logging
 
         // DELETE: api/MaliciousActivities/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteMaliciousActivity(long id)
         {
             var maliciousActivity = await _context.MaliciousActivityLog.FindAsync(id);

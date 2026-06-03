@@ -10,10 +10,15 @@ namespace PolyplayAPI.Models
         [Required]
         public long GameId { get; set; } // foreign key
 
-        [Required] public string UserName { get; set; } = null!;
+        public string? UserId { get; set; }
+
+        public string UserName { get; set; } = null!;
         [Required]
         [StringLength(1000, MinimumLength = 1)]
-        public string Body { get; set; }
+        public string? Body { get; set; }
+
+        public Game? Game { get; set; }
+        public User? User { get; set; }
 
     }
 }

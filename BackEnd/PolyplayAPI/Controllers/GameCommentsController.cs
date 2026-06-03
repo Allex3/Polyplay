@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Bogus.DataSets;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
+using PolyplayAPI.Models.Auth;
+using PolyplayAPI.ViewModels.Games;
 
 namespace PolyplayAPI.Controllers
 {
@@ -10,27 +15,40 @@ namespace PolyplayAPI.Controllers
     public class GameCommentsController : ControllerBase
     {
         private readonly PolyplayDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public GameCommentsController(PolyplayDbContext context)
+        public GameCommentsController(PolyplayDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/GameComments?gameId=X (without game id, get NOTHING)
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameComment>>> GetGameComments([FromQuery] long GameId = -1)
+        public async Task<ActionResult<IEnumerable<GameCommentDto>>> GetGameComments([FromQuery] long GameId = -1)
         {
             if (GameId == -1)
                 return Ok(new List<GameComment>());
+
             var gameComments = _context.GameComments.AsQueryable();
             var thisGameComments = await gameComments.Where(gameComment => gameComment.GameId == GameId).ToListAsync();
-            return Ok(thisGameComments);
+
+            var gameCommentsDto = new List<GameCommentDto>();
+            thisGameComments.ForEach(gameComment => gameCommentsDto.Add(new GameCommentDto
+            {
+                Body = gameComment.Body,
+                GameId = gameComment.GameId,
+                Id = gameComment.Id,
+                UserName = gameComment.UserName
+            }));
+            
+            return Ok(gameCommentsDto);
 
         }
 
         // GET: api/GameComments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GameComment>> GetGameComment(long id)
+        public async Task<ActionResult<GameCommentDto>> GetGameComment(long id)
         {
             var gameComment = await _context.GameComments.FindAsync(id);
 
@@ -39,19 +57,45 @@ namespace PolyplayAPI.Controllers
                 return NotFound();
             }
 
-            return gameComment;
+            return new GameCommentDto
+            {
+                Body = gameComment.Body,
+                GameId = gameComment.GameId,
+                Id=gameComment.Id,
+                UserName = gameComment.UserName
+            };
         }
 
         // PUT: api/GameComments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> PutGameComment(long id, GameComment gameComment)
         {
             if (id != gameComment.Id)
             {
                 return BadRequest();
             }
+
+            string userId = _userManager.GetUserId(User);
+            GameComment? existingGameComment = await _context.GameComments.FindAsync(gameComment.Id);
+
+            if (existingGameComment == null)
+                return NotFound();
+
+            string gameCommentUserId = existingGameComment.UserId;
+
+            if ((userId != gameCommentUserId || gameCommentUserId == null) && !this.User.IsInRole("Admin"))
+                return Unauthorized(new { Error = "This isn't your game" });
+
+            GameComment gameToUpdate = new GameComment
+            {
+                GameId = gameComment.GameId,
+                UserName = gameComment.UserName,
+                Body = gameComment.Body,
+                UserId = _userManager.GetUserId(this.User)
+            };
 
             _context.Entry(gameComment).State = EntityState.Modified;
 
@@ -76,25 +120,46 @@ namespace PolyplayAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<ActionResult<GameComment>> PostGameComment(GameComment gameComment)
+        [Authorize(Roles = "User,Admin")]
+        public async Task<ActionResult<GameCommentDto>> PostGameComment(GameCommentDto gameComment)
         {
             if (gameComment.GameId == -1)
                 return BadRequest(new { Game = new List<string>(["Game does not exist"]) });
-            _context.GameComments.Add(gameComment);
+
+            var gameCommentToAdd = new GameComment
+            {
+                GameId = gameComment.GameId,
+                UserName = gameComment.UserName,
+                Body = gameComment.Body,
+                UserId = _userManager.GetUserId(this.User)
+            };
+
+            _context.GameComments.Add(gameCommentToAdd);
             await _context.SaveChangesAsync();
+
+            gameComment.Id = gameCommentToAdd.Id;
 
             return CreatedAtAction("GetGameComment", new { id = gameComment.Id }, gameComment);
         }
 
         // DELETE: api/GameComments/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> DeleteGameComment(long id)
         {
             var gameComment = await _context.GameComments.FindAsync(id);
+
             if (gameComment == null)
             {
                 return NotFound();
             }
+
+            string userId = _userManager.GetUserId(User);
+
+            string gameCommentUserId = gameComment.UserId;
+
+            if ((userId != gameCommentUserId || gameCommentUserId == null) && !this.User.IsInRole("Admin"))
+                return Unauthorized(new { Error = "This isn't your game" });
 
             _context.GameComments.Remove(gameComment);
             await _context.SaveChangesAsync();

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using NuGet.Common;
+using PolyplayAPI.Controllers.Auth;
 using PolyplayAPI.Models;
 using PolyplayAPI.Models.Chats;
 using PolyplayAPI.Models.Logging;
@@ -22,6 +26,13 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
     {   // HttpContext of the executing action
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
+            const string HeaderKeyName = "Sec-WebSocket-Protocol";
+            Request.Headers.TryGetValue(HeaderKeyName, out StringValues token);
+            if (!AuthValidator.Authenticate(token))
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return;
+            }
             WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
 
             CancellationToken ct = HttpContext.RequestAborted;
@@ -50,6 +61,14 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
     {   // HttpContext of the executing action
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
+            const string HeaderKeyName = "Sec-WebSocket-Protocol";
+            Request.Headers.TryGetValue(HeaderKeyName, out StringValues token);
+            if (!AuthValidator.Authenticate(token))
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return;
+            }
+
             WebSocket webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
 
             CancellationToken ct = HttpContext.RequestAborted;
@@ -86,8 +105,9 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
         }
     }
 
-    [Route("~/ws/generalChatDisconnectedUsers")] // ~ overrides default routing, so
-    // instead of api/games/ws/... it will be just /ws/startTestGames
+    /*
+
+    [Route("~/ws/generalChatDisconnectedUsers")] // ~ overrides default routing
     public async Task EstablishGeneralChatDisconnectedUsersWs()
     {   // HttpContext of the executing action
         if (HttpContext.WebSockets.IsWebSocketRequest)
@@ -125,6 +145,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
             HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest; // not websocket request
         }
     }
+    */
     private async Task StartGeneralChatForUser(WebSocket webSocket, string webSocketId)
     {
         const int THIS_IS_NOT_A_MAGIC_NUMBER = 1024;
@@ -223,6 +244,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
     }
 
     [HttpPost]
+    [Authorize(Roles="User")]
     public async Task<IActionResult> Post(GeneralChatMessage newMessage)
     {
         await _generalChatService.CreateAsync(newMessage);
@@ -231,6 +253,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
     }
 
     [HttpPut("{id:length(24)}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(string id, GeneralChatMessage updatedMessage)
     {
         var message = await _generalChatService.GetAsync(id);
@@ -248,6 +271,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
     }
 
     [HttpDelete("{id:length(24)}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(string id)
     {
         var message = await _generalChatService.GetAsync(id);

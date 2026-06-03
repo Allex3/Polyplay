@@ -1,30 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PolyplayAPI.Models;
 using PolyplayAPI.Models.Auth;
+using System.ComponentModel.DataAnnotations;
 
-namespace PolyplayAPI.Models
+namespace PolyplayAPI.ViewModels.Games
 {
-    public class Game
+    public class GameDto
     {
         public long Id { get; set; }
-        [Required]
-        [StringLength(250, MinimumLength = 1)]
         public string? Name { get; set; }
         public DateTime PostedDate { get; set; }
-        [Required]
-        [StringLength(1000, MinimumLength = 2)]
         public string? Description { get; set; }
         public string MainTag { get; set; }
         public string ThumbnailPath { get; set; }
         public double Rating { get; set; }
-        [Required]
         public string? Developer { get; set; }
 
         public bool IsPublished { get; set; } = false;
-        public List<GameComment> GameComments { get; } = new List<GameComment>();
-
-        [Required]
-        public string? UserId { get; set; }
-        public User User { get; set; } = null!;
 
     }
 }
