@@ -3,11 +3,13 @@ import { cacheRequest } from './offlineApiSupport'
 import type { UserActivity } from '@/data/UserActivity'
 import type { MaliciousActivity } from '@/data/MaliciousActivity'
 import { BASE_URL } from './apiService'
+import { useUserStore } from '@/stores/userStore'
 
 class MaliciousActivityApi {
   constructor() {}
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
+    await useUserStore().refreshJwtToken();
     const fetchData: { URL: string; options: any } = {
       URL: BASE_URL + endpoint,
       options: {

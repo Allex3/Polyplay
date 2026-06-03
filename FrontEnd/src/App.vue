@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router'
 
 const { isUserLoggedIn } = useShowProfileAndHideLogin()
 
-if (useUserStore().jwtToken.token != '') isUserLoggedIn.value = true
+if (useUserStore().isJwtTokenValid()) isUserLoggedIn.value = true
 
 const { isUserAdmin } = useUserRoles()
 

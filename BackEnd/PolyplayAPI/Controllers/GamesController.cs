@@ -10,7 +10,6 @@ namespace PolyplayAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "User")]
     public class GamesController : ControllerBase
     {
         private readonly PolyplayDbContext _context;

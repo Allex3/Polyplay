@@ -14,4 +14,4 @@ app.use(router)
 
 app.mount('#app')
 
-setInterval(fetchCachedRequests, 10000) // every 10 seconds
+// setInterval(fetchCachedRequests, 10000) // every 10 seconds

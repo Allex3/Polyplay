@@ -1,7 +1,8 @@
 import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
-import type { RegisterUser, User } from '@/data/User'
+import type { RegisterUser, TokenRequest, User } from '@/data/User'
 import { BASE_URL } from './apiService'
+import { useUserStore } from '@/stores/userStore'
 
 class UsersApi {
   constructor() {}
@@ -53,6 +54,12 @@ class UsersApi {
 
   public getUserRoles(username: string) {
     return this.callApi('GET', `/api/authentication/${username}/roles`)
+  }
+
+  public refreshJwtToken(tokenRequest: TokenRequest) {
+    return this.callApi('POST', '/api/authentication/refresh-token', {
+      body: JSON.stringify(tokenRequest),
+    })
   }
 }
 

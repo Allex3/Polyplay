@@ -11,6 +11,7 @@ class GameCommentsApi {
   }
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
+    await useUserStore().refreshJwtToken()
     const fetchData: { URL: string; options: any } = {
       URL: BASE_URL + endpoint,
       options: {
@@ -19,7 +20,7 @@ class GameCommentsApi {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${useUserStore().jwtToken.token}`
+          Authorization: `Bearer ${useUserStore().jwtToken.token}`,
         },
         ...requestParams, // put the requestParams object: body, etc.
       }, //TODO after POST return websocket

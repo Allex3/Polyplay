@@ -2,11 +2,13 @@ import type { GameComment } from '@/data/GameComment'
 import { cacheRequest } from './offlineApiSupport'
 import type { UserActivity } from '@/data/UserActivity'
 import {BASE_URL} from './apiService'
+import { useUserStore } from '@/stores/userStore';
 
 class UserActivityApi {
   constructor() {}
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
+    await useUserStore().refreshJwtToken();
     const fetchData: { URL: string; options: any } = {
       URL: BASE_URL + endpoint,
       options: {

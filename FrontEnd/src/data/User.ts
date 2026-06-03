@@ -43,3 +43,15 @@ export function createJwtToken(data: Partial<JwtToken> = {}): JwtToken {
     expiresAt: data.expiresAt ?? new Date(),
   }
 }
+
+export type TokenRequest = {
+  token: string
+  refreshToken: string
+}
+
+export function createTokenRequest(data: Partial<TokenRequest> = {}): TokenRequest {
+  return {
+    token: data.token ?? '',
+    refreshToken: data.refreshToken ?? '',
+  }
+}

@@ -11,6 +11,7 @@ class GamesApi {
   }
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
+    await useUserStore().refreshJwtToken()
     const fetchData: { URL: string; options: any } = {
       URL: BASE_URL + endpoint,
       options: {

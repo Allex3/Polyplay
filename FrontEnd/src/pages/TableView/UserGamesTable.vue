@@ -43,7 +43,6 @@ const { reset } = useInfiniteScroll(
     visibleGames.value.push(
       ...(await apiService.games.getGames(pageNumber, VISIBLE_GAMES_ON_PAGE)).games,
     )
-    console.log(visibleGames)
   },
   {
     // options

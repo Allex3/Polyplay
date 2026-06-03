@@ -253,7 +253,10 @@ namespace PolyplayAPI.Controllers.Auth
         [HttpGet("/api/authentication/{userName}/roles")]
         public async Task<ActionResult<IEnumerable<int>>> GetRoles(string userName)
         {
-            var userRoles = await _userManager.GetRolesAsync(await _userManager.FindByNameAsync(userName));
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+                return Unauthorized("User does not exist / is not logged in.");
+            var userRoles = await _userManager.GetRolesAsync(user);
             return Ok(userRoles);
         }
 
