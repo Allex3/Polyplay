@@ -28,7 +28,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
         {
             const string HeaderKeyName = "Sec-WebSocket-Protocol";
             Request.Headers.TryGetValue(HeaderKeyName, out StringValues token);
-            if (!AuthValidator.Authenticate(token))
+            if (AuthValidator.Authenticate(token) == string.Empty)
             {
                 HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return;
@@ -63,7 +63,7 @@ public class GeneralChatController(GeneralChatService generalChatService, Polypl
         {
             const string HeaderKeyName = "Sec-WebSocket-Protocol";
             Request.Headers.TryGetValue(HeaderKeyName, out StringValues token);
-            if (!AuthValidator.Authenticate(token))
+            if (AuthValidator.Authenticate(token)==string.Empty)
             {
                 HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return;

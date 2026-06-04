@@ -7,7 +7,7 @@ namespace PolyplayAPI.Controllers.Auth
 {
     public static class AuthValidator
     {
-        public static bool Authenticate(string token)
+        public static string Authenticate(string token)
         {
             var key = new SymmetricSecurityKey("THEREISNoWayAnyoneWILLGUESSMYSECRETKEYLMAO"u8.ToArray());
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -32,13 +32,16 @@ namespace PolyplayAPI.Controllers.Auth
                     principal = validator.ValidateToken(token, validationParameters, out validatedToken);
 
                     // If we got here then the token is valid
-                    /*
                     if (principal.HasClaim(c => c.Type == ClaimTypes.Role))
                     {
-                        return principal.Claims.Where(c => c.Type == ClaimTypes.Role).First().Value;
+                        foreach (var claim in principal.Claims.Where(c => c.Type == ClaimTypes.Role))
+                        {
+                            if (claim.Value == "Admin")
+                                return "Admin";
+                        }
                     }
-                    */
-                    return true;
+
+                    return "User";
                 }
                 catch (Exception e)
                 {
@@ -46,8 +49,7 @@ namespace PolyplayAPI.Controllers.Auth
                 }
             }
 
-            // return String.Empty;
-            return false;
+            return string.Empty;
         }
     }
 }

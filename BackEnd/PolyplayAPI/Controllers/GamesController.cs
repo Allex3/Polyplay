@@ -3,12 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
+using PolyplayAPI.Controllers.Auth;
 using PolyplayAPI.Filters;
 using PolyplayAPI.Models;
 using PolyplayAPI.Models.Auth;
 using PolyplayAPI.ViewModels.Games;
 using System.Net.WebSockets;
 using System.Text;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace PolyplayAPI.Controllers
 {
@@ -29,6 +32,7 @@ namespace PolyplayAPI.Controllers
 
         // GET: api/Games
         [HttpGet]
+        [DisableRateLimiting]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames([FromQuery] PaginationParameters paginationParams)
         {
             var gamesQuery = _context.Games.AsQueryable();
@@ -42,6 +46,7 @@ namespace PolyplayAPI.Controllers
             {
                 Id = game.Id,
                 Name = game.Name,
+                Description = game.Description,
                 PostedDate = game.PostedDate,
                 MainTag = game.MainTag,
                 ThumbnailPath = game.ThumbnailPath,
@@ -100,6 +105,7 @@ namespace PolyplayAPI.Controllers
                 PostedDate = game.PostedDate,
                 MainTag = game.MainTag,
                 ThumbnailPath = game.ThumbnailPath,
+                Description = game.Description,
                 Rating = game.Rating,
                 Developer = game.Developer,
                 IsPublished = game.IsPublished
@@ -137,6 +143,7 @@ namespace PolyplayAPI.Controllers
                 Id = game.Id,
                 UserId = userId,
                 Name = game.Name,
+                Description = game.Description,
                 PostedDate = game.PostedDate,
                 MainTag = game.MainTag,
                 ThumbnailPath = game.ThumbnailPath,
@@ -175,6 +182,7 @@ namespace PolyplayAPI.Controllers
             {
                 UserId = _userManager.GetUserId(User),
                 Name = game.Name,
+                Description = game.Description,
                 PostedDate = game.PostedDate,
                 MainTag = game.MainTag,
                 ThumbnailPath = game.ThumbnailPath,
@@ -225,11 +233,17 @@ namespace PolyplayAPI.Controllers
         // for web sockets... but still related to games, so I put it here
         [Route("~/ws/startTestGames")] // ~ overrides default routing, so
         // instead of api/games/ws/... it will be just /ws/startTestGames
-        [Authorize(Roles = "Admin")]
         public async Task EstablishGenerateGamesWs()
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
+                const string HeaderKeyName = "Sec-WebSocket-Protocol";
+                Request.Headers.TryGetValue(HeaderKeyName, out StringValues token);
+                if (AuthValidator.Authenticate(token)!="Admin")
+                {
+                    HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return;
+                }
                 using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
 
                 await GenerateGames(webSocket);

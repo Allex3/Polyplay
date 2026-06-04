@@ -17,6 +17,7 @@ namespace PolyplayAPI
             TestGames = new Faker<Game>()
                 .StrictMode(true)
                 .RuleFor(game => game.Id, f => 0)
+                .RuleFor(game => game.User, f => null)
                 .RuleFor(game => game.UserId, f=> "c45b12df-231d-47d4-bc18-5a438ef82337")
                 .RuleFor(game => game.Name, f => f.Name.JobTitle())
                 .RuleFor(game => game.PostedDate, f => f.Date.Past(1))

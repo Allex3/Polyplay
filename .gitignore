@@ -64,3 +64,4 @@ obj/
 
 # OS files
 .DS_Store
+/BackEnd/PolyplayAPI/appsettings.json

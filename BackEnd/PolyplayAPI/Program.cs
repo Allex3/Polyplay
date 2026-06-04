@@ -137,6 +137,18 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    using var serviceScope = app.Services.CreateScope();
+    using var dbContext = serviceScope.ServiceProvider.GetService<PolyplayDbContext>();
+    dbContext?.Database.Migrate();
+}
+else
+{
+    app.UseHsts();
+}
+
 app.UseHttpsRedirection();
 app.UseCors("VueSite");
 
@@ -145,11 +157,6 @@ app.UseAuthorization();
 
 app.UseWebSockets(); // use web sockets, all origins allowed, ping every 2 minutes by default
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 /*
 if (!app.Environment.IsDevelopment())
