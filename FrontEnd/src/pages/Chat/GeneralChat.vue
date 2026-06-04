@@ -63,7 +63,7 @@ function updateUserExit(username: string): void {
       <div class="flex flex-row gap-2 wrap-break-word" v-for="message in messages">
         <div :class="isUserThePoster(message.userName)">
           <div class="pr-2">{{ message.userName }}:</div>
-          <div class="w-1/2 wrap-break-word">{{ message.message }}</div>
+          <div class="w-full wrap-break-word">{{ message.message }}</div>
         </div>
       </div>
     </div>
