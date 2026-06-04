@@ -7,7 +7,6 @@ import apiService from '@/api/apiService'
 import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
 import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
 
-
 const userStore = useUserStore()
 
 const router = useRouter()
