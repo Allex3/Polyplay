@@ -25,7 +25,7 @@ const currentGame = ref<Game>(
   (await apiService.games.getGame(Number(route.params.gameid))).gamesData,
 )
 
-if (userStore.user.username != currentGame.value.developer) router.push('/PermissionDenied')
+if (userStore.user.userName != currentGame.value.developer) router.push('/PermissionDenied')
 
 const currentlySaving = ref(false)
 
@@ -35,7 +35,10 @@ async function sendInputAndClose() {
   const response = await apiService.games.putGame(currentGame.value)
   if (validateInput(response, 'Saved Successfully')) {
     apiService.userActivity.postUserActivity(
-      createUserActivity({ userId: userStore.user.id, activityTypeId: USER_ACTIVITIES.PUT_GAME }),
+      createUserActivity({
+        userName: userStore.user.userName,
+        activityTypeId: USER_ACTIVITIES.PUT_GAME,
+      }),
     )
   }
   currentlySaving.value = false

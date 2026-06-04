@@ -9,6 +9,7 @@ namespace PolyplayAPI.Models.Logging
         [Key]
         public long Id { get; set; }
         //TODO USEER FOREIGN KEY LATER
+        // public string UserId {get;set;}
         public string UserName { get; set; } = null!;
         [ForeignKey(nameof(ActivityType))]
         public long ActivityTypeId { get; set; }
@@ -18,5 +19,7 @@ namespace PolyplayAPI.Models.Logging
         public DateTime? ActivityTimestamp { get; set; }
         public string? IpAddress { get; set; }
         public string? AdditionalInfo { get; set; }
+
+        // public User User { get; set; }
     }
 }
