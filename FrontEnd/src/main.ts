@@ -5,7 +5,7 @@ import App from './App.vue'
 import router from './router'
 import './global.css'
 
-export const BASE_URL = 'https://172.30.248.197:7114'
+export const BASE_URL = 'https://polyplay.runasp.net'
 
 import { fetchCachedRequests } from './api/offlineApiSupport'
 import { useUserStore } from './stores/userStore.ts'
