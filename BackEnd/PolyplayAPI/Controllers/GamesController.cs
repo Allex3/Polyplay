@@ -33,6 +33,7 @@ namespace PolyplayAPI.Controllers
         // GET: api/Games
         [HttpGet]
         [DisableRateLimiting]
+        [EnableRateLimiting("games")]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames([FromQuery] PaginationParameters paginationParams)
         {
             var gamesQuery = _context.Games.AsQueryable();

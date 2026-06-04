@@ -1,6 +1,8 @@
+using Azure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -29,7 +31,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("VueSite", policy => policy
-        .WithOrigins("https://172.30.248.197:8080", "https://172.30.248.197", "https://localhost:8080", "https://192.168.1.128:8080", "https://192.168.1.128", "https://192.168.1.128:8080/", "https://192.168.1.128/")
+        .WithOrigins("https://172.30.248.197:8080", "https://172.30.248.197", "https://localhost:8080", "https://192.168.1.128:8080", "https://192.168.1.128", "https://192.168.1.128:8080/", "https://192.168.1.128/", "https://localhost")
         .AllowAnyHeader()
         .AllowAnyMethod());
 });
@@ -55,12 +57,25 @@ builder.Services.AddRateLimiter(options =>
         context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
         context.HttpContext.Response.Headers["Retry-After"] = "60";
 
+        context.HttpContext.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+
         await context.HttpContext.Response.WriteAsync("Rate limit exceeded. Wait 1 minute.. or more", cancellationToken);
 
         // Optional logging
         //logger.LogWarning("Rate limit exceeded for IP: {IpAddress}",
-          //  context.HttpContext.Connection.RemoteIpAddress);
+        //  context.HttpContext.Connection.RemoteIpAddress);
     };
+});
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("games", options =>
+    {
+        options.PermitLimit = 200;           // 100 requests per user per minute
+        options.Window = TimeSpan.FromSeconds(10);
+        options.QueueLimit = 0;       
+        options.AutoReplenishment = true; 
+    });
 });
 
 
