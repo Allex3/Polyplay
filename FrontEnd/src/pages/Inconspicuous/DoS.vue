@@ -1,7 +1,5 @@
-<script setup>
-import { onMounted } from 'vue'
-
-var jeff = document.getElementById('jeff')
+<script setup lang="ts">
+var jeff: any = document.getElementById('jeff')
 
 function hmhm() {
   jeff = document.getElementById('jeff')

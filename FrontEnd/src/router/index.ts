@@ -55,8 +55,8 @@ const routes = [
   },
   {
     path: '/hmhmhmhmhmhmhmhm',
-    component: () => import('../pages/Inconspicuous/DoS.vue')
-  }
+    component: () => import('../pages/Inconspicuous/DoS.vue'),
+  },
 ]
 
 const router = createRouter({
