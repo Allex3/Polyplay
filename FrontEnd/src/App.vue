@@ -7,15 +7,15 @@ import { useRouter } from 'vue-router'
 
 const { isUserLoggedIn } = useShowProfileAndHideLogin()
 
-if (useUserStore().isJwtTokenValid()) isUserLoggedIn.value = true
+if (useUserStore().isJwtTokenValid() && !useUserStore().hasTokenExpired())
+  isUserLoggedIn.value = true
 
 const { isUserAdmin } = useUserRoles()
 
 const router = useRouter()
 
 function logOut() {
-  useUserStore().jwtToken.token = ''
-  isUserLoggedIn.value = false
+  useUserStore().logOutUser()
   router.push('/login')
 }
 </script>

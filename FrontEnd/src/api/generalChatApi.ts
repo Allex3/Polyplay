@@ -19,7 +19,7 @@ class GeneralChatApi {
   }
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
-    await useUserStore().refreshJwtToken();
+    await useUserStore().refreshJwtToken()
     const fetchData: { URL: string; options: any } = {
       URL: BASE_URL + endpoint,
       options: {
@@ -28,6 +28,7 @@ class GeneralChatApi {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${useUserStore().jwtToken.token}`,
         },
         ...requestParams, // put the requestParams object: body, etc.
       }, //TODO after POST return websocket
@@ -71,8 +72,14 @@ class GeneralChatApi {
     updateTypingIndicators: Function,
     updateUserExiting: Function,
   ) {
-    this.generalChatWebSocket = new WebSocket(BASE_URL + '/ws/generalChat')
-    this.typingIndicatorsWebSocket = new WebSocket(BASE_URL + '/ws/generalChatTypingIndicators')
+    this.generalChatWebSocket = new WebSocket(
+      BASE_URL + '/ws/generalChat',
+      useUserStore().jwtToken.token,
+    )
+    this.typingIndicatorsWebSocket = new WebSocket(
+      BASE_URL + '/ws/generalChatTypingIndicators',
+      useUserStore().jwtToken.token,
+    )
 
     this.generalChatWebSocket.onopen = function () {
       console.log('Connected to general chat')

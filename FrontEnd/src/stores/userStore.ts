@@ -91,10 +91,18 @@ export const useUserStore = defineStore('userStore', () => {
     return tokenExpiryDate < currentDateUtc
   }
 
+  function logOutUser(): void {
+    logOut()
+    jwtToken.value = createJwtToken()
+    user.value = createUser()
+  }
+
   return {
     user,
     jwtToken,
     refreshJwtToken,
     isJwtTokenValid,
+    logOutUser,
+    hasTokenExpired,
   }
 })

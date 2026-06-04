@@ -16,11 +16,11 @@ const gameComments = ref<GameCom[]>([])
 
 const showEdits = reactive<any>({})
 
-updateComments()
+await updateComments()
 
 async function updateComments() {
   gameComments.value = await apiService.gamesComments.getGameComments(props.gameId) // comments in a list
-  if (Object.keys(showEdits.value).length == 0) {
+  if (Object.keys(showEdits).length == 0) {
     //if its empty, otherwise don't modify it
     gameComments.value.forEach((game) => {
       showEdits[game.id] = false // don't show its edit at first

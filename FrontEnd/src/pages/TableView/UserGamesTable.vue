@@ -38,6 +38,7 @@ const { reset } = useInfiniteScroll(
   infiniteScrollContainer,
   async () => {
     // onLoadMore()
+    if (loadedGames >= totalGames) return
     pageNumber += 1 // next 4 games
     loadedGames += VISIBLE_GAMES_ON_PAGE // should get >= totalGames to stop
     visibleGames.value.push(
@@ -54,9 +55,10 @@ const { reset } = useInfiniteScroll(
   },
 )
 const resetGamesList = reset
+
 async function updateGamesList() {
   let apiResponse = await apiService.games.getGames(pageNumber, VISIBLE_GAMES_ON_PAGE)
-  pageNumber = 0
+  pageNumber = 1
   totalGames = apiResponse.totalGames
   visibleGames.value = apiResponse.games
   loadedGames = VISIBLE_GAMES_ON_PAGE

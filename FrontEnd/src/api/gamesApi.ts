@@ -74,7 +74,10 @@ class GamesApi {
   }
 
   public generateTestGames(updateView: Function) {
-    this.generateGamesWebSocket = new WebSocket(BASE_URL + '/ws/startTestGames')
+    this.generateGamesWebSocket = new WebSocket(
+      BASE_URL + '/ws/startTestGames',
+      useUserStore().jwtToken.token,
+    )
 
     this.generateGamesWebSocket.onopen = function (event) {
       this.send('connection started') // announce it can start the loop

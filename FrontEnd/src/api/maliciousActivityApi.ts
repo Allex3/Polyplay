@@ -18,6 +18,7 @@ class MaliciousActivityApi {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${useUserStore().jwtToken.token}`,
         },
         ...requestParams, // put the requestParams object: body, etc.
       }, //TODO after POST return websocket
