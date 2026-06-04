@@ -40,7 +40,7 @@ export function createJwtToken(data: Partial<JwtToken> = {}): JwtToken {
   return {
     token: data.token ?? '',
     refreshToken: data.token ?? '',
-    expiresAt: data.expiresAt ?? new Date(),
+    expiresAt: data.expiresAt ?? new Date(1989, 1, 1, 1, 1),
   }
 }
 

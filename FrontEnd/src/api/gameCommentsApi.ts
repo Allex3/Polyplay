@@ -1,7 +1,8 @@
 import type { GameComment } from '@/data/GameComment'
 import { cacheRequest } from './offlineApiSupport'
-import { BASE_URL } from './apiService'
+import { BASE_URL } from '../main'
 import { useUserStore } from '@/stores/userStore'
+import { useJumpscareWhenDoS } from '@/composables/useJumpscareWhenDoS'
 
 class GameCommentsApi {
   generateGamesWebSocket: undefined | WebSocket
@@ -28,6 +29,9 @@ class GameCommentsApi {
 
     try {
       const response = await fetch(fetchData.URL, fetchData.options)
+
+      console.log(response)
+      if (response.status == 429) useJumpscareWhenDoS()
 
       if (!response.ok) {
         return { success: false, errors: await response.json() } //if NOT ok, we get the POST/PUT data validation errors

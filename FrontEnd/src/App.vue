@@ -5,17 +5,18 @@ import { useUserRoles } from './composables/useUserRoles'
 import { useUserStore } from './stores/userStore'
 import { useRouter } from 'vue-router'
 
-const { isUserLoggedIn } = useShowProfileAndHideLogin()
+const userStore = useUserStore()
 
-if (useUserStore().isJwtTokenValid() && !useUserStore().hasTokenExpired())
-  isUserLoggedIn.value = true
-
-const { isUserAdmin } = useUserRoles()
+const { logIn, isUserLoggedIn } = useShowProfileAndHideLogin()
 
 const router = useRouter()
 
+if (userStore.isJwtTokenValid() && !userStore.hasTokenExpired()) logIn()
+else logOut()
+const { isUserAdmin } = useUserRoles()
+
 function logOut() {
-  useUserStore().logOutUser()
+  userStore.logOutUser()
   router.push('/login')
 }
 </script>

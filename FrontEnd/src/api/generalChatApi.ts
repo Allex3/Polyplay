@@ -2,7 +2,8 @@ import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
 import type { GeneralChatMessage } from '@/data/GeneralChatMessage'
 import { useUserStore } from '@/stores/userStore'
-import { BASE_URL } from './apiService'
+import { BASE_URL } from '../main'
+import { useJumpscareWhenDoS } from '@/composables/useJumpscareWhenDoS'
 
 class GeneralChatApi {
   public generalChatWebSocket: undefined | WebSocket
@@ -36,6 +37,8 @@ class GeneralChatApi {
 
     try {
       const response = await fetch(fetchData.URL, fetchData.options)
+
+      if (response.status == 429) useJumpscareWhenDoS()
 
       if (!response.ok) {
         return { success: false, errors: await response.json() } //if NOT ok, we get the POST/PUT data validation errors
@@ -72,13 +75,14 @@ class GeneralChatApi {
     updateTypingIndicators: Function,
     updateUserExiting: Function,
   ) {
+    let jwtToken = useUserStore().jwtToken.token
     this.generalChatWebSocket = new WebSocket(
       BASE_URL + '/ws/generalChat',
-      useUserStore().jwtToken.token,
+      jwtToken == '' ? 'nopnopnop' : jwtToken,
     )
     this.typingIndicatorsWebSocket = new WebSocket(
       BASE_URL + '/ws/generalChatTypingIndicators',
-      useUserStore().jwtToken.token,
+      jwtToken == '' ? 'nopnopnop' : jwtToken,
     )
 
     this.generalChatWebSocket.onopen = function () {

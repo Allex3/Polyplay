@@ -48,6 +48,11 @@ onUnmounted(() => {
   apiService.generalChat.stopChatConnection()
 })
 
+function isUserThePoster(userName: string) {
+  if (userStore.user.userName == userName) return 'flex flex-row w-full justify-end'
+  else return 'flex flex-row w-full'
+}
+
 function updateUserExit(username: string): void {
   messages.value.push(createGeneralChatMessage({ message: `User ${username} exited! Good... bye` }))
 }
@@ -56,8 +61,10 @@ function updateUserExit(username: string): void {
   <div class="retro-window w-2/3 h-135 m-auto p-4">
     <div class="overflow-y-scroll h-110 flex flex-col gap-2">
       <div class="flex flex-row gap-2 wrap-break-word" v-for="message in messages">
-        <span>{{ message.userName }}:</span>
-        <span>{{ message.message }}</span>
+        <div :class="isUserThePoster(message.userName)">
+          <div class="pr-2">{{ message.userName }}:</div>
+          <div class="w-1/2 wrap-break-word">{{ message.message }}</div>
+        </div>
       </div>
     </div>
     <div v-show="isUserLoggedIn" class="flex flex-col items-center">

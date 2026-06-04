@@ -2,14 +2,15 @@ import type { GameComment } from '@/data/GameComment'
 import { cacheRequest } from './offlineApiSupport'
 import type { UserActivity } from '@/data/UserActivity'
 import type { MaliciousActivity } from '@/data/MaliciousActivity'
-import { BASE_URL } from './apiService'
+import { BASE_URL } from '../main'
 import { useUserStore } from '@/stores/userStore'
+import { useJumpscareWhenDoS } from '@/composables/useJumpscareWhenDoS'
 
 class MaliciousActivityApi {
   constructor() {}
 
   private async callApi(method: string, endpoint: string, requestParams = {}) {
-    await useUserStore().refreshJwtToken();
+    await useUserStore().refreshJwtToken()
     const fetchData: { URL: string; options: any } = {
       URL: BASE_URL + endpoint,
       options: {
@@ -26,6 +27,8 @@ class MaliciousActivityApi {
 
     try {
       const response = await fetch(fetchData.URL, fetchData.options)
+
+      if (response.status == 429) useJumpscareWhenDoS()
 
       if (!response.ok) {
         return { success: false, errors: await response.json() } //if NOT ok, we get the POST/PUT data validation errors

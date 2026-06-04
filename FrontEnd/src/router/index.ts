@@ -53,6 +53,10 @@ const routes = [
     path: '/adminLog',
     component: () => import('../pages/Logging/AdminLogView.vue'),
   },
+  {
+    path: '/hmhmhmhmhmhmhmhm',
+    component: () => import('../pages/Inconspicuous/DoS.vue')
+  }
 ]
 
 const router = createRouter({

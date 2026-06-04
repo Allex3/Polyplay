@@ -6,6 +6,9 @@ import { useRouter } from 'vue-router'
 import apiService from '@/api/apiService'
 import { usePostPutApiCallWithErrors } from '@/composables/usePostPutApiCallWithErrors'
 import { useShowProfileAndHideLogin } from '@/composables/useShowProfileAndHideLogin'
+import { useJumpscareWhenDoS } from '@/composables/useJumpscareWhenDoS'
+
+useJumpscareWhenDoS()
 
 const userStore = useUserStore()
 

@@ -1,8 +1,9 @@
 import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
 import type { RegisterUser, TokenRequest, User } from '@/data/User'
-import { BASE_URL } from './apiService'
+import { BASE_URL } from '../main'
 import { useUserStore } from '@/stores/userStore'
+import { useJumpscareWhenDoS } from '@/composables/useJumpscareWhenDoS'
 
 class UsersApi {
   constructor() {}
@@ -22,7 +23,7 @@ class UsersApi {
 
     try {
       const response = await fetch(fetchData.URL, fetchData.options)
-
+      if (response.status == 429) useJumpscareWhenDoS()
       if (!response.ok) {
         return { success: false, errors: await response.json() } //if NOT ok, we get the POST/PUT data validation errors
       }

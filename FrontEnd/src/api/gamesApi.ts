@@ -1,7 +1,8 @@
 import type { Game } from '@/data/Game'
 import { cacheRequest } from './offlineApiSupport'
-import { BASE_URL } from './apiService'
+import { BASE_URL } from '../main'
 import { useUserStore } from '@/stores/userStore'
+import { useJumpscareWhenDoS } from '@/composables/useJumpscareWhenDoS'
 
 class GamesApi {
   generateGamesWebSocket: undefined | WebSocket
@@ -27,8 +28,9 @@ class GamesApi {
     }
 
     try {
-      console.log(BASE_URL)
       const response = await fetch(fetchData.URL, fetchData.options)
+
+      if (response.status == 429) useJumpscareWhenDoS()
 
       if (!response.ok) {
         return { success: false, errors: await response.json() } //if NOT ok, we get the POST/PUT data validation errors

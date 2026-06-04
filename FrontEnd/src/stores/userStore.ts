@@ -94,6 +94,7 @@ export const useUserStore = defineStore('userStore', () => {
   function logOutUser(): void {
     logOut()
     jwtToken.value = createJwtToken()
+    useUserRoles().removeAdmin()
     user.value = createUser()
   }
 
