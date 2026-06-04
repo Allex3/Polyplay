@@ -39,7 +39,7 @@ function logOut() {
       <router-link v-show="isUserAdmin" to="/adminLog" class="hover_scale single_link"
         >User Log</router-link
       >
-      <router-link to="/general" class="hover_scale single_link">General</router-link>
+      <router-link to="/general" class="hover_scale single_link">CHAT</router-link>
     </div>
     <div class="flex flex-row justify-end gap-8 flex-1 mr-8">
       <router-link v-show="!isUserLoggedIn" to="/Login" class="hover_scale single_link"
